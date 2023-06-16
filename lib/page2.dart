@@ -1,4 +1,5 @@
 import 'package:aarush/eventpage.dart';
+import 'package:aarush/profilepage.dart';
 import 'package:aarush/search.dart';
 import 'package:flutter/material.dart';
 import 'jsonextract.dart';
@@ -7,6 +8,7 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'profilepage.dart';
 List<dynamic> eventList=[];
 int pg=0;
 class page2 extends StatefulWidget {
@@ -26,7 +28,7 @@ class _page2State extends State<page2> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          height: 1000,
           width:   MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage('images/bg2.jpg'),
@@ -44,7 +46,7 @@ class _page2State extends State<page2> {
                     width: 20,
                   ),
                   IconButton(onPressed: (){Navigator.push(context,
-                      MaterialPageRoute(builder: (context) =>  SearchScreen()));
+                      MaterialPageRoute(builder: (context) =>  profile()));
 
                   },
                     icon: Image.asset('images/profile.png'),
@@ -121,176 +123,60 @@ class _page2State extends State<page2> {
                          enlargeFactor: 0.5,
                   ),
                   ),
-                  // Row(
-                  //   children: [
-                  //
-                  //     Container(
-                  //       padding: const EdgeInsets.all(16.0),
-                  //       height: 300,
-                  //       decoration: BoxDecoration(
-                  //         border: Border.all(width: 2, color: Colors.white),
-                  //         borderRadius: BorderRadius.all(Radius.circular(40)),
-                  //       ),
-                  //       child:
-                  //       Stack(
-                  //         alignment: Alignment.bottomCenter,
-                  //         children:[
-                  //
-                  //           Image.network(eventList[0]['image']),
-                  //           Container(
-                  //               height: 40,
-                  //               width: 130,
-                  //               decoration: BoxDecoration(
-                  //                 color: Colors.blueGrey.withOpacity(0.8),
-                  //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-                  //               ),
-                  //               child: TextButton(onPressed: (){launchlink();
-                  //                 print(eventList[0]['id']);}, child: Text("Register Now",
-                  //                 style: TextStyle(
-                  //                     color: Colors.white
-                  //                 ),))),
-                  //
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     SizedBox(
-                  //       width: 10,
-                  //     ),
-                  //     Container(
-                  //       padding: const EdgeInsets.all(13.0),
-                  //       height: 300,
-                  //       decoration: BoxDecoration(
-                  //         border: Border.all(width: 2, color: Colors.white),
-                  //         borderRadius: BorderRadius.all(Radius.circular(40)),
-                  //       ),
-                  //       child:
-                  //       Stack(
-                  //         alignment: Alignment.bottomCenter,
-                  //         children:[
-                  //
-                  //           GestureDetector(
-                  //             onTap: (){Navigator.push(context,
-                  //                 MaterialPageRoute(builder: (context) => const eventpage()));},
-                  //             child: Image(image: AssetImage('images/event1.png'),
-                  //             ),
-                  //           ),
-                  //           Container(
-                  //               height: 40,
-                  //               width: 130,
-                  //               decoration: BoxDecoration(
-                  //                 color: Colors.blueGrey.withOpacity(0.8),
-                  //
-                  //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-                  //               ),
-                  //
-                  //               child: TextButton(onPressed: (){}, child: Text("Register Now",
-                  //                 style: TextStyle(
-                  //                     color: Colors.white
-                  //                 ),))),
-                  //
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     SizedBox(
-                  //       width: 10,
-                  //     ),
-                  //     Container(
-                  //       padding: const EdgeInsets.all(16.0),
-                  //       height: 300,
-                  //       decoration: BoxDecoration(
-                  //         border: Border.all(width: 2, color: Colors.white),
-                  //         borderRadius: BorderRadius.all(Radius.circular(40)),
-                  //       ),
-                  //       child:
-                  //       Stack(
-                  //         alignment: Alignment.bottomCenter,
-                  //         children:[
-                  //           Image(image: AssetImage('images/event3.png'),
-                  //           ),
-                  //           Container(
-                  //               height: 40,
-                  //               width: 130,
-                  //               decoration: BoxDecoration(
-                  //                 color: Colors.blueGrey.withOpacity(0.8),
-                  //
-                  //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-                  //               ),
-                  //
-                  //               child: TextButton(onPressed: (){}, child: Text("Register Now",
-                  //                 style: TextStyle(
-                  //                     color: Colors.white
-                  //                 ),))),
-                  //
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+
                 ),
               ),
+              SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                child: Container(
+                  height: 500,
+                  padding:EdgeInsets.all(15),
+                  decoration:BoxDecoration(
+                    color:Color.fromRGBO(115, 115, 115, 0.3),
+                    border: Border.all(width: 1, color: Colors.white),
+                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                  ),
 
-              // Container(
-              //   margin:const EdgeInsets.all(14),
-              //   height: 700.0,
-              //
-              //   padding: const EdgeInsets.all(7),
-              //   width: 500.0,
-              //   decoration: const BoxDecoration(
-              //       borderRadius: BorderRadius.all(Radius.circular(37)),
-              // ),
-              //   child:
-              //   Column(
-              //
-              //     children:  [
-              //       const Padding(
-              //         padding: EdgeInsets.only(top: 10),
-              //       ),
-              //       const Align(
-              //
-              //         alignment: Alignment.center,
-              //         child: Text(
-              //           'Our Workshops',
-              //           style: TextStyle(fontSize: 35,color: Colors.white),
-              //         ),
-              //       ),
-              //       const Padding(
-              //         padding: EdgeInsets.only(top: 20),
-              //       ),
-              //       TextButton(
-              //         style: TextButton.styleFrom(
-              //             fixedSize: const Size(270, 70),
-              //             backgroundColor: Colors.white24,
-              //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0),),
-              //             textStyle: const TextStyle(fontSize: 16)),
-              //         onPressed: () {},
-              //         child: const Text('Stock Market and Financial Management'),
-              //       ),
-              //       const Padding(
-              //         padding: EdgeInsets.only(top: 15),
-              //       ),
-              //       TextButton(
-              //         style:
-              //         TextButton.styleFrom(
-              //             fixedSize: const Size(270, 70),
-              //             backgroundColor: Colors.white24,
-              //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0),),
-              //             textStyle: const TextStyle(fontSize: 16)),
-              //
-              //         onPressed: () {},
-              //         child: const Text('Stock Market and Financial Management'),
-              //       ),
-              //       const Padding(
-              //         padding: EdgeInsets.only(top: 15),
-              //       ),
-              //
-              //
-              //       const Padding(
-              //         padding: EdgeInsets.only(top: 15),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text("OUR WORKSHOPS",style:TextStyle(fontWeight:FontWeight.bold,fontSize: 30,color: Colors.white)),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            height: 80,
+                            decoration:BoxDecoration(
+                              color:Color.fromRGBO(115, 115, 115, 0.5),
+                              borderRadius: BorderRadius.all(Radius.circular(12)),
 
+                            ),
+                            child: Center(child:Text("Stock Market and Financial Management",style: TextStyle(fontSize:20,color: Colors.white),),
+                            ),),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            height: 80,
+                            decoration:BoxDecoration(
+                              color:Color.fromRGBO(115, 115, 115, 0.5),
+                              borderRadius: BorderRadius.all(Radius.circular(12)),
+
+                            ),
+                            child: Center(child:Text("Stock Market and Financial Management",style: TextStyle(fontSize:20,color: Colors.white),),
+                            ),),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

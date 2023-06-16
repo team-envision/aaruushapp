@@ -40,7 +40,7 @@ class _eventpageState extends State<eventpage> {
     return Scaffold(
         body: SingleChildScrollView(
         child: Container(
-        height: MediaQuery.of(context).size.height,
+        height: 1000,
         width:   MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           image: DecorationImage(image: AssetImage('images/bg2.jpg'),
@@ -91,17 +91,17 @@ class _eventpageState extends State<eventpage> {
               padding: const EdgeInsets.fromLTRB(30, 10, 20, 5),
               child: Text(n2,
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 32,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 0, 20),
+              padding: const EdgeInsets.fromLTRB(30, 0, 20, 20),
               child: Text(_eventList1[pg]['oneliner'],
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 14,
                   color: Colors.white,
                 ),
               ),
@@ -134,48 +134,82 @@ class _eventpageState extends State<eventpage> {
                 ),)
               ],
             ),
-            SingleChildScrollView(
-              child: DefaultTabController(
-                length: 3,
-                child: Column(
-                  children: [
-                    TabBar(tabs: [
-                      Tab(text: "About",),
-                      Tab(text: "Requirement",),
-                      Tab(text: "Contact",),
-                    ]),
-                    Container(
-                      height: 300,
+            SizedBox(height: 5,),
+            DefaultTabController(
+              length: 3,
+              child: Column(
+                children: [
+                  TabBar(tabs: [
+                    Tab(text: "About",),
+                    Tab(text: "Requirement",),
+                    Tab(text: "Contact",),
+                  ]),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      constraints: const BoxConstraints(
+                        minWidth: 100,
+                        minHeight: 200,
+                      ),
+                      padding:EdgeInsets.all(15),
+                      decoration:BoxDecoration(
+                        color:Color.fromRGBO(115, 115, 115, 0.3),
+                        border: Border.all(width: 2, color: Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                      ),
+                      height: 200,
                       child: TabBarView(children: [
-                        Container(
-                          child: Html(data: _eventList1[pg]['about'],style: {"body": Style(color: Colors.white)},),
+                        SingleChildScrollView(
+                          child: Container(
+                            child: Html(data: _eventList1[pg]['about'],style: {"body": Style(color: Colors.white,fontSize: FontSize(19.5))},),
+                          ),
                         ),
-
                         //   child: Text(_eventList1[0]['about'],style: TextStyle(
                         //     fontSize: 14,
                         //     color: Colors.white,
                         //   ),),
                         // ),
-                        Container(
-                          child: Html(data: _eventList1[pg]['structure'],style: {"body": Style(color: Colors.white)},),
-
+                        SingleChildScrollView(
+                          child: Container(
+                            child: Html(data: _eventList1[pg]['structure'],style: {"body": Style(color: Colors.white,fontSize: FontSize(19.5))},),
+                          ),
                         ),
                         Container(
-
-                          child: Html(data: _eventList1[pg]['contact'],style: {"body": Style(color: Colors.white,fontSize:FontSize(18))},),
-
+                          child: Center(
+                              child: Html(data: _eventList1[pg]['contact'],style: {"body": Style(color: Colors.white,fontSize:FontSize(19.5),textAlign:TextAlign.center)},)),
                         ),
                       ]),
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+          Container(
+            height: 65,
+            width: 300,
+            decoration: BoxDecoration(
+                color: Colors.deepOrangeAccent,
+                borderRadius: BorderRadius.all(Radius.circular(30))
+            ),
+
+
+            child:TextButton(
+                    child: Text("Register",
+                      style: TextStyle(
+                          color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                    onPressed: (){Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const page2()));
+
+
+                    },
+                  ),  ),              ],
               ),
             ),
 
           ],
         )
     ),
-        )
+        ),
     );
   }
 }
