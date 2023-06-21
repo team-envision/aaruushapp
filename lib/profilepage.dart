@@ -18,7 +18,7 @@ class _profileState extends State<profile> {
         height: 1000,
     width:   MediaQuery.of(context).size.width,
     decoration: BoxDecoration(
-    image: DecorationImage(image: AssetImage('images/bg2.jpg'),
+    image: DecorationImage(image: AssetImage('assets/images/bg2.jpg'),
     fit: BoxFit.cover
     ),
     ),
@@ -33,7 +33,7 @@ class _profileState extends State<profile> {
         onTap:(){ Navigator.push(context,MaterialPageRoute(builder: (context) =>  page2()));},
         child: Container(
           height: 40,
-          child: Image.asset('images/Group557.jpg'),
+          child: Image.asset('assets/images/Group557.jpg'),
         ),
       ),
 
@@ -74,11 +74,11 @@ class _profileState extends State<profile> {
               alignment: Alignment.bottomRight,
               children: [
                 Container(height:110,
-                    child: Image.asset('images/Ellipse 252.png',
+                    child: Image.asset('assets/images/Ellipse 252.png',
                       fit: BoxFit.contain,
                     )),
 
-                Image.asset("images/Frame 12.png")
+                Image.asset("assets/images/Frame 12.png")
               ],
             )
           ),

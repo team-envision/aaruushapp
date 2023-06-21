@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: const Color(0xFF242329) ,
         body: Stack(
           children: <Widget>[
-            SvgPicture.asset('images/BGLightseffect1.svg'),
+            SvgPicture.asset('assets/images/BGLightseffect1.svg'),
              Column(
                crossAxisAlignment: CrossAxisAlignment.start,
                children:      <Widget>[
@@ -76,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                        IconButton(onPressed: (){
                          _key.currentState!.openDrawer();
                        },
-                         iconSize: 24 ,icon: SvgPicture.asset('images/Menu.svg') ,color: Colors.white,),
+                         iconSize: 24 ,icon: SvgPicture.asset('assets/images/Menu.svg') ,color: Colors.white,),
                        const Spacer(),
                        IconButton(onPressed: ()=>{},iconSize: 24 ,icon: const Icon(Icons.notifications_none_outlined),color: Colors.white,)
                      ],

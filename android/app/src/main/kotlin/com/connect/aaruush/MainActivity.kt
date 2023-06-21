@@ -1,4 +1,4 @@
-package com.example.aarush
+package com.connect.aaruush
 
 import io.flutter.embedding.android.FlutterActivity
 

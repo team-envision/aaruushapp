@@ -1,3 +1,4 @@
+import 'package:aarush/temp/main.dart';
 import 'package:aarush/eventpage.dart';
 import 'package:aarush/profilepage.dart';
 import 'package:aarush/search.dart';
@@ -11,6 +12,15 @@ import 'dart:convert';
 import 'profilepage.dart';
 List<dynamic> eventList=[];
 int pg=0;
+Future _fetchData() async {
+  final response = await http.get(
+      Uri.parse('https://api.aaruush.org/api/v1/events'));
+  if (response.statusCode == 200) {
+    eventList = json.decode(response.body);
+  } else {
+    throw Exception('Failed to load events');
+  }
+}
 class page2 extends StatefulWidget {
   const page2({Key? key}) : super(key: key);
 
@@ -49,7 +59,7 @@ class _page2State extends State<page2> {
                       MaterialPageRoute(builder: (context) =>  profile()));
 
                   },
-                    icon: Image.asset('images/profile.png'),
+                    icon: Image.asset('assets/images/profile.png'),
                     color: Colors.white,
                     iconSize: 40,
                   ),
@@ -108,8 +118,13 @@ class _page2State extends State<page2> {
                                   color: Colors.blueGrey.withOpacity(0.8),
                                   borderRadius: BorderRadius.all(Radius.circular(20)),
                                 ),
-                                child: TextButton(onPressed: (){launchlink();
-                                print(eventList[itemIndex]['id']);}, child: Text("Register Now",
+                                child: TextButton(
+                                  
+                                //   onPressed: (){launchlink();
+                                // print(eventList[itemIndex]['id']);},
+                                  onPressed: (){},
+                                
+                                 child: Text("Register Now",
                                   style: TextStyle(
                                       color: Colors.white
                                   ),))),

@@ -63,7 +63,7 @@ class _searchWidgetState extends State<searchWidget> {
                           color: findcolor(i),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                          child:SvgPicture.asset('images/filtericon.svg',),)),
+                          child:SvgPicture.asset('assets/images/filtericon.svg',),)),
                 )
                 // suffixIcon: Padding(
                 //   padding: const EdgeInsets.all(5.0),

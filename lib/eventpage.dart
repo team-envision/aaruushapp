@@ -58,7 +58,7 @@ class _eventpageState extends State<eventpage> {
                   width: 20,
                 ),
                 IconButton(onPressed: (){},
-                  icon: Image.asset('images/profile.png'),
+                  icon: Image.asset('assets/images/profile.png'),
                   color: Colors.white,
                   iconSize: 40,
                 ),

@@ -27,23 +27,21 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  amplify_auth_cognito: ^1.1.1
+  amplify_flutter: ^1.1.1
   carousel_slider: ^4.2.1
+  change_app_package_name: ^1.1.0
   cupertino_icons: ^1.0.2
+  editable_image: ^2.0.0
   flutter:
     sdk: flutter
   flutter_html: ^3.0.0-alpha.6
-  flutter_parse: ^1.0.1
   flutter_svg: ^2.0.5
   get: ^4.6.5
   get_storage: ^2.1.1
+  google_fonts: ^5.0.0
   html: ^0.15.2
-  http: ^0.13.5
   url_launcher: ^6.1.10
-  flutter_parse: ^1.0.1
-  html: ^0.15.2
-  flutter_html: ^3.0.0-alpha.6
-  carousel_slider: ^4.2.1
-  editable_image: ^2.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -57,14 +55,13 @@ flutter:
   fonts:
     - family: Xirod
       fonts:
-        - asset: fonts/xirod1.ttf
+        - asset: assets/fonts/xirod1.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
   assets:
-    - images/
-    - images/Rectangle2.jpg
-    - images/Rectangle3.jpg
-    - images/bg.jpg
+    - assets/
+    - assets/images/
+    - assets/images/icons/
