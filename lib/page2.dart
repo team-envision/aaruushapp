@@ -36,6 +36,7 @@ class _page2State extends State<page2> {
   }
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: SingleChildScrollView(
         child: Container(
           height: 1000,
