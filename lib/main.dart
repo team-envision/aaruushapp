@@ -22,6 +22,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart' as t;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   await configureAmplify();
   runApp(AaruushApp());
 }

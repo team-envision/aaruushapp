@@ -1,19 +1,19 @@
 {
-  "dev": {
+  "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-aaruushapp-dev-04013-authRole",
-      "UnauthRoleArn": "arn:aws:iam::179683962947:role/amplify-aaruushapp-dev-04013-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::179683962947:role/amplify-aaruushapp-dev-04013-authRole",
+      "AuthRoleName": "amplify-aaruushconnectapp-prod-214432-authRole",
+      "UnauthRoleArn": "arn:aws:iam::179683962947:role/amplify-aaruushconnectapp-prod-214432-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::179683962947:role/amplify-aaruushconnectapp-prod-214432-authRole",
       "Region": "ap-south-1",
-      "DeploymentBucketName": "amplify-aaruushapp-dev-04013-deployment",
-      "UnauthRoleName": "amplify-aaruushapp-dev-04013-unauthRole",
-      "StackName": "amplify-aaruushapp-dev-04013",
-      "StackId": "arn:aws:cloudformation:ap-south-1:179683962947:stack/amplify-aaruushapp-dev-04013/ec2e7fb0-0ed4-11ee-ae04-020038e1fe14",
-      "AmplifyAppId": "d1rb3ymbkmqhcg"
+      "DeploymentBucketName": "amplify-aaruushconnectapp-prod-214432-deployment",
+      "UnauthRoleName": "amplify-aaruushconnectapp-prod-214432-unauthRole",
+      "StackName": "amplify-aaruushconnectapp-prod-214432",
+      "StackId": "arn:aws:cloudformation:ap-south-1:179683962947:stack/amplify-aaruushconnectapp-prod-214432/b5a4e440-104e-11ee-a97c-025a43c0aa8e",
+      "AmplifyAppId": "d1kbhvepfxdwei"
     },
     "categories": {
       "auth": {
-        "aaruushapp8c7a0135": {}
+        "aaruushconnectapp73ca8980": {}
       }
     }
   }

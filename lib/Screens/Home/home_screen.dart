@@ -23,6 +23,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<HomeController>(HomeController());
+    // controller.common.signOutCurrentUser();
+    controller.loadAttributes();
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -33,9 +35,16 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           onPressed: () => {},
-          icon: Image.asset(
-            'assets/images/profile.png',
-            height: 30,
+          icon: Obx(
+            () => controller.userAttributes.value['image'] != null
+                ? CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(controller.userAttributes.value['image']!),
+                  )
+                : Image.asset(
+                    'assets/images/profile.png',
+                    height: 30,
+                  ),
           ),
           color: Colors.white,
           iconSize: 40,
@@ -94,7 +103,11 @@ class HomeScreen extends StatelessWidget {
 
                                 //   onPressed: (){launchlink();
                                 // print(eventList[itemIndex]['id']);},
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.to(() => EventsScreen(
+                                        event: e,
+                                      ));
+                                },
                                 style: TextButton.styleFrom(
                                     backgroundColor:
                                         Get.theme.curveBG.withOpacity(0.7),

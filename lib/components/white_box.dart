@@ -9,11 +9,11 @@ import 'package:get/get.dart';
 class WhiteBox extends StatelessWidget {
   const WhiteBox(
       {super.key,
-      required this.height,
+      this.height,
       required this.width,
       required this.margin,
       required this.child});
-  final double height;
+  final double? height;
   final double width;
   final EdgeInsets margin;
   final Widget child;

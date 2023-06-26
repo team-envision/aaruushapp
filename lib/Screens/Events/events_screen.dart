@@ -1,12 +1,17 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:ui';
 
 import 'package:aarush/Data/bottomIndexData.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
 import 'package:aarush/Screens/Events/events_controller.dart';
+import 'package:aarush/Screens/Events/register_event.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/bottombar.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
+import 'package:aarush/Utilities/snackbar.dart';
 import 'package:aarush/components/bg_area.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:aarush/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -19,6 +24,8 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<EventsController>(EventsController());
+    controller.eventData.value = event;
+    controller.loadAttributes();
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -29,9 +36,16 @@ class EventsScreen extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           onPressed: () => {},
-          icon: Image.asset(
-            'assets/images/profile.png',
-            height: 30,
+          icon: Obx(
+            () => controller.userAttributes.value['image'] != null
+                ? CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(controller.userAttributes.value['image']!),
+                  )
+                : Image.asset(
+                    'assets/images/profile.png',
+                    height: 30,
+                  ),
           ),
           color: Colors.white,
           iconSize: 40,
@@ -138,7 +152,44 @@ class EventsScreen extends StatelessWidget {
               ),
             ),
             sizeBox(20, 0),
-            primaryButton(text: 'Register now', onTap: () => {}),
+            Obx(
+              () => primaryButton(
+                  text: controller.isEventRegistered.value
+                      ? 'Registered'
+                      : 'Register now',
+                  onTap: () async => {
+                        if (event.reqdfields == null)
+                          {
+                            if (await canLaunchUrl(Uri.parse(event.reglink!)))
+                              {
+                                launchUrl(Uri.parse(event.reglink!),
+                                    mode: LaunchMode.externalApplication),
+                              }
+                            else
+                              {
+                                setSnackBar("ERROR:", "Invalid URL",
+                                    icon: const Icon(
+                                      Icons.error,
+                                      color: Colors.red,
+                                    ))
+                              }
+                          }
+                        else
+                          {
+                            if (controller.isEventRegistered.value)
+                              {
+                                setSnackBar(
+                                    "INFO:", "You have already registered",
+                                    icon: const Icon(
+                                      Icons.info,
+                                      color: Colors.orange,
+                                    ))
+                              }
+                            else
+                              {Get.to(() => RegisterEvent(event: event))}
+                          }
+                      }),
+            ),
             sizeBox(200, 0),
           ]),
       bottomNavigationBar:

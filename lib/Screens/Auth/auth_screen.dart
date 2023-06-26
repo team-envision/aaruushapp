@@ -1,5 +1,4 @@
 import 'package:aarush/Screens/Auth/auth_controller.dart';
-import 'package:aarush/Screens/Auth/sign_up_screen.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/bg_area.dart';
@@ -51,8 +50,7 @@ class AuthScreen extends StatelessWidget {
                         fixedSize: Size.fromWidth(Get.width),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    onPressed: () =>
-                        controller.common.fetchCurrentUserAttributes(),
+                    onPressed: () => controller.googleSignIn(),
                     icon: SvgPicture.asset('assets/images/google_logo.svg',
                         height: 24, width: 24),
                     label: Padding(

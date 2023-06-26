@@ -1,6 +1,6 @@
 {
   "auth": {
-    "aaruushapp8c7a0135": {
+    "aaruushconnectapp73ca8980": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -13,7 +13,11 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "FAMILY_NAME",
+          "GIVEN_NAME",
+          "NAME",
+          "PICTURE"
         ],
         "socialProviders": [
           "GOOGLE"

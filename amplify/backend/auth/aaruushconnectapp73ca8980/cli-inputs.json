@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "aaruushapp8c7a0135_identitypool_8c7a0135",
+    "identityPoolName": "aaruushconnectapp73ca8980_identitypool_73ca8980",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "aaruus8c7a0135",
-    "userPoolName": "aaruushapp8c7a0135_userpool_8c7a0135",
+    "resourceNameTruncated": "aaruus73ca8980",
+    "userPoolName": "aaruushconnectapp73ca8980_userpool_73ca8980",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -20,50 +20,41 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email"
+      "email",
+      "family_name",
+      "given_name",
+      "name",
+      "picture"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [],
-    "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "aaruus8c7a0135_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [
+      "email"
+    ],
+    "userpoolClientReadAttributes": [
+      "email"
+    ],
+    "userpoolClientLambdaRole": "aaruus73ca8980_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "8c7a0135",
-    "resourceName": "aaruushapp8c7a0135",
+    "sharedId": "73ca8980",
+    "resourceName": "aaruushconnectapp73ca8980",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "manual",
+    "useDefault": "defaultSocial",
     "hostedUI": true,
     "usernameAttributes": [
       "email"
     ],
-    "hostedUIDomainName": "aaruushapp8c7a0135-8c7a0135",
+    "triggers": {},
+    "hostedUIDomainName": "aaruushconnectapp",
     "authProvidersUserPool": [
       "Google"
     ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"family_name\":\"family_name\",\"given_name\":\"given_name\",\"name\":\"name\",\"picture\":\"picture\",\"username\":\"sub\"}}]",
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"aaruushconnectapp://\"],\"LogoutURLs\":[\"aaruushconnectapp://\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true,
-    "authRoleArn": {
-      "Fn::GetAtt": [
-        "AuthRole",
-        "Arn"
-      ]
-    },
-    "unauthRoleArn": {
-      "Fn::GetAtt": [
-        "UnauthRole",
-        "Arn"
-      ]
-    },
-    "breakCircularDependency": true,
-    "dependsOn": [],
-    "userPoolGroups": false,
-    "adminQueries": false,
-    "thirdPartyAuth": false,
-    "authProviders": []
+    "useEnabledMfas": true
   }
 }

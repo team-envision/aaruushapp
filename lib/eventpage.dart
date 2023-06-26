@@ -42,19 +42,19 @@ class _eventpageState extends State<eventpage> {
         child: Container(
         height: 1000,
         width:   MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(image: AssetImage('images/bg2.jpg'),
               fit: BoxFit.cover
           ),
         ),
         child:Column(crossAxisAlignment: CrossAxisAlignment.start,
 
-          children: [SizedBox(
+          children: [const SizedBox(
             height: 40,
           ),
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 IconButton(onPressed: (){},
@@ -62,23 +62,23 @@ class _eventpageState extends State<eventpage> {
                   color: Colors.white,
                   iconSize: 40,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 40,
                 ),
-                Text("AARUUSH",
+                const Text("AARUUSH",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
                     fontFamily: 'Xirod',
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 40,
                 ),
                 IconButton(onPressed: (){
                   print(n2);
                   Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const eventpage()));}, icon: Icon(Icons.notifications_outlined),color: Colors.white,iconSize: 30,)
+                    MaterialPageRoute(builder: (context) => const eventpage()));}, icon: const Icon(Icons.notifications_outlined),color: Colors.white,iconSize: 30,)
               ],
             ),
 
@@ -90,7 +90,7 @@ class _eventpageState extends State<eventpage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 10, 20, 5),
               child: Text(n2,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -100,7 +100,7 @@ class _eventpageState extends State<eventpage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 0, 20, 20),
               child: Text(_eventList1[pg]['oneliner'],
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white,
                 ),
@@ -108,38 +108,38 @@ class _eventpageState extends State<eventpage> {
             ),
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 30,
                 ),
-                Icon(Icons.calendar_month_outlined,color: Colors.white,),
-                Text(_eventList1[pg]['date'],style: TextStyle(
+                const Icon(Icons.calendar_month_outlined,color: Colors.white,),
+                Text(_eventList1[pg]['date'],style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white,
                 ),),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.access_time,color: Colors.white,),
-                Text(_eventList1[pg]['location'],style: TextStyle(
+                const Icon(Icons.access_time,color: Colors.white,),
+                Text(_eventList1[pg]['location'],style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white,
                 ),),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.pin_drop,color: Colors.white,),
-                Text(eventList[pg]['location'],style: TextStyle(
+                const Icon(Icons.pin_drop,color: Colors.white,),
+                Text(eventList[pg]['location'],style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white,
                 ),)
               ],
             ),
-            SizedBox(height: 5,),
+            const SizedBox(height: 5,),
             DefaultTabController(
               length: 3,
               child: Column(
                 children: [
-                  TabBar(tabs: [
+                  const TabBar(tabs: [
                     Tab(text: "About",),
                     Tab(text: "Requirement",),
                     Tab(text: "Contact",),
@@ -151,11 +151,11 @@ class _eventpageState extends State<eventpage> {
                         minWidth: 100,
                         minHeight: 200,
                       ),
-                      padding:EdgeInsets.all(15),
+                      padding:const EdgeInsets.all(15),
                       decoration:BoxDecoration(
-                        color:Color.fromRGBO(115, 115, 115, 0.3),
+                        color:const Color.fromRGBO(115, 115, 115, 0.3),
                         border: Border.all(width: 2, color: Colors.white),
-                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                        borderRadius: const BorderRadius.all(Radius.circular(40)),
                       ),
                       height: 200,
                       child: TabBarView(children: [
@@ -184,14 +184,14 @@ class _eventpageState extends State<eventpage> {
           Container(
             height: 65,
             width: 300,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.deepOrangeAccent,
                 borderRadius: BorderRadius.all(Radius.circular(30))
             ),
 
 
             child:TextButton(
-                    child: Text("Register",
+                    child: const Text("Register",
                       style: TextStyle(
                           color: Colors.white,
                         fontSize: 24,

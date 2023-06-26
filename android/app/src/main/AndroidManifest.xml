@@ -6,8 +6,10 @@
           "android.support.customtabs.action.CustomTabsService" />
   </intent>
 </queries>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
-        android:label="aarush"
+        android:label="aarush connect"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
