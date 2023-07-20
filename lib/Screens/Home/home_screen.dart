@@ -8,14 +8,11 @@ import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/bottombar.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/bg_area.dart';
-import 'package:aarush/newfolder.dart';
-import 'package:aarush/profilepage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../eventpage.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

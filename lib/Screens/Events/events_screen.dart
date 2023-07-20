@@ -186,7 +186,18 @@ class EventsScreen extends StatelessWidget {
                                     ))
                               }
                             else
-                              {Get.to(() => RegisterEvent(event: event))}
+                              {
+                                if(controller.eventData.value.live!){
+                                  Get.to(() => RegisterEvent(event: event))
+                                }else {
+                                  setSnackBar(
+                                    "INFO:", "Event is not live now!",
+                                    icon: const Icon(
+                                      Icons.warning_amber_rounded,
+                                      color: Colors.red,
+                                    ))
+                                }
+                              }
                           }
                       }),
             ),
