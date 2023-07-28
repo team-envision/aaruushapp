@@ -161,25 +161,9 @@ class EventsScreen extends StatelessWidget {
                       ? 'Registered'
                       : 'Register now',
                   onTap: () async => {
-                        if (event.reglink != null)
+                        if (event.reqdfields!=null && event.reqdfields!)
                           {
-                            if (await canLaunchUrl(Uri.parse(event.reglink!)))
-                              {
-                                launchUrl(Uri.parse(event.reglink!),
-                                    mode: LaunchMode.externalApplication),
-                              }
-                            else
-                              {
-                                setSnackBar("ERROR:", "Invalid URL",
-                                    icon: const Icon(
-                                      Icons.error,
-                                      color: Colors.red,
-                                    ))
-                              }
-                          }
-                        else
-                          {
-                            if (controller.isEventRegistered.value)
+    if (controller.isEventRegistered.value)
                               {
                                 setSnackBar(
                                     "INFO:", "You have already registered",
@@ -201,6 +185,22 @@ class EventsScreen extends StatelessWidget {
                                           color: Colors.red,
                                         ))
                                   }
+                              }                        
+                          }
+                        else
+                          {
+                            if (await canLaunchUrl(Uri.parse(event.reglink!)))
+                              {
+                                launchUrl(Uri.parse(event.reglink!),
+                                    mode: LaunchMode.externalApplication),
+                              }
+                            else
+                              {
+                                setSnackBar("ERROR:", "Invalid URL",
+                                    icon: const Icon(
+                                      Icons.error,
+                                      color: Colors.red,
+                                    ))
                               }
                           }
                       }),

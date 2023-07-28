@@ -52,51 +52,38 @@ class RegisterEvent extends GetView<EventsController> {
                       //         .copyWith(color: Colors.black87),
                       //   ),
                       // sizeBox(30, 0),
-                      if (event.reqdfields != null)
-                        ...event.reqdfields!.map((e) {
-                          return textField(
-                              validator: (v) {
-                                if (e.value.toLowerCase().contains('email')) {
-                                  if (!GetUtils.isEmail(v!)) {
-                                    return 'Please enter a valid email';
+                      if (event.dynamicform != null)
+                        ...event.dynamicform!.map((e) {
+                          if (e.type == "select") {
+                      // TODO: create dropdown
+                            return Container();
+                          } else {
+                           return textField(
+                                validator: (v) {
+                                  if (e.type == "email" && e.required) {
+                                    if (!GetUtils.isEmail(v!)) {
+                                      return 'Please enter a valid email';
+                                    }
+                                  } else if (e.type == "tel" && e.required) {
+                                    if (!GetUtils.isPhoneNumber(v!)) {
+                                      return 'Please enter a valid phone number';
+                                    }
                                   }
-                                } else if (e.value
-                                        .toLowerCase()
-                                        .contains('phone') ||
-                                    e.value
-                                        .toLowerCase()
-                                        .contains('whatsapp') ||
-                                    e.value.toLowerCase().contains('contact')) {
-                                  if (!GetUtils.isPhoneNumber(v!)) {
-                                    return 'Please enter a valid phone number';
-                                  }
-                                } else if (e.value
-                                    .toLowerCase()
-                                    .contains('registration')) {
-                                  if (v!.isEmpty) {
-                                    return 'Please enter a valid registration number';
-                                  }
-                                }
-                                return null;
-                              },
-                              keyboard: e.value.toLowerCase().contains('email')
-                                  ? TextInputType.emailAddress
-                                  : e.value.toLowerCase().contains('phone') ||
-                                          e.value
-                                              .toLowerCase()
-                                              .contains('whatsapp') ||
-                                          e.value
-                                              .toLowerCase()
-                                              .contains('contact')
-                                      ? TextInputType.phone
-                                      : TextInputType.text,
-                              initialValue:
-                                  controller.userDetails.value[e.value],
-                              onChanged: (v) {
-                                controller.registerFieldData
-                                    .addAll({e.value: v});
-                              },
-                              label: e.label);
+                                  return null;
+                                },
+                                keyboard: e.type == "email"
+                                    ? TextInputType.emailAddress
+                                    : e.type == "tel"
+                                        ? TextInputType.phone
+                                        : TextInputType.text,
+                                initialValue:
+                                    controller.userDetails.value[e.label],
+                                onChanged: (v) {
+                                  controller.registerFieldData
+                                      .addAll({e.label: v});
+                                },
+                                label: e.placeholder);
+                          }
                         }),
                       sizeBox(20, 0),
                       Obx(
@@ -107,15 +94,15 @@ class RegisterEvent extends GetView<EventsController> {
                                 onTap: () {
                                   if (controller.registerFormKey.currentState!
                                           .validate() &&
-                                      event.reqdfields != null) {
-                                    for (var e in event.reqdfields!) {
+                                      event.dynamicform != null) {
+                                    for (var e in event.dynamicform!) {
                                       controller.registerFieldData.addAllIf(
                                           controller
-                                                  .userDetails.value[e.value] !=
+                                                  .userDetails.value[e.label] !=
                                               null,
                                           {
-                                            e.value: controller
-                                                .userDetails.value[e.value]
+                                            e.label: controller
+                                                .userDetails.value[e.label]
                                           });
                                     }
                                     controller.registerEvent(e: event);
