@@ -13,7 +13,14 @@ class HomeController extends GetxController {
   var userAttributes = <String, String>{}.obs;
   CommonController common = Get.find();
 
-  
+  final dummyCatListIcon = [
+    ["games_rounded", "Gaming"],
+    ["science_rounded", "Science"],
+    ["devices_rounded", "Technology"],
+    ["sports_rounded", "Sports"],
+    ["music_note_rounded", "Music"]
+  ];
+
   Future<List<EventListModel>> fetchEventData() async {
     final response = await get(Uri.parse('${ApiData.API}/events'));
     if (response.statusCode == 200) {
@@ -29,10 +36,10 @@ class HomeController extends GetxController {
   }
 
   Future<void> loadAttributes() async {
-    var data = await common.fetchCurrentUserAttributes();
+    var data = await common.getUserDetails();
     userAttributes.value = {
       "name": data['name'],
-      "image": data['picture'],
+      "image": data['image'],
       "email": data['email'],
     };
     // debugPrint("USER :LENGHT: ${userAttributes.value}");

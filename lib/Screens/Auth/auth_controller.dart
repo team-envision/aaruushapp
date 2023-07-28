@@ -33,7 +33,7 @@ class AuthController extends GetxController {
       // debugPrint('Response status: ${response.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);
-        // debugPrint('Access token: ${data['accessToken']}');
+        debugPrint('Access token: ${data['accessToken']}');
         GetStorage().write('accessToken', data['accessToken']).then((v) {
           Get.off(() => HomeScreen());
         });

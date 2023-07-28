@@ -18,6 +18,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../Utilities/appBarBlur.dart';
+
 class EventsScreen extends StatelessWidget {
   const EventsScreen({super.key, required this.event});
   final EventListModel event;
@@ -32,6 +34,7 @@ class EventsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.transparent,
+        flexibleSpace: appBarBlur(),
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
@@ -158,7 +161,7 @@ class EventsScreen extends StatelessWidget {
                       ? 'Registered'
                       : 'Register now',
                   onTap: () async => {
-                        if (event.reqdfields == null)
+                        if (event.reglink != null)
                           {
                             if (await canLaunchUrl(Uri.parse(event.reglink!)))
                               {
@@ -187,16 +190,17 @@ class EventsScreen extends StatelessWidget {
                               }
                             else
                               {
-                                if(controller.eventData.value.live!){
-                                  Get.to(() => RegisterEvent(event: event))
-                                }else {
-                                  setSnackBar(
-                                    "INFO:", "Event is not live now!",
-                                    icon: const Icon(
-                                      Icons.warning_amber_rounded,
-                                      color: Colors.red,
-                                    ))
-                                }
+                                if (controller.eventData.value.live!)
+                                  {Get.to(() => RegisterEvent(event: event))}
+                                else
+                                  {
+                                    setSnackBar(
+                                        "INFO:", "Event is not live now!",
+                                        icon: const Icon(
+                                          Icons.warning_amber_rounded,
+                                          color: Colors.red,
+                                        ))
+                                  }
                               }
                           }
                       }),

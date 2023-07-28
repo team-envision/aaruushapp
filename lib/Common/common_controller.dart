@@ -61,7 +61,7 @@ class CommonController extends GetxController {
   }
 
   Future<Map<String, dynamic>> getUserDetails() async {
-    final userSignedIn=await isUserSignedIn();
+    final userSignedIn = await isUserSignedIn();
     if (!userSignedIn) {
       return {"error": "User not found"};
     } else {
@@ -71,11 +71,17 @@ class CommonController extends GetxController {
               'https://api.aaruush.org/api/v1/users/${attributes['email']}'),
           headers: {'Authorization': ApiData.accessToken});
       if (response.statusCode == 200) {
-        var data = response.body;
+        var data = jsonDecode(response.body);
+        if (data["message"] == "Unauthorized") {
+          debugPrint("unauthorized");
+          signOutCurrentUser();
+          Get.off(() => AuthScreen());
+        }
         // debugPrint("User details: $data");
-      return jsonDecode(data);
+        return data;
       } else {
-        var data = response.body;
+        var data = jsonDecode(response.body);
+        debugPrint("Error data $data");
         return {"error": data};
       }
     }
