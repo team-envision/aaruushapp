@@ -16,5 +16,23 @@
         "aaruushconnectapp73ca8980": {}
       }
     }
+  },
+  "production": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-aaruushconnectapp-production-223142-authRole",
+      "UnauthRoleArn": "arn:aws:iam::179683962947:role/amplify-aaruushconnectapp-production-223142-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::179683962947:role/amplify-aaruushconnectapp-production-223142-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-aaruushconnectapp-production-223142-deployment",
+      "UnauthRoleName": "amplify-aaruushconnectapp-production-223142-unauthRole",
+      "StackName": "amplify-aaruushconnectapp-production-223142",
+      "StackId": "arn:aws:cloudformation:ap-south-1:179683962947:stack/amplify-aaruushconnectapp-production-223142/6e1e9210-2d68-11ee-bfaa-020038e1fe14",
+      "AmplifyAppId": "d1kbhvepfxdwei"
+    },
+    "categories": {
+      "auth": {
+        "aaruushconnectapp73ca8980": {}
+      }
+    }
   }
 }
