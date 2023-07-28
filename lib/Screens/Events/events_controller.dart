@@ -49,7 +49,7 @@ class EventsController extends GetxController {
     // }} %%%%%%%%%%%%%%%%%%%%");
     try {
       final response = await post(
-          Uri.parse('${ApiData.API}/events/${e.category}/${e.id}/register'),
+          Uri.parse('${ApiData.API}/test/events/${e.category}/${e.id}/register'),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',

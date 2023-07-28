@@ -75,7 +75,6 @@ class CommonController extends GetxController {
         if (data["message"] == "Unauthorized") {
           debugPrint("unauthorized");
           signOutCurrentUser();
-          Get.off(() => AuthScreen());
         }
         // debugPrint("User details: $data");
         return data;
