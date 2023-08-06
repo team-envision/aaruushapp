@@ -4,9 +4,8 @@ import 'package:aarush/Screens/OnBoard/on_boarding_screen.dart';
 import 'package:aarush/Screens/aaruush_app.dart';
 import 'package:aarush/Themes/theme_service.dart';
 import 'package:aarush/Themes/themes.dart';
-import 'package:aarush/amplifyconfiguration.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:aarush/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:get/get.dart';
@@ -18,8 +17,8 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart' as t;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
-  await configureAmplify();
   runApp(AaruushApp());
 }
 
@@ -44,12 +43,3 @@ class AaruushApp extends StatelessWidget {
 
 
 }
-   Future<void> configureAmplify() async {
-    try {
-      final auth = AmplifyAuthCognito();
-      await Amplify.addPlugin(auth);
-      await Amplify.configure(amplifyconfig);
-    } on Exception catch (e) {
-      safePrint('An error occurred configuring Amplify: $e');
-    }
-  }

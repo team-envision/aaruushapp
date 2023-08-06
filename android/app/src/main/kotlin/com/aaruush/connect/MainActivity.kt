@@ -1,4 +1,4 @@
-package com.connect.aaruush
+package com.aaruush.connect
 
 import io.flutter.embedding.android.FlutterActivity
 

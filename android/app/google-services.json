@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "750621970165",
+    "project_id": "main-aaruush-org",
+    "storage_bucket": "main-aaruush-org.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750621970165:android:7f1069c715386320b37fbc",
+        "android_client_info": {
+          "package_name": "com.aaruush.connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750621970165-erlur17q44tco5v0ug057iij1ro5s34v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZtPUkInleTKiZvOIOeV27w7v8p-V-OLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750621970165-26ne2qpdhcfr6dni6002q0ckhej458qh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "750621970165-ujdoscc9703h2ve7ala90v6h1nqpuqio.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aarush"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

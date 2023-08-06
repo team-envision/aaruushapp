@@ -10,7 +10,6 @@ import 'package:http/http.dart';
 
 class HomeController extends GetxController {
   var eventList = <EventListModel>[].obs;
-  var userAttributes = <String, String>{}.obs;
   CommonController common = Get.find();
 
   final dummyCatListIcon = [
@@ -35,14 +34,19 @@ class HomeController extends GetxController {
     return eventList;
   }
 
-  Future<void> loadAttributes() async {
-    var data = await common.getUserDetails();
-    userAttributes.value = {
-      "name": data['name'],
-      "image": data['image'],
-      "email": data['email'],
-    };
-    // debugPrint("USER :LENGHT: ${userAttributes.value}");
+  Future<List<EventListModel>> fetchEventDataByCategory(
+      {required String category}) async {
+    final response = await get(Uri.parse('${ApiData.API}/events/$category'));
+    if (response.statusCode == 200) {
+      String data = utf8.decode(response.bodyBytes);
+      List jsonResponse = json.decode(data);
+      eventList.assignAll(jsonResponse.map((e) => EventListModel.fromMap(e)));
+      // debugPrint("EVENT :LENGHT: ${eventList.length}");
+    } else {
+      debugPrint("Error banners: ${response.body} ${response.statusCode}");
+      throw Exception('Failed to load events');
+    }
+    return eventList;
   }
 
   @override

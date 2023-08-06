@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.connect.aaruush">
+    package="com.aaruush.connect">
     <queries>
   <intent>
       <action android:name=
@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
    <application
-        android:label="aarush connect"
+        android:label="aaruush connect"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

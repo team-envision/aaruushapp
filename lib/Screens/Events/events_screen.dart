@@ -27,7 +27,6 @@ class EventsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put<EventsController>(EventsController());
     controller.eventData.value = event;
-    controller.loadAttributes();
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -40,10 +39,10 @@ class EventsScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () => {},
           icon: Obx(
-            () => controller.userAttributes.value['image'] != null
+            () => controller.common.profileUrl.value != null
                 ? CircleAvatar(
                     backgroundImage:
-                        NetworkImage(controller.userAttributes.value['image']!),
+                        NetworkImage(controller.common.profileUrl.value),
                   )
                 : Image.asset(
                     'assets/images/profile.png',

@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart';
 
 class EventsController extends GetxController {
-  var userAttributes = <String, String>{}.obs;
   var userDetails = <String, dynamic>{}.obs;
   var registerFieldData = <String, dynamic>{};
   var isLoading = false.obs;
@@ -20,14 +19,6 @@ class EventsController extends GetxController {
   CommonController common = Get.find();
   final registerFormKey = GlobalKey<FormState>();
 
-  Future<void> loadAttributes() async {
-    var data = await common.fetchCurrentUserAttributes();
-    userAttributes.value = {
-      "name": data['name'],
-      "image": data['picture'],
-      "email": data['email'],
-    };
-  }
 
   Future<void> getUser() async {
     userDetails.value = await common.getUserDetails();

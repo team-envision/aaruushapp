@@ -23,8 +23,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<HomeController>(HomeController());
-    // controller.common.signOutCurrentUser();
-    controller.loadAttributes();
+    controller.common.signOutCurrentUser();
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -37,10 +36,10 @@ class HomeScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () => {},
           icon: Obx(
-            () => controller.userAttributes.value['image'] != null
+            () => controller.common.profileUrl.value != null
                 ? CircleAvatar(
                     backgroundImage:
-                        NetworkImage(controller.userAttributes.value['image']!),
+                        NetworkImage(controller.common.profileUrl.value),
                   )
                 : Image.asset(
                     'assets/images/profile.png',
@@ -72,7 +71,7 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Obx(
                 () => Text(
-                  "Hi, ${controller.userAttributes['name']}"
+                  "Hi, ${controller.common.userName.value}"
                       .useCorrectEllipsis(),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,

@@ -4,23 +4,25 @@ import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Screens/Auth/auth_screen.dart';
 import 'package:aarush/Screens/Home/home_screen.dart';
 import 'package:aarush/Screens/OnBoard/on_boarding_screen.dart';
-import 'package:aarush/amplifyconfiguration.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CommonController extends GetxController {
   var bottomBarIndex = 0.obs;
+  var userName = ''.obs;
+  var emailAddress = ''.obs;
+  var profileUrl = ''.obs;
+  var uID = ''.obs;
 
   void changeBottomBarIndex(int index) {
     bottomBarIndex.value = index;
   }
 
   Future<bool> isUserSignedIn() async {
-    final result = await Amplify.Auth.fetchAuthSession();
-    return result.isSignedIn;
+    return FirebaseAuth.instance.currentUser != null;
   }
 
   Future<Widget> getLandingPage() async {
@@ -32,32 +34,17 @@ class CommonController extends GetxController {
     }
   }
 
-  Future<AuthUser> getCurrentUser() async {
-    final user = await Amplify.Auth.getCurrentUser();
-    // debugPrint("USER INFO $user");
-    return user;
-  }
-
-  Future<Map<String, dynamic>> fetchCurrentUserAttributes() async {
-    try {
-      final attributes = await Amplify.Auth.fetchUserAttributes();
-      final data = {for (var e in attributes) e.userAttributeKey.key: e.value};
-      // debugPrint('User attributes: $data');
-      return data;
-    } on AuthException catch (e) {
-      safePrint('Error fetching user attributes: ${e.message}');
-      return {"error": e.message};
-    }
+  User getCurrentUser() {
+    FirebaseAuth.instance.currentUser?.reload();
+    final user = FirebaseAuth.instance.currentUser;
+    return user!;
   }
 
   Future<void> signOutCurrentUser() async {
-    final result = await Amplify.Auth.signOut();
-    if (result is CognitoCompleteSignOut) {
-      Get.offAll(() => const AuthScreen());
-      safePrint('Sign out completed successfully');
-    } else if (result is CognitoFailedSignOut) {
-      safePrint('Error signing user out: ${result.exception.message}');
-    }
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().disconnect();
+    await FirebaseAuth.instance.signOut();
+    googleUser?.clearAuthCache();
+    Get.offAll(() => const AuthScreen());
   }
 
   Future<Map<String, dynamic>> getUserDetails() async {
@@ -65,10 +52,9 @@ class CommonController extends GetxController {
     if (!userSignedIn) {
       return {"error": "User not found"};
     } else {
-      final attributes = await fetchCurrentUserAttributes();
+      final attributes = getCurrentUser();
       final response = await get(
-          Uri.parse(
-              'https://api.aaruush.org/api/v1/users/${attributes['email']}'),
+          Uri.parse('https://api.aaruush.org/api/v1/users/${attributes.email}'),
           headers: {'Authorization': ApiData.accessToken});
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
@@ -76,6 +62,9 @@ class CommonController extends GetxController {
           debugPrint("unauthorized");
           signOutCurrentUser();
         }
+        userName.value = data['name'];
+        emailAddress.value = data['email'];
+        profileUrl.value = data['image'];
         // debugPrint("User details: $data");
         return data;
       } else {
@@ -87,9 +76,8 @@ class CommonController extends GetxController {
   }
 
   @override
-  void onInit() {
-    // configureAmplify();
-    // debugPrint("Access token: ${ApiData.accessToken}");
+  void onInit() async {
+    await getUserDetails();
     super.onInit();
   }
 }
