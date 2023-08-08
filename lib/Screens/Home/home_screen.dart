@@ -36,7 +36,8 @@ class HomeScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () => {},
           icon: Obx(
-            () => controller.common.profileUrl.value != null
+            () => controller.common.profileUrl.value != null &&
+                    controller.common.profileUrl.value.isNotEmpty
                 ? CircleAvatar(
                     backgroundImage:
                         NetworkImage(controller.common.profileUrl.value),
