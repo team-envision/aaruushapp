@@ -32,22 +32,50 @@ dependencies:
   cupertino_icons: ^1.0.2
   editable_image: ^2.0.0
   firebase_analytics: ^10.4.4
-  firebase_auth: ^4.7.2
-  firebase_core: ^2.15.0
+  firebase_auth: ^4.7.3
+  firebase_core: ^2.15.1
   firebase_crashlytics: ^3.3.4
-  firebase_messaging: ^14.6.5
+  firebase_messaging: ^14.6.6
   flutter:
     sdk: flutter
   flutter_html: ^3.0.0-alpha.6
+  flutter_native_splash: ^2.3.2
   flutter_svg: ^2.0.5
   get: ^4.6.5
   get_storage: ^2.1.1
   google_fonts: ^5.0.0
   google_sign_in: ^6.1.4
   html: ^0.15.2
+  qr_flutter: ^4.1.0
   url_launcher: ^6.1.10
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/splash_logo.png"
+  remove_alpha_ios: true
+  adaptive_icon_background: "#000000"
+#  flutter pub run flutter_launcher_icons:main
+flutter_native_splash:
+  color: "#000000"
+  #background_image: "assets/background.png"
+  image: "assets/images/splash_logo.png"
+  branding: assets/images/splash_logo.png
+  android_12:
+    image: assets/images/splash_logo.png
+    icon_background_color: "#000000"
+
+  #background_image_dark: "assets/dark-background.png"
+  #image_dark: assets/splash-invert.png
+  android: true
+  ios: true
+  #web: false
+  android_gravity: center
+  ios_content_mode: center
+  fullscreen: true
+
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter

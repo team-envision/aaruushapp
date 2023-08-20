@@ -2,16 +2,16 @@
 import 'dart:convert';
 
 class Dynamicform {
-  final String label;
-  final String placeholder;
-  final String type;
-  final bool required;
+  String? label;
+  String? placeholder;
+  String? type;
+  bool? required;
   String? options;
   Dynamicform({
-    required this.label,
-    required this.placeholder,
-    required this.type,
-    required this.required,
+    this.label,
+    this.placeholder,
+    this.type,
+    this.required,
     this.options,
   });
 
@@ -43,18 +43,17 @@ class Dynamicform {
 
   factory Dynamicform.fromMap(Map<String, dynamic> map) {
     return Dynamicform(
-      label: map['label'] as String,
-      placeholder: map['placeholder'] as String,
-      type: map['type'] as String,
-      required: map['required'] as bool,
+      label: map['label'] != null ? map['label'] as String : null,
+      placeholder: map['placeholder'] != null ? map['placeholder'] as String : null,
+      type: map['type'] != null ? map['type'] as String : null,
+      required: map['required'] != null ? map['required'] as bool : null,
       options: map['options'] != null ? map['options'] as String : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Dynamicform.fromJson(String source) =>
-      Dynamicform.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Dynamicform.fromJson(String source) => Dynamicform.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -81,4 +80,4 @@ class Dynamicform {
       required.hashCode ^
       options.hashCode;
   }
-}
+ }

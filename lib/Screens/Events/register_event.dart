@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../Model/Events/event_list_model.dart';
+import '../../components/dropdown_selector.dart';
 import '../../components/text_field.dart';
 
 class RegisterEvent extends GetView<EventsController> {
@@ -55,16 +56,28 @@ class RegisterEvent extends GetView<EventsController> {
                       if (event.dynamicform != null)
                         ...event.dynamicform!.map((e) {
                           if (e.type == "select") {
-                      // TODO: create dropdown
-                            return Container();
+                            return Obx(() =>
+                                controller.chnageInDropDown.value.isNotEmpty
+                                    ? dropDownSelector(
+                                        hint: e.label!,
+                                        list: e.options!.split(','),
+                                        onChanged: (v) {
+                                          controller.registerFieldData.value
+                                              .addAll({e.label!: v});
+                                          controller.chnageInDropDown.value = v;
+                                        },
+                                        value: controller.registerFieldData
+                                                .value[e.label] ??
+                                            "")
+                                    : sizeBox(0, 0));
                           } else {
-                           return textField(
+                            return textField(
                                 validator: (v) {
-                                  if (e.type == "email" && e.required) {
+                                  if (e.type == "email" && e.required!) {
                                     if (!GetUtils.isEmail(v!)) {
                                       return 'Please enter a valid email';
                                     }
-                                  } else if (e.type == "tel" && e.required) {
+                                  } else if (e.type == "tel" && e.required!) {
                                     if (!GetUtils.isPhoneNumber(v!)) {
                                       return 'Please enter a valid phone number';
                                     }
@@ -79,10 +92,11 @@ class RegisterEvent extends GetView<EventsController> {
                                 initialValue:
                                     controller.userDetails.value[e.label],
                                 onChanged: (v) {
-                                  controller.registerFieldData
-                                      .addAll({e.label: v});
+                                  controller.registerFieldData.value
+                                      .addAll({e.label!: v});
+                                  debugPrint("${e.label} ${v}");
                                 },
-                                label: e.placeholder);
+                                label: e.placeholder ?? "");
                           }
                         }),
                       sizeBox(20, 0),
@@ -96,15 +110,18 @@ class RegisterEvent extends GetView<EventsController> {
                                           .validate() &&
                                       event.dynamicform != null) {
                                     for (var e in event.dynamicform!) {
-                                      controller.registerFieldData.addAllIf(
-                                          controller
-                                                  .userDetails.value[e.label] !=
-                                              null,
-                                          {
-                                            e.label: controller
+                                      controller.registerFieldData.value
+                                          .addAllIf(
+                                              controller.userDetails
+                                                      .value[e.label] !=
+                                                  null,
+                                              {
+                                            e.label!: controller
                                                 .userDetails.value[e.label]
                                           });
                                     }
+                                    debugPrint(
+                                        "Register data ${controller.registerFieldData.value}");
                                     controller.registerEvent(e: event);
                                     // Get.back()
                                   }

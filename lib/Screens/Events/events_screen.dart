@@ -21,8 +21,9 @@ import 'package:get/get.dart';
 import '../../Utilities/appBarBlur.dart';
 
 class EventsScreen extends StatelessWidget {
-  const EventsScreen({super.key, required this.event});
+  EventsScreen({super.key, required this.event, this.fromMyEvents});
   final EventListModel event;
+  bool? fromMyEvents = false;
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<EventsController>(EventsController());
@@ -154,56 +155,58 @@ class EventsScreen extends StatelessWidget {
               ),
             ),
             sizeBox(20, 0),
-            Obx(
-              () => primaryButton(
-                  text: controller.isEventRegistered.value
-                      ? 'Registered'
-                      : 'Register now',
-                  onTap: () async => {
-                        if (event.reqdfields!=null && event.reqdfields!)
-                          {
-    if (controller.isEventRegistered.value)
-                              {
-                                setSnackBar(
-                                    "INFO:", "You have already registered",
-                                    icon: const Icon(
-                                      Icons.info,
-                                      color: Colors.orange,
-                                    ))
-                              }
-                            else
-                              {
-                                if (controller.eventData.value.live!)
-                                  {Get.to(() => RegisterEvent(event: event))}
-                                else
-                                  {
-                                    setSnackBar(
-                                        "INFO:", "Event is not live now!",
-                                        icon: const Icon(
-                                          Icons.warning_amber_rounded,
-                                          color: Colors.red,
-                                        ))
-                                  }
-                              }                        
-                          }
-                        else
-                          {
-                            if (await canLaunchUrl(Uri.parse(event.reglink!)))
-                              {
-                                launchUrl(Uri.parse(event.reglink!),
-                                    mode: LaunchMode.externalApplication),
-                              }
-                            else
-                              {
-                                setSnackBar("ERROR:", "Invalid URL",
-                                    icon: const Icon(
-                                      Icons.error,
-                                      color: Colors.red,
-                                    ))
-                              }
-                          }
-                      }),
-            ),
+            if (!fromMyEvents!)
+              Obx(
+                () => primaryButton(
+                    text: controller.isEventRegistered.value
+                        ? 'Registered'
+                        : 'Register now',
+                    onTap: () async => {
+                          if (event.reqdfields != null && event.reqdfields!)
+                            {
+                              if (controller.isEventRegistered.value)
+                                {
+                                  setSnackBar(
+                                      "INFO:", "You have already registered",
+                                      icon: const Icon(
+                                        Icons.info,
+                                        color: Colors.orange,
+                                      ))
+                                }
+                              else
+                                {
+                                  if (controller.eventData.value.live!)
+                                    {Get.to(() => RegisterEvent(event: event))}
+                                  else
+                                    {
+                                      setSnackBar(
+                                          "INFO:", "Event is not live now!",
+                                          icon: const Icon(
+                                            Icons.warning_amber_rounded,
+                                            color: Colors.red,
+                                          ))
+                                    }
+                                }
+                            }
+                          else
+                            {
+                              if (await canLaunchUrl(Uri.parse(event.reglink!)))
+                                {
+                                  launchUrl(Uri.parse(event.reglink!),
+                                      mode: LaunchMode.externalApplication),
+                                  controller.registerEvent(e: event)
+                                }
+                              else
+                                {
+                                  setSnackBar("ERROR:", "Invalid URL",
+                                      icon: const Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                      ))
+                                }
+                            }
+                        }),
+              ),
             sizeBox(200, 0),
           ]),
       bottomNavigationBar:

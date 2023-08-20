@@ -32,6 +32,7 @@ class EventListModel {
   String? sk;
   String? pk;
   String? id;
+  String? sortCategory;
   List<dynamic>? gallery;
   String? contact;
   EventListModel({
@@ -58,6 +59,7 @@ class EventListModel {
     this.sk,
     this.pk,
     this.id,
+    this.sortCategory,
     this.gallery,
     this.contact,
   });
@@ -86,6 +88,7 @@ class EventListModel {
     String? sk,
     String? pk,
     String? id,
+    String? sortCategory,
     List<dynamic>? gallery,
     String? contact,
   }) {
@@ -113,6 +116,7 @@ class EventListModel {
       sk: sk ?? this.sk,
       pk: pk ?? this.pk,
       id: id ?? this.id,
+      sortCategory: sortCategory ?? this.sortCategory,
       gallery: gallery ?? this.gallery,
       contact: contact ?? this.contact,
     );
@@ -127,9 +131,9 @@ class EventListModel {
       'timestamp': timestamp,
       'oneliner': oneliner,
       'startdate': startdate,
-      'sponsors': sponsors?.map((x) => x.toMap()).toList(),
+      'sponsors': sponsors?.map((x) => x?.toMap()).toList(),
       'time': time,
-      'dynamicform': dynamicform?.map((x) => x.toMap()).toList(),
+      'dynamicform': dynamicform?.map((x) => x?.toMap()).toList(),
       'name': name,
       'live': live,
       'payment_type': payment_type,
@@ -143,6 +147,7 @@ class EventListModel {
       'sk': sk,
       'pk': pk,
       'id': id,
+      'sortCategory': sortCategory,
       'gallery': gallery,
       'contact': contact,
     };
@@ -173,6 +178,7 @@ class EventListModel {
       sk: map['sk'] != null ? map['sk'] as String : null,
       pk: map['pk'] != null ? map['pk'] as String : null,
       id: map['id'] != null ? map['id'] as String : null,
+      sortCategory: map['sortCategory'] != null ? map['sortCategory'] as String : null,
       gallery: map['gallery'] != null ? List<dynamic>.from((map['gallery'] as List<dynamic>)) : null,
       contact: map['contact'] != null ? map['contact'] as String : null,
     );
@@ -185,7 +191,7 @@ class EventListModel {
 
   @override
   String toString() {
-    return 'EventListModel(headerImage: $headerImage, location: $location, mode: $mode, pricepool: $pricepool, timestamp: $timestamp, oneliner: $oneliner, startdate: $startdate, sponsors: $sponsors, time: $time, dynamicform: $dynamicform, name: $name, live: $live, payment_type: $payment_type, date: $date, reqdfields: $reqdfields, reglink: $reglink, structure: $structure, image: $image, about: $about, category: $category, sk: $sk, pk: $pk, id: $id, gallery: $gallery, contact: $contact)';
+    return 'EventListModel(headerImage: $headerImage, location: $location, mode: $mode, pricepool: $pricepool, timestamp: $timestamp, oneliner: $oneliner, startdate: $startdate, sponsors: $sponsors, time: $time, dynamicform: $dynamicform, name: $name, live: $live, payment_type: $payment_type, date: $date, reqdfields: $reqdfields, reglink: $reglink, structure: $structure, image: $image, about: $about, category: $category, sk: $sk, pk: $pk, id: $id, sortCategory: $sortCategory, gallery: $gallery, contact: $contact)';
   }
 
   @override
@@ -216,6 +222,7 @@ class EventListModel {
       other.sk == sk &&
       other.pk == pk &&
       other.id == id &&
+      other.sortCategory == sortCategory &&
       listEquals(other.gallery, gallery) &&
       other.contact == contact;
   }
@@ -245,6 +252,7 @@ class EventListModel {
       sk.hashCode ^
       pk.hashCode ^
       id.hashCode ^
+      sortCategory.hashCode ^
       gallery.hashCode ^
       contact.hashCode;
   }

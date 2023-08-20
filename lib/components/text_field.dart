@@ -9,6 +9,7 @@ Widget textField(
     bool obscureText = false,
     bool enableSuggestions = true,
     bool autoCorrect = true,
+    bool? enabled = true,
     String? initialValue,
     Function(String)? onChanged,
     required String label}) {
@@ -20,6 +21,7 @@ Widget textField(
       textInputAction: TextInputAction.next,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
+      enabled: enabled,
       obscureText: obscureText,
       initialValue: initialValue,
       enableSuggestions: enableSuggestions,
@@ -40,11 +42,14 @@ Widget textField(
         // ),
         labelText: label,
         labelStyle: Get.theme.kSmallTextStyle
-            .copyWith(color: Get.theme.curveBG.withOpacity(0.4)),
+            .copyWith(color: Get.theme.curveBG.withOpacity(1)),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18),
             borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),
         enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),
+        disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18),
             borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),
         errorBorder: OutlineInputBorder(

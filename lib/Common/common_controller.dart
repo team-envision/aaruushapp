@@ -10,12 +10,18 @@ import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../Model/Events/event_list_model.dart';
+
 class CommonController extends GetxController {
   var bottomBarIndex = 0.obs;
   var userName = ''.obs;
   var emailAddress = ''.obs;
   var profileUrl = ''.obs;
+  var aaruushId = ''.obs;
+  var phoneNumber = ''.obs;
   var uID = ''.obs;
+  var userDetails = <String, dynamic>{}.obs;
+  var isLoading = false.obs;
 
   void changeBottomBarIndex(int index) {
     bottomBarIndex.value = index;
@@ -28,8 +34,10 @@ class CommonController extends GetxController {
   Future<Widget> getLandingPage() async {
     final isSignedIn = await isUserSignedIn();
     if (isSignedIn) {
+      debugPrint("User signed in");
       return const HomeScreen();
     } else {
+      debugPrint("User not signed in");
       return const OnBoardingScreen();
     }
   }
@@ -41,17 +49,23 @@ class CommonController extends GetxController {
   }
 
   Future<void> signOutCurrentUser() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().disconnect();
-    await FirebaseAuth.instance.signOut();
-    googleUser?.clearAuthCache();
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().currentUser;
+      await FirebaseAuth.instance.signOut();
+      googleUser?.clearAuthCache();
+    } on FirebaseAuthException catch (e) {
+      debugPrint("Errr ${e}");
+    }
     Get.offAll(() => const AuthScreen());
   }
 
   Future<Map<String, dynamic>> getUserDetails() async {
     final userSignedIn = await isUserSignedIn();
     if (!userSignedIn) {
+      debugPrint("User not signed in");
       return {"error": "User not found"};
     } else {
+      debugPrint("User signed in");
       final attributes = getCurrentUser();
       final response = await get(
           Uri.parse('https://api.aaruush.org/api/v1/users/${attributes.email}'),
@@ -62,10 +76,12 @@ class CommonController extends GetxController {
           debugPrint("unauthorized");
           signOutCurrentUser();
         }
-        userName.value = data['name'];
-        emailAddress.value = data['email'];
-        profileUrl.value = data['image'];
-        // debugPrint("User details: $data");
+        userName.value = data['name'] ?? "";
+        emailAddress.value = data['email'] ?? "";
+        profileUrl.value = data['image'] ?? "";
+        aaruushId.value = data['aaruushId'] ?? "";
+        phoneNumber.value = data['phone'] ?? "";
+        debugPrint("User details: $data");
         return data;
       } else {
         var data = jsonDecode(response.body);
@@ -75,9 +91,22 @@ class CommonController extends GetxController {
     }
   }
 
+  List<String> registeredEvents() {
+    List<String> events = [];
+    if (userDetails['events'] != null) {
+      for (var event in userDetails['events']) {
+        events.add(event);
+      }
+    }
+    return events;
+  }
+
+  Future<void> fetchAndLoadDetails() async {
+    userDetails.value = await getUserDetails();
+  }
+
   @override
   void onInit() async {
-    await getUserDetails();
     super.onInit();
   }
 }
