@@ -21,9 +21,9 @@ import 'package:get/get.dart';
 import '../../Utilities/appBarBlur.dart';
 
 class EventsScreen extends StatelessWidget {
-  EventsScreen({super.key, required this.event, this.fromMyEvents});
+  EventsScreen({super.key, required this.event, this.fromMyEvents = false});
   final EventListModel event;
-  bool? fromMyEvents = false;
+  bool fromMyEvents;
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<EventsController>(EventsController());
@@ -126,7 +126,7 @@ class EventsScreen extends StatelessWidget {
                       indicatorColor: Colors.transparent,
                       tabs: const [
                         Tab(text: 'About'),
-                        Tab(text: 'Requirements'),
+                        Tab(text: 'Structure'),
                         Tab(text: 'Contact'),
                       ]),
                   Container(
@@ -155,7 +155,7 @@ class EventsScreen extends StatelessWidget {
               ),
             ),
             sizeBox(20, 0),
-            if (!fromMyEvents!)
+            if (!fromMyEvents)
               Obx(
                 () => primaryButton(
                     text: controller.isEventRegistered.value
