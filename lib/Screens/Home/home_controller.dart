@@ -16,6 +16,14 @@ class HomeController extends GetxController {
 
   var sortName = "All".obs;
 
+  var catList = [
+    "workshops",
+    "hackathons",
+    "initiatives",
+    "panel-discussions",
+    "domain-events"
+  ];
+
   Future<List<EventListModel>> fetchEventData() async {
     final response = await get(Uri.parse('${ApiData.API}/events'));
     if (response.statusCode == 200) {

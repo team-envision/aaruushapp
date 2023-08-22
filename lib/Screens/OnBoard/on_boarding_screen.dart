@@ -44,7 +44,7 @@ class OnBoardingScreen extends StatelessWidget {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                       child: const Text(
-                        'WELCOME TO',
+                        "WELCOME TO\nAARUUSH '23",
                         style: TextStyle(
                           fontSize: 30,
                           color: Colors.black87,
@@ -58,10 +58,9 @@ class OnBoardingScreen extends StatelessWidget {
                 Flexible(
                     child: Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                      "Aaruush '23\n\nShifting Paradigms, \nEnriching Wellbeing",
-                      style: Get.theme.kSubTitleTextStyle
-                          .copyWith(color: Colors.black)),
+                  child: Text("Shifting Paradigms, Enriching Wellbeing",
+                      style: Get.theme.kSmallTextStyle
+                          .copyWith(color: Colors.black45)),
                 )),
                 sizeBox(30, 0),
                 Center(

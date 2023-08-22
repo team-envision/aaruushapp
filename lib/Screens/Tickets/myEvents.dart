@@ -5,6 +5,7 @@ import 'package:aarush/Screens/Profile/editProfile.dart';
 import 'package:aarush/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/aaruushappbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -162,7 +163,8 @@ class TicketTile extends StatelessWidget {
                             width: 1,
                             strokeAlign: BorderSide.strokeAlignOutside),
                         image: DecorationImage(
-                            image: NetworkImage(imagePath), fit: BoxFit.fill)),
+                            image: CachedNetworkImageProvider(imagePath),
+                            fit: BoxFit.fill)),
                   ),
                 ),
               ),

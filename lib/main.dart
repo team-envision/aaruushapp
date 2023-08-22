@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aarush/Common/default_controller_bindings.dart';
 import 'package:aarush/Screens/Home/home_screen.dart';
 import 'package:aarush/Screens/OnBoard/on_boarding_screen.dart';
@@ -6,8 +8,10 @@ import 'package:aarush/Themes/theme_service.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,11 +21,19 @@ import 'dart:convert';
 import 'package:get/get_navigation/src/routes/transitions_type.dart' as t;
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await GetStorage.init();
-  runApp(AaruushApp());
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    await GetStorage.init();
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+    runApp(AaruushApp());
+  }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
 
 class AaruushApp extends StatelessWidget {

@@ -16,6 +16,8 @@ class EventListModel {
   int? timestamp;
   String? oneliner;
   String? startdate;
+  String? locationLng;
+  String? locationLat;
   List<Sponsor>? sponsors;
   String? time;
   List<Dynamicform>? dynamicform;
@@ -33,6 +35,7 @@ class EventListModel {
   String? pk;
   String? id;
   String? sortCategory;
+  String? timeline;
   List<dynamic>? gallery;
   String? contact;
   EventListModel({
@@ -43,6 +46,8 @@ class EventListModel {
     this.timestamp,
     this.oneliner,
     this.startdate,
+    this.locationLng,
+    this.locationLat,
     this.sponsors,
     this.time,
     this.dynamicform,
@@ -60,6 +65,7 @@ class EventListModel {
     this.pk,
     this.id,
     this.sortCategory,
+    this.timeline,
     this.gallery,
     this.contact,
   });
@@ -72,6 +78,8 @@ class EventListModel {
     int? timestamp,
     String? oneliner,
     String? startdate,
+    String? locationLng,
+    String? locationLat,
     List<Sponsor>? sponsors,
     String? time,
     List<Dynamicform>? dynamicform,
@@ -89,6 +97,7 @@ class EventListModel {
     String? pk,
     String? id,
     String? sortCategory,
+    String? timeline,
     List<dynamic>? gallery,
     String? contact,
   }) {
@@ -100,6 +109,8 @@ class EventListModel {
       timestamp: timestamp ?? this.timestamp,
       oneliner: oneliner ?? this.oneliner,
       startdate: startdate ?? this.startdate,
+      locationLng: locationLng ?? this.locationLng,
+      locationLat: locationLat ?? this.locationLat,
       sponsors: sponsors ?? this.sponsors,
       time: time ?? this.time,
       dynamicform: dynamicform ?? this.dynamicform,
@@ -117,6 +128,7 @@ class EventListModel {
       pk: pk ?? this.pk,
       id: id ?? this.id,
       sortCategory: sortCategory ?? this.sortCategory,
+      timeline: timeline ?? this.timeline,
       gallery: gallery ?? this.gallery,
       contact: contact ?? this.contact,
     );
@@ -131,6 +143,8 @@ class EventListModel {
       'timestamp': timestamp,
       'oneliner': oneliner,
       'startdate': startdate,
+      'locationLng': locationLng,
+      'locationLat': locationLat,
       'sponsors': sponsors?.map((x) => x?.toMap()).toList(),
       'time': time,
       'dynamicform': dynamicform?.map((x) => x?.toMap()).toList(),
@@ -148,6 +162,7 @@ class EventListModel {
       'pk': pk,
       'id': id,
       'sortCategory': sortCategory,
+      'timeline': timeline,
       'gallery': gallery,
       'contact': contact,
     };
@@ -162,6 +177,8 @@ class EventListModel {
       timestamp: map['timestamp'] != null ? map['timestamp'] as int : null,
       oneliner: map['oneliner'] != null ? map['oneliner'] as String : null,
       startdate: map['startdate'] != null ? map['startdate'] as String : null,
+      locationLng: map['locationLng'] != null ? map['locationLng'] as String : null,
+      locationLat: map['locationLat'] != null ? map['locationLat'] as String : null,
       sponsors: map['sponsors'] != null ? List<Sponsor>.from((map['sponsors'] as List<dynamic>).map<Sponsor?>((x) => Sponsor.fromMap(x as Map<String,dynamic>),),) : null,
       time: map['time'] != null ? map['time'] as String : null,
       dynamicform: map['dynamicform'] != null ? List<Dynamicform>.from((map['dynamicform'] as List<dynamic>).map<Dynamicform?>((x) => Dynamicform.fromMap(x as Map<String,dynamic>),),) : null,
@@ -179,6 +196,7 @@ class EventListModel {
       pk: map['pk'] != null ? map['pk'] as String : null,
       id: map['id'] != null ? map['id'] as String : null,
       sortCategory: map['sortCategory'] != null ? map['sortCategory'] as String : null,
+      timeline: map['timeline'] != null ? map['timeline'] as String : null,
       gallery: map['gallery'] != null ? List<dynamic>.from((map['gallery'] as List<dynamic>)) : null,
       contact: map['contact'] != null ? map['contact'] as String : null,
     );
@@ -191,7 +209,7 @@ class EventListModel {
 
   @override
   String toString() {
-    return 'EventListModel(headerImage: $headerImage, location: $location, mode: $mode, pricepool: $pricepool, timestamp: $timestamp, oneliner: $oneliner, startdate: $startdate, sponsors: $sponsors, time: $time, dynamicform: $dynamicform, name: $name, live: $live, payment_type: $payment_type, date: $date, reqdfields: $reqdfields, reglink: $reglink, structure: $structure, image: $image, about: $about, category: $category, sk: $sk, pk: $pk, id: $id, sortCategory: $sortCategory, gallery: $gallery, contact: $contact)';
+    return 'EventListModel(headerImage: $headerImage, location: $location, mode: $mode, pricepool: $pricepool, timestamp: $timestamp, oneliner: $oneliner, startdate: $startdate, locationLng: $locationLng, locationLat: $locationLat, sponsors: $sponsors, time: $time, dynamicform: $dynamicform, name: $name, live: $live, payment_type: $payment_type, date: $date, reqdfields: $reqdfields, reglink: $reglink, structure: $structure, image: $image, about: $about, category: $category, sk: $sk, pk: $pk, id: $id, sortCategory: $sortCategory, timeline: $timeline, gallery: $gallery, contact: $contact)';
   }
 
   @override
@@ -206,6 +224,8 @@ class EventListModel {
       other.timestamp == timestamp &&
       other.oneliner == oneliner &&
       other.startdate == startdate &&
+      other.locationLng == locationLng &&
+      other.locationLat == locationLat &&
       listEquals(other.sponsors, sponsors) &&
       other.time == time &&
       listEquals(other.dynamicform, dynamicform) &&
@@ -223,6 +243,7 @@ class EventListModel {
       other.pk == pk &&
       other.id == id &&
       other.sortCategory == sortCategory &&
+      other.timeline == timeline &&
       listEquals(other.gallery, gallery) &&
       other.contact == contact;
   }
@@ -236,6 +257,8 @@ class EventListModel {
       timestamp.hashCode ^
       oneliner.hashCode ^
       startdate.hashCode ^
+      locationLng.hashCode ^
+      locationLat.hashCode ^
       sponsors.hashCode ^
       time.hashCode ^
       dynamicform.hashCode ^
@@ -253,6 +276,7 @@ class EventListModel {
       pk.hashCode ^
       id.hashCode ^
       sortCategory.hashCode ^
+      timeline.hashCode ^
       gallery.hashCode ^
       contact.hashCode;
   }

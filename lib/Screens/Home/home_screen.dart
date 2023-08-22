@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Data/bottomIndexData.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
+import 'package:aarush/Screens/About/aboutpage.dart';
 import 'package:aarush/Screens/Events/events_screen.dart';
 import 'package:aarush/Screens/Home/home_controller.dart';
 import 'package:aarush/Screens/Profile/profilepage.dart';
@@ -15,6 +16,7 @@ import 'package:aarush/Utilities/capitalize.dart';
 import 'package:aarush/Utilities/correct_ellipis.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/bg_area.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -54,8 +56,8 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => {},
-            icon: SvgPicture.asset('assets/images/icons/bell.svg'),
+            onPressed: () => {Get.to(const AboutPage())},
+            icon: const Icon(Icons.info_outlined),
             color: Colors.white,
             iconSize: 25,
           ),
@@ -114,7 +116,11 @@ class HomeScreen extends StatelessWidget {
                               return categoryButton(
                                 icon:
                                     "${ApiData.CDN_URL}/icons/categories/${e?.toLowerCase().split(' ').join('-')}.png",
-                                name: e!,
+                                name: e!
+                                    .toLowerCase()
+                                    .split('-')
+                                    .join(' ')
+                                    .toCapitalized(),
                                 onTap: () => controller.setSortCategory(e),
                               );
                             })
@@ -126,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                               horizontal: 20.0, vertical: 20),
                           child: Obx(
                             () => Text(
-                              "${controller.sortName.value.toCapitalized()} Live Events",
+                              "${controller.sortName.value.toLowerCase().split('-').join(' ').toCapitalized()} Live Events",
                               style: Get.theme.kTitleTextStyle,
                             ),
                           ),
@@ -168,12 +174,15 @@ class HomeScreen extends StatelessWidget {
                                                           event: e,
                                                         ));
                                                   },
-                                                  child:
-                                                      FadeInImage.assetNetwork(
-                                                    placeholder:
-                                                        'assets/images/loading.gif',
-                                                    image: e.image!,
-                                                    placeholderScale: 0.1,
+                                                  child: CachedNetworkImage(
+                                                    progressIndicatorBuilder: (ctx,
+                                                            url, progress) =>
+                                                        CircularProgressIndicator(
+                                                      value: progress.progress,
+                                                      color: Get
+                                                          .theme.colorPrimary,
+                                                    ),
+                                                    imageUrl: e.image!,
                                                     fit: BoxFit.cover,
                                                     width: 400,
                                                     height: 250,
@@ -251,11 +260,14 @@ class HomeScreen extends StatelessWidget {
                                                       event: e,
                                                     ));
                                               },
-                                              child: FadeInImage.assetNetwork(
-                                                placeholder:
-                                                    'assets/images/loading.gif',
-                                                image: e.image!,
-                                                placeholderScale: 0.1,
+                                              child: CachedNetworkImage(
+                                                progressIndicatorBuilder: (ctx,
+                                                        url, progress) =>
+                                                    CircularProgressIndicator(
+                                                  value: progress.progress,
+                                                  color: Get.theme.colorPrimary,
+                                                ),
+                                                imageUrl: e.image!,
                                                 fit: BoxFit.cover,
                                                 width: 400,
                                                 height: 250,
@@ -334,10 +346,10 @@ Widget categoryButton({
                 radius: 30,
                 backgroundColor: Get.theme.curveBG,
                 child: icon != null && icon.isNotEmpty
-                    ? Image.network(
-                        icon,
+                    ? CachedNetworkImage(
+                        imageUrl: icon,
                         height: 30,
-                        errorBuilder: (context, error, stackTrace) {
+                        errorWidget: (context, url, error) {
                           // Handle image loading error by showing default icon
                           return Icon(
                             iconData ?? Icons.category_rounded,

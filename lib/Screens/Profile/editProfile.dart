@@ -1,5 +1,8 @@
 import 'package:aarush/Screens/Profile/profileController.dart';
+import 'package:aarush/Utilities/custom_sizebox.dart';
+import 'package:aarush/components/aaruushappbar.dart';
 import 'package:aarush/components/bg_area.dart';
+import 'package:aarush/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -18,139 +21,102 @@ class EditProfile extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       backgroundColor: const Color(0xFF070709),
-      appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.12),
-        foregroundColor: Colors.transparent,
-        centerTitle: true,
-        title: const Text(
-          "Edit Profile",
-          style: TextStyle(color: Colors.white, fontSize: 28),
+      appBar: AaruushAppBar(title: "Edit Profile", actions: [
+        IconButton(
+          onPressed: () => {Get.back()},
+          icon: const Icon(Icons.close_rounded),
+          color: Colors.white,
+          iconSize: 25,
         ),
-        actions: [
-          Padding(
-            padding:
-                EdgeInsets.only(right: MediaQuery.of(context).size.width / 20),
-            child: IconButton(
-                onPressed: () => Get.back(),
-                icon: const Icon(
-                  Icons.close_rounded,
-                  color: Colors.white,
-                  size: 35,
-                )),
-          )
-        ],
-      ),
-      body: Container(
-        color: Colors.white.withOpacity(0.12),
-        height: double.infinity,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Form(
-            key: controller.formkey,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    IconButton(
-                      iconSize: MediaQuery.of(context).size.height / 6,
-                      onPressed: () {},
-                      icon: Obx(
-                        () =>
-                            controller.homeController.common.profileUrl.value !=
-                                    null
-                                ? CircleAvatar(
-                                    radius: 60,
-                                    backgroundImage: NetworkImage(controller
-                                        .homeController
-                                        .common
-                                        .profileUrl
-                                        .value!),
-                                  )
-                                : Image.asset(
-                                    'assets/images/profile.png',
-                                    height: 30,
-                                  ),
-                      ),
-                      color: Colors.white,
+      ]),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Form(
+          key: controller.formkey,
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  IconButton(
+                    iconSize: MediaQuery.of(context).size.height / 6,
+                    onPressed: () {},
+                    icon: Obx(
+                      () => controller.homeController.common.profileUrl.value !=
+                              null
+                          ? CircleAvatar(
+                              radius: 60,
+                              backgroundImage: NetworkImage(controller
+                                  .homeController.common.profileUrl.value!),
+                            )
+                          : Image.asset(
+                              'assets/images/profile.png',
+                              height: 30,
+                            ),
                     ),
-                    // IconButton(
-                    //   onPressed: () {},
-                    //   iconSize: MediaQuery.of(context).size.height / 6,
-                    //   icon: CircleAvatar(
-                    //     backgroundColor: Colors.white,
-                    //     radius: 60,
-                    //     child: SvgPicture.asset(
-                    //       'assets/images/icons/GroupCamera.svg',
-                    //       colorFilter: const ColorFilter.mode(
-                    //           Colors.black, BlendMode.srcIn),
-                    //     ),
-                    //   ),
-                    // )
-                  ],
-                ),
-                // TextButton(
-                //     onPressed: () {},
-                //     style: const ButtonStyle(
-                //         padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-                //     child: const Text(
-                //       'Choose from gallery',
-                //       style: TextStyle(fontSize: 18, color: Color(0xFFEF6522)),
-                //     )),
-                // SizedBox(
-                //   height: MediaQuery.of(context).size.height / 50,
-                // ),
-                CustomTextField(
-                  label: 'Name',
-                  type: TextInputType.text,
-                  controller: controller.nameController,
-                ),
-
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 50,
-                ),
-                CustomTextField(
-                    controller: controller.phoneController,
-                    label: 'Phone',
-                    type: TextInputType.phone),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 50,
-                ),
-                CustomTextField(
-                  controller: controller.emailController,
-                  label: 'Email',
-                  type: TextInputType.emailAddress,
-                  enabled: false,
-                ),
-                // SizedBox(height: MediaQuery.of(context).size.height/25,),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).size.width / 8,
-                      MediaQuery.of(context).size.height / 15,
-                      MediaQuery.of(context).size.width / 8,
-                      15),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                        onPressed: () {
-                          if (controller.formkey.currentState!.validate()) {
-                            controller.updateProfile();
-                          }
-                        },
-                        style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(Color(0xFFFF723D)),
-                        ),
-                        child: const Text('Save',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 25))),
+                    color: Colors.white,
                   ),
-                )
-              ],
-            ),
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   iconSize: MediaQuery.of(context).size.height / 6,
+                  //   icon: CircleAvatar(
+                  //     backgroundColor: Colors.white,
+                  //     radius: 60,
+                  //     child: SvgPicture.asset(
+                  //       'assets/images/icons/GroupCamera.svg',
+                  //       colorFilter: const ColorFilter.mode(
+                  //           Colors.black, BlendMode.srcIn),
+                  //     ),
+                  //   ),
+                  // )
+                ],
+              ),
+              // TextButton(
+              //     onPressed: () {},
+              //     style: const ButtonStyle(
+              //         padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              //     child: const Text(
+              //       'Choose from gallery',
+              //       style: TextStyle(fontSize: 18, color: Color(0xFFEF6522)),
+              //     )),
+              // SizedBox(
+              //   height: MediaQuery.of(context).size.height / 50,
+              // ),
+              CustomTextField(
+                label: 'Name',
+                type: TextInputType.text,
+                controller: controller.nameController,
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 50,
+              ),
+              CustomTextField(
+                  controller: controller.phoneController,
+                  label: 'Phone',
+                  type: TextInputType.phone),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 50,
+              ),
+              CustomTextField(
+                controller: controller.emailController,
+                label: 'Email',
+                type: TextInputType.emailAddress,
+                enabled: false,
+              ),
+              // SizedBox(height: MediaQuery.of(context).size.height/25,),
+              sizeBox(50, 0),
+              primaryButton(
+                  text: "Save",
+                  onTap: () {
+                    if (controller.formkey.currentState!.validate()) {
+                      controller.updateProfile();
+                    }
+                  })
+            ],
           ),
         ),
       ),

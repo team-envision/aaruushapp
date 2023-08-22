@@ -1,10 +1,12 @@
 import 'package:aarush/Data/bottomIndexData.dart';
+import 'package:aarush/Screens/About/aboutpage.dart';
 import 'package:aarush/Screens/Profile/editProfile.dart';
 import 'package:aarush/Screens/Tickets/myEvents.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/correct_ellipis.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/aaruushappbar.dart';
+import 'package:aarush/components/primaryButton.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -123,31 +125,12 @@ class ProfileScreen extends StatelessWidget {
               ProfileButtons(
                   ButtonName: 'About Aaruush',
                   onPressedFunc: () async {
-                    // Launch URL
-                    final url = Uri.parse("https://aaruush.org/about");
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(url,
-                          mode: LaunchMode.externalApplication);
-                    }
+                    Get.to(() => AboutPage());
                   }),
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                    MediaQuery.of(context).size.width / 8,
-                    MediaQuery.of(context).size.height / 15,
-                    MediaQuery.of(context).size.width / 8,
-                    15),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: TextButton(
-                      onPressed: () {controller.common.signOutCurrentUser();},
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Color(0xFFFF723D)),
-                      ),
-                      child: const Text('Log Out',
-                          style: TextStyle(color: Colors.white, fontSize: 25))),
-                ),
-              )
+              sizeBox(50, 0),
+              primaryButton(
+                  text: "Log out",
+                  onTap: () => {controller.common.signOutCurrentUser()}),
             ],
           ),
         ),

@@ -10,7 +10,9 @@ import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/bottombar.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/Utilities/snackbar.dart';
+import 'package:aarush/components/aaruushappbar.dart';
 import 'package:aarush/components/bg_area.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:aarush/components/primaryButton.dart';
 import 'package:flutter/material.dart';
@@ -28,53 +30,35 @@ class EventsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put<EventsController>(EventsController());
     controller.eventData.value = event;
+    controller.getUser().then(
+        (value) => controller.checkRegistered(controller.eventData.value));
+
+    debugPrint("Event id is ${event.id}");
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        flexibleSpace: appBarBlur(),
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () => {},
-          icon: Obx(
-            () => controller.common.profileUrl.value != null
-                ? CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(controller.common.profileUrl.value),
-                  )
-                : Image.asset(
-                    'assets/images/profile.png',
-                    height: 30,
-                  ),
-          ),
+      appBar: AaruushAppBar(title: "Aaruush", actions: [
+        IconButton(
+          onPressed: () => {Get.back()},
+          icon: const Icon(Icons.close_rounded),
           color: Colors.white,
-          iconSize: 40,
+          iconSize: 25,
         ),
-        actions: [
-          IconButton(
-            onPressed: () => {},
-            icon: SvgPicture.asset('assets/images/icons/bell.svg'),
-            color: Colors.white,
-            iconSize: 25,
-          ),
-        ],
-        title: Text(
-          "AARUUSH",
-          style: Get.theme.kTitleTextStyle.copyWith(fontFamily: 'Xirod'),
-        ),
-      ),
+      ]),
       body: BgArea(
           image: 'bg2.png',
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             sizeBox(100, 0),
-            FadeInImage.assetNetwork(
-              placeholder: 'assets/images/loading.gif',
-              image: event.image!,
-              placeholderScale: 0.1,
+            CachedNetworkImage(
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Center(
+                child: CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                  color: Get.theme.colorPrimary,
+                ),
+              ),
+              imageUrl: event.image!,
               fit: BoxFit.contain,
               width: Get.width,
               height: 300,
@@ -88,8 +72,8 @@ class EventsScreen extends StatelessWidget {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-              child:
-                  Text(event.oneliner!, style: Get.theme.kVerySmallTextStyle),
+              child: Text(event.oneliner ?? "Nil",
+                  style: Get.theme.kVerySmallTextStyle),
             ),
             sizeBox(20, 0),
             Padding(
@@ -99,10 +83,42 @@ class EventsScreen extends StatelessWidget {
                 children: [
                   _iconWithText(Icons.calendar_month, event.date ?? ''),
                   _iconWithText(Icons.access_time, event.time ?? ''),
-                  _iconWithText(Icons.pin_drop, event.location ?? ''),
+                  GestureDetector(
+                    onTap: () => {
+                      if (event.location != null &&
+                          event.locationLat != null &&
+                          event.locationLng != null)
+                        controller.openMapWithLocation(
+                            event.locationLat!, event.locationLng!)
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.pin_drop,
+                          color: Colors.blue,
+                        ),
+                        sizeBox(0, 3),
+                        Text(
+                          event.location ?? '',
+                          style: Get.theme.kVerySmallTextStyle
+                              .copyWith(fontSize: 11, color: Colors.blue),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
+            if (event.timeline != null)
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Html(
+                  data: event.timeline ?? "",
+                  style: {
+                    "body": Style(color: Colors.white, fontSize: FontSize(14))
+                  },
+                ),
+              ),
             Container(
               width: Get.width,
               margin:
@@ -145,9 +161,9 @@ class EventsScreen extends StatelessWidget {
                       child: TabBarView(
                           physics: const BouncingScrollPhysics(),
                           children: [
-                            _tabDataWidget(text: event.about!),
-                            _tabDataWidget(text: event.structure!),
-                            _tabDataWidget(text: event.contact!),
+                            _tabDataWidget(text: event.about ?? "Nil"),
+                            _tabDataWidget(text: event.structure ?? "Nil"),
+                            _tabDataWidget(text: event.contact ?? "Nil"),
                           ]),
                     ),
                   ),
@@ -192,9 +208,21 @@ class EventsScreen extends StatelessWidget {
                             {
                               if (await canLaunchUrl(Uri.parse(event.reglink!)))
                                 {
-                                  launchUrl(Uri.parse(event.reglink!),
-                                      mode: LaunchMode.externalApplication),
-                                  controller.registerEvent(e: event)
+                                  if (controller.isEventRegistered.value)
+                                    {
+                                      setSnackBar("INFO:",
+                                          "You have already registered",
+                                          icon: const Icon(
+                                            Icons.info,
+                                            color: Colors.orange,
+                                          ))
+                                    }
+                                  else
+                                    {
+                                      launchUrl(Uri.parse(event.reglink!),
+                                          mode: LaunchMode.externalApplication),
+                                      controller.registerEvent(e: event)
+                                    }
                                 }
                               else
                                 {

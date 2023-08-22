@@ -28,9 +28,9 @@ Widget textField(
       autocorrect: autoCorrect,
       controller: controller,
       onChanged: onChanged,
-      style: Get.theme.kVerySmallTextStyle.copyWith(color: Colors.black),
+      style: Get.theme.kVerySmallTextStyle,
       decoration: InputDecoration(
-        fillColor: Colors.white,
+        fillColor: Colors.black87,
         filled: true,
         // prefixIcon: Icon(
         //   icon,
@@ -41,8 +41,7 @@ Widget textField(
         //   color: Get.theme.btnTextCol,
         // ),
         labelText: label,
-        labelStyle: Get.theme.kSmallTextStyle
-            .copyWith(color: Get.theme.curveBG.withOpacity(1)),
+        labelStyle: Get.theme.kSmallTextStyle.copyWith(color: Colors.white),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18),
             borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),

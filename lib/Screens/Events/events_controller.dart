@@ -8,6 +8,7 @@ import 'package:aarush/Utilities/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventsController extends GetxController {
   var userDetails = <String, dynamic>{}.obs;
@@ -22,12 +23,6 @@ class EventsController extends GetxController {
 
   Future<void> getUser() async {
     userDetails.value = await common.getUserDetails();
-  }
-
-  @override
-  void onInit() async {
-    getUser().then((value) => checkRegistered(eventData.value));
-    super.onInit();
   }
 
   Future<void> registerEvent({required EventListModel e}) async {
@@ -72,7 +67,7 @@ class EventsController extends GetxController {
               "email": userDetails['email'],
               "events": [...userDetails['events'] ?? [], e.id],
             }));
-       
+
         if (userRes.statusCode == 200 ||
             userRes.statusCode == 201 ||
             userRes.statusCode == 202) {
@@ -113,14 +108,26 @@ class EventsController extends GetxController {
     Get.offAll(() => const HomeScreen());
   }
 
+  void openMapWithLocation(String latitude, String longitude) async {
+    final mapUrl = Uri.parse(
+        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude");
+
+    if (await canLaunchUrl(mapUrl)) {
+      await launchUrl(mapUrl, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint("Cannot launch map url");
+    }
+  }
+
   void checkRegistered(EventListModel e) {
-    userDetails['events']?.forEach((element) {
-      debugPrint("ELEMENT: $element");
-      if (element == e.id) {
-        isEventRegistered.value = true;
-      } else {
-        isEventRegistered.value = false;
+    // Compare the userDetails["events"] array and if id matches make isEventRegistered true
+    if (userDetails['events'] != null) {
+      for (var event in userDetails['events']) {
+        if (event == e.id) {
+          isEventRegistered.value = true;
+          break;
+        }
       }
-    });
+    }
   }
 }
