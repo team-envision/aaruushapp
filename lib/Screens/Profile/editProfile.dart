@@ -6,7 +6,7 @@ import 'package:aarush/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../components/text_field.dart';
+import '../../components/profile_text_field.dart';
 import '../Home/home_controller.dart';
 
 //TODO: make the
@@ -138,7 +138,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return textField(
+    return profileTextField(
         enabled: enabled,
         keyboard: type,
         controller: controller,

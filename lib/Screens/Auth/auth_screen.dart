@@ -3,7 +3,7 @@ import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/bg_area.dart';
 import 'package:aarush/components/primaryButton.dart';
-import 'package:aarush/components/text_field.dart';
+import 'package:aarush/components/profile_text_field.dart';
 import 'package:aarush/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

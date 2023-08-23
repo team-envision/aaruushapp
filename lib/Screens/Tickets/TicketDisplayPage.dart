@@ -20,11 +20,8 @@ class TicketDisplayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<HomeController>(HomeController());
-    final qrDetails = {
-      "emailid": controller.common.emailAddress.value,
-      "aaruushId": controller.common.aaruushId.value,
-      "eventId": event.id
-    };
+    final qrDetails = '''emailid:${controller.common.emailAddress.value},
+aaruushId:${controller.common.aaruushId.value},eventId:${event.id}''';
     return SafeArea(
         child: Scaffold(
             appBar: AaruushAppBar(title: "Aaruush", actions: [
