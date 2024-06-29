@@ -34,6 +34,9 @@ user.json
 .pub/
 /build/
 
+# Environment variables
+assets/.env
+
 # Web related
 lib/generated_plugin_registrant.dart
 
@@ -42,6 +45,15 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+
+# Firebase configuration files
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+ios/firebase_app_id_file.json
+lib/firebase_options.dart
+firebase.json
+
 
 # Android Studio will place build artifacts here
 /android/app/debug
