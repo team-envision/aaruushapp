@@ -4,28 +4,31 @@ import 'package:aarush/Screens/Profile/editProfile.dart';
 import 'package:aarush/Screens/Tickets/myEvents.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/correct_ellipis.dart';
+import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/aaruushappbar.dart';
 import 'package:aarush/components/primaryButton.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import '../../Utilities/appBarBlur.dart';
 import '../../Utilities/bottombar.dart';
 import '../Home/home_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<HomeController>(HomeController());
-
     return SafeArea(
       child: Scaffold(
         appBar: AaruushAppBar(
           title: "Profile",
           actions: [
             IconButton(
-              onPressed: () => Get.back(),
+              onPressed: () => {Get.back()},
               icon: const Icon(Icons.close_rounded),
               color: Colors.white,
               iconSize: 25,
@@ -44,20 +47,25 @@ class ProfileScreen extends StatelessWidget {
                       IconButton(
                         onPressed: () {},
                         iconSize: MediaQuery.of(context).size.height / 6,
-                        icon: Obx(
-                              () => CircleAvatar(
-                            radius: 50,
-                            backgroundImage: controller.common.profileUrl.value != null
-                                ? NetworkImage(controller.common.profileUrl.value!)
-                                : AssetImage('assets/images/profile.png') as ImageProvider,
-                          ),
-                        ),
+                        icon:
+                            Obx(() => controller.common.profileUrl.value != null
+                                ? CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: NetworkImage(
+                                        controller.common.profileUrl.value!),
+                                  )
+                                : Image.asset(
+                                    'assets/images/profile.png',
+                                    fit: BoxFit.fill,
+                                    height:
+                                        MediaQuery.of(context).size.height / 6,
+                                  )),
                       ),
                       Positioned(
                         bottom: 20,
                         right: 10,
                         child: GestureDetector(
-                          onTap: () => Get.to(() => EditProfile()),
+                          onTap: () => Get.to(const EditProfile()),
                           child: Container(
                             width: MediaQuery.of(context).size.height / 20,
                             height: MediaQuery.of(context).size.height / 20,
@@ -75,56 +83,54 @@ class ProfileScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  const SizedBox(width: 20),
-                  Expanded(
+                  sizeBox(20, 0),
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width *
+                          0.5, // Adjust this value as needed
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Obx(
-                              () => Text(
-                            controller.common.userName.value.useCorrectEllipsis(),
+                          () => Text(
+                            controller.common.userName.value
+                                .useCorrectEllipsis(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: Get.theme.kTitleTextStyle,
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          controller.common.emailAddress.value,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: Get.theme.kVerySmallTextStyle,
-                        ),
-                        Text(
-                          controller.common.aaruushId.value,
-                          style: Get.theme.kVerySmallTextStyle,
-                        ),
+                        sizeBox(10, 0),
+                        Text(controller.common.emailAddress.value,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: Get.theme.kVerySmallTextStyle),
+                        Text(controller.common.aaruushId.value,
+                            style: Get.theme.kVerySmallTextStyle),
                       ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 100),
+              sizeBox(100, 0),
               ProfileButtons(
-                buttonName: 'My Events',
-                onPressedFunc: () {
-                  Get.to(() => MyEvents(
-                    eventList: controller.eventList.value,
-                  ));
-                },
-              ),
-              // ProfileButtons(buttonName: 'My Proshows', onPressedFunc: () {}),
+                  ButtonName: 'My Events',
+                  onPressedFunc: () {
+                    Get.to(() => MyEvents(
+                          eventList: controller.eventList.value,
+                        ));
+                  }),
+              // ProfileButtons(ButtonName: 'My Proshows', onPressedFunc: () {}),
               ProfileButtons(
-                buttonName: 'About Aaruush',
-                onPressedFunc: () {
-                  Get.to(() => const AboutPage());
-                },
-              ),
-              const SizedBox(height: 50),
+                  ButtonName: 'About Aaruush',
+                  onPressedFunc: () async {
+                    Get.to(() => AboutPage());
+                  }),
+              sizeBox(50, 0),
               primaryButton(
-                text: "Log out",
-                onTap: () => controller.common.signOutCurrentUser(),
-              ),
+                  text: "Log out",
+                  onTap: () => {controller.common.signOutCurrentUser()}),
             ],
           ),
         ),
@@ -137,44 +143,33 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class ProfileButtons extends StatelessWidget {
-  final String buttonName;
+  final String ButtonName;
   final VoidCallback onPressedFunc;
-
-  const ProfileButtons({
-    Key? key,
-    required this.buttonName,
-    required this.onPressedFunc,
-  }) : super(key: key);
+  const ProfileButtons(
+      {super.key, required this.ButtonName, required this.onPressedFunc});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-        MediaQuery.of(context).size.width / 15,
-        MediaQuery.of(context).size.height / 50,
-        MediaQuery.of(context).size.width / 15,
-        0,
-      ),
+          MediaQuery.of(context).size.width / 15,
+          MediaQuery.of(context).size.height / 50,
+          MediaQuery.of(context).size.width / 15,
+          0),
       child: SizedBox(
         width: double.infinity,
         height: 56,
         child: TextButton(
           onPressed: onPressedFunc,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(const Color(0xFF504D50)),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7.05),
-              ),
-            ),
+            backgroundColor: const MaterialStatePropertyAll(Color(0xFF504D50)),
+            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(7.05))),
           ),
           child: Text(
-            buttonName,
+            ButtonName,
             style: const TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.w700,
-            ),
+                color: Colors.white, fontSize: 25, fontWeight: FontWeight.w700),
           ),
         ),
       ),

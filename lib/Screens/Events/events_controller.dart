@@ -11,8 +11,8 @@ import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EventsController extends GetxController {
-  var userDetails = {}.obs;
-  var registerFieldData = {}.obs;
+  var userDetails = <String, dynamic>{}.obs;
+  var registerFieldData = <String, dynamic>{}.obs;
   var chnageInDropDown = "ALL".obs;
   var isLoading = false.obs;
   var isEventRegistered = false.obs;
@@ -22,35 +22,39 @@ class EventsController extends GetxController {
   final registerFormKey = GlobalKey<FormState>();
 
   Future<void> getUser() async {
-    try {
-      userDetails.value = await common.getUserDetails();
-    } catch (e) {
-      debugPrint('Error fetching user details: $e');
-      setSnackBar('Error:', 'Failed to fetch user details',
-          icon: const Icon(Icons.warning_amber_rounded, color: Colors.red));
-    }
+    userDetails.value = await common.getUserDetails();
   }
 
   Future<void> registerEvent({required EventListModel e}) async {
     isLoading.value = true;
-
+    // debugPrint("%%%%%%%%%%%%%%%%%%%%% ${{
+    //   ...registerFieldData,
+    //   'user': userDetails['email'],
+    //   'events': userDetails['events'] ?? [],
+    //   'event': e.toJson()
+    // }} %%%%%%%%%%%%%%%%%%%%");
     try {
+      // debugPrint("Token: ${ApiData.accessToken}");
+      // debugPrint("Email: ${userDetails['email']}");
+      // debugPrint("Events: ${userDetails['events']}");
+      // debugPrint("Events: ${userDetails['aaruushId']}");
+      debugPrint("Entered and ${e.id} ${e.category}");
       final response = await post(
-        Uri.parse('${ApiData.API}/events/${e.category}/${e.id}/register'),
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': ApiData.accessToken
-        },
-        body: json.encode({
-          ...registerFieldData,
-          'email': userDetails['email'],
-          'events': userDetails['events'] ?? [],
-          'event': e.toMap()
-        }),
-      );
-
+          Uri.parse('${ApiData.API}/events/${e.category}/${e.id}/register'),
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': ApiData.accessToken
+          },
+          body: json.encode({
+            ...registerFieldData,
+            'email': userDetails['email'],
+            'events': userDetails['events'] ?? [],
+            'event': e.toMap()
+          }));
+      debugPrint("response created ${response.body} ${response.statusCode}");
       if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint("EVENT REGISTERED");
         final userRes = await put(Uri.parse('${ApiData.API}/users'),
             headers: {
               'Content-type': 'application/json',
@@ -67,23 +71,38 @@ class EventsController extends GetxController {
         if (userRes.statusCode == 200 ||
             userRes.statusCode == 201 ||
             userRes.statusCode == 202) {
-          setSnackBar('SUCCESS:', 'Event registered successfully',
-              icon: const Icon(Icons.check_circle_outline_rounded,
-                  color: Colors.green));
+          debugPrint("USER UPDATED: ${userRes.body}  ${userRes.statusCode}");
+          setSnackBar('SUCCESS:', "Event registered successfully",
+              icon: const Icon(
+                Icons.check_circle_outline_rounded,
+                color: Colors.green,
+              ));
         } else {
           setSnackBar('ERROR:', json.decode(userRes.body)['message'],
-              icon: const Icon(Icons.warning_amber_rounded, color: Colors.red));
+              icon: const Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.red,
+              ));
+          debugPrint("ERROR : ${userRes.body}");
+          // throw Exception('Failed to register event ${response.body}');
         }
       } else {
         setSnackBar('ERROR:', json.decode(response.body)['message'],
-            icon: const Icon(Icons.warning_amber_rounded, color: Colors.red));
+            icon: const Icon(
+              Icons.warning_amber_rounded,
+              color: Colors.red,
+            ));
+        debugPrint("ERROR : " + response.body);
+        // throw Exception('Failed to register event ${response.body}');
       }
     } catch (e) {
-      debugPrint('Error registering event: $e');
-      setSnackBar('ERROR:', 'Something went wrong',
-          icon: const Icon(Icons.warning_amber_rounded, color: Colors.red));
+      debugPrint(e.toString());
+      setSnackBar('ERROR:', "Something went wrong",
+          icon: const Icon(
+            Icons.warning_amber_rounded,
+            color: Colors.red,
+          ));
     }
-
     registerFieldData.clear();
     isLoading.value = false;
     Get.offAll(() => const HomeScreen());
@@ -93,21 +112,22 @@ class EventsController extends GetxController {
     final mapUrl = Uri.parse(
         "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude");
 
-    if (await canLaunch(mapUrl.toString())) {
-      await launch(mapUrl.toString(), forceSafariVC: false);
+    if (await canLaunchUrl(mapUrl)) {
+      await launchUrl(mapUrl, mode: LaunchMode.externalApplication);
     } else {
       debugPrint("Cannot launch map url");
     }
   }
 
   void checkRegistered(EventListModel e) {
+    // Compare the userDetails["events"] array and if id matches make isEventRegistered true
     if (userDetails['events'] != null) {
-      isEventRegistered.value = userDetails['events'].contains(e.id);
+      for (var event in userDetails['events']) {
+        if (event == e.id) {
+          isEventRegistered.value = true;
+          break;
+        }
+      }
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

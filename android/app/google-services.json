@@ -22,14 +22,6 @@
           }
         },
         {
-          "client_id": "750621970165-mu9n00ph22u3npr4f4damc15ui4fg3ak.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.aaruush.connect",
-            "certificate_hash": "df5f60cdd403abdcfb61483b4c715467891913bc"
-          }
-        },
-        {
           "client_id": "750621970165-erlur17q44tco5v0ug057iij1ro5s34v.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -50,7 +42,7 @@
               "client_id": "750621970165-ujdoscc9703h2ve7ala90v6h1nqpuqio.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.aaruushapp"
+                "bundle_id": "com.example.aarush"
               }
             }
           ]

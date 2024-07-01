@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:aarush/Common/default_controller_bindings.dart';
+import 'package:aarush/Screens/Home/home_screen.dart';
+import 'package:aarush/Screens/OnBoard/on_boarding_screen.dart';
 import 'package:aarush/Screens/aaruush_app.dart';
 import 'package:aarush/Themes/theme_service.dart';
 import 'package:aarush/Themes/themes.dart';
@@ -10,11 +12,13 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:get/get_navigation/src/routes/transitions_type.dart' as t;
-
-import 'Data/api_data.dart';
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
@@ -24,7 +28,6 @@ Future<void> main() async {
     );
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await GetStorage.init();
-    await ApiData.init();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
