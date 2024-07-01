@@ -1,4 +1,4 @@
-# aarush
+# aaruush
 
 A new Flutter project.
 
