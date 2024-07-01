@@ -1,15 +1,16 @@
 import 'package:aarush/Data/bottomIndexData.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
-import 'package:aarush/Screens/Events/events_screen.dart';
-import 'package:aarush/Screens/Profile/editProfile.dart';
+
+
 import 'package:aarush/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/aaruushappbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:get/get.dart';
 import '../../Utilities/bottombar.dart';
+import '../Events/events_screen.dart';
 import '../Home/home_controller.dart';
 
 class MyEvents extends StatelessWidget {
@@ -50,7 +51,7 @@ class MyEvents extends StatelessWidget {
             sizeBox(50, 0),
             Padding(
               padding:
-                  EdgeInsets.only(left: MediaQuery.sizeOf(context).width / 25),
+              EdgeInsets.only(left: MediaQuery.sizeOf(context).width / 25),
               child: const Text(
                 'Events and tickets',
                 style: TextStyle(fontSize: 32),
@@ -136,8 +137,8 @@ class TicketTile extends StatelessWidget {
                       child: IconButton(
                           onPressed: () {
                             Get.to(() => TicketDisplayPage(
-                                  event: event,
-                                ));
+                              event: event,
+                            ));
                           },
                           icon: const Icon(Icons.qr_code_scanner_rounded)),
                     )
@@ -150,9 +151,9 @@ class TicketTile extends StatelessWidget {
               child: GestureDetector(
                 //TODO: make this gesture detector redirect to events page
                 onTap: () => Get.to(() => EventsScreen(
-                      event: event,
-                      fromMyEvents: true,
-                    )),
+                  event: event,
+                  fromMyEvents: true,
+                )),
                 child: Card(
                   child: Container(
                     decoration: BoxDecoration(

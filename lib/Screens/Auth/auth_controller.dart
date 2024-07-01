@@ -13,53 +13,71 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 
 class AuthController extends GetxController {
-  CommonController common = Get.find();
+  final CommonController common = Get.find();
+
   Future<void> googleSignIn() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return; // User canceled sign-in
+
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
 
-      await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((value) async {
-        var attributes = common.getCurrentUser();
-        final userAttributes = UserAttributes(
-          name: attributes.displayName!,
-          email: attributes.email!,
-          image: attributes.photoURL!,
-        );
-        final response = await post(Uri.parse('${ApiData.API}/users'),
-            headers: {
-              'Content-type': 'application/json',
-              'Accept': 'application/json',
-            },
-            body: userAttributes.toJson());
-        // debugPrint('Response status: ${response.body}');
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          var data = json.decode(response.body);
-          debugPrint('Access token: ${data['accessToken']}');
-          GetStorage().write('accessToken', data['accessToken']).then((v) {
-            Get.off(() => HomeScreen());
-          });
-        } else {
-          setSnackBar('Error:', response.body,
-              icon: const Icon(
-                Icons.warning_amber_rounded,
-                color: Colors.red,
-              ));
-          throw Exception('Something went wrong');
-        }
-      });
+      // Sign in with Firebase
+      final UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Get user attributes
+      final User user = userCredential.user!;
+      final userAttributes = UserAttributes(
+        name: user.displayName!,
+        email: user.email!,
+        image: user.photoURL!,
+      );
+
+      // Post user data to your API
+      final response = await post(
+        Uri.parse('${ApiData.API}/users'),
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: userAttributes.toJson(),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = json.decode(response.body);
+        debugPrint('Access token: ${data['accessToken']}');
+
+        // Store access token using GetStorage
+        await GetStorage().write('accessToken', data['accessToken']);
+
+        // Navigate to home screen
+        Get.off(() => HomeScreen());
+      } else {
+        setSnackBar('Error:', response.body,
+            icon: const Icon(
+              Icons.warning_amber_rounded,
+              color: Colors.red,
+            ));
+        throw Exception('Failed to register user');
+      }
     } on FirebaseAuthException catch (e) {
       setSnackBar('Error:', e.message!,
+          icon: const Icon(
+            Icons.warning_amber_rounded,
+            color: Colors.red,
+          ));
+    } catch (e) {
+      setSnackBar('Error:', e.toString(),
           icon: const Icon(
             Icons.warning_amber_rounded,
             color: Colors.red,
@@ -69,15 +87,13 @@ class AuthController extends GetxController {
 
   @override
   void onClose() {
-    // email.dispose();
-    // password.dispose();
-    // name.dispose();
-    // college.dispose();
-    // registerNumber.dispose();
-    // phone.dispose();
-    // emailAddress.dispose();
-    // signupPassword.dispose();
-    // confirmPassword.dispose();
     super.onClose();
+    // Dispose any resources here if necessary
+  }
+
+  @override
+  void dispose() {
+    // Dispose any resources here if necessary
+    super.dispose();
   }
 }

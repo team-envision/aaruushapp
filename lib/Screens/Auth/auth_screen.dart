@@ -43,9 +43,10 @@ class AuthScreen extends StatelessWidget {
                         .copyWith(color: Colors.black87)),
                 sizeBox(30, 0),
                 TextButton.icon(
-                    style: TextButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 10,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black26.withAlpha(9),
+                        elevation: 8,
+                        shadowColor: Colors.black12,
                         padding: const EdgeInsets.all(18),
                         fixedSize: Size.fromWidth(Get.width),
                         shape: RoundedRectangleBorder(
