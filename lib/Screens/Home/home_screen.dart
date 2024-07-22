@@ -228,7 +228,7 @@ class HomeScreen extends StatelessWidget {
                 value: progress.progress,
                 color: Get.theme.colorPrimary,
               ),
-              imageUrl: event.image!,
+              imageUrl: event.image ?? 'https://imgs.search.brave.com/IexF9m6HTHhdVbZbd7ZaacA6S3QJOvPTfRLibNcISCA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXRu/dXQuaW8vd3AtY29u/dGVudC9wbHVnaW5z/L3BoYXN0cHJlc3Mv/cGhhc3QucGhwL2My/VnlkbWxqWlQxcGJX/Rm5aWE1tYzNKalBX/aDBkSEJ6SlQvTkJK/VEpHSlRKR2JtVjBi/blYwTG1sdkpUSkdk/M0F0WTI5dWRHVnVk/Q1V5Um5Wd2JHOWha/SE1sTWtZeU1ESXpK/VEpHTURVbE1rWkli/M2N0ZEc4dFUyOXNk/bVV0VUhKdmVIa3RS/WEp5YjNJdFEyOWta/WE10SlRJMVJUSWxN/alU0TUNVeU5Ua3pM/VlJvWlMxVmJIUnBi/V0YwWlMxSGRXbGta/UzB0TVRBeU5IZ3hN/REkwTG5CdVp5WmpZ/V05vWlUxaGNtdGxj/ajB4TnpJd016VXlN/ekF5TFRZNE5UUXlK/blJ2YTJWdVBUbGtZ/akprWlRCbE5HUmhZ/VEUxWVdFLnEucG5n', // Use empty string or placeholder if image is null
               fit: BoxFit.cover,
               width: 400,
               height: 250,
@@ -244,7 +244,7 @@ class HomeScreen extends StatelessWidget {
               fixedSize: const Size.fromWidth(130),
             ),
             child: Text(
-              event.live! ? "Register Now" : "View Event",
+              event.live ?? false ? "Register Now" : "View Event", // Default to false if live status is null
               style: Get.theme.kVerySmallTextStyle,
             ),
           ),
@@ -252,4 +252,5 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
 }
