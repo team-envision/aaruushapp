@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "750621970165",
+    "project_id": "main-aaruush-org",
+    "storage_bucket": "main-aaruush-org.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750621970165:android:7f1069c715386320b37fbc",
+        "android_client_info": {
+          "package_name": "com.aaruush.connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750621970165-12u3o3debg0egmf75g0jei8pt8c55u5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aaruush.connect",
+            "certificate_hash": "2b31eefe0ce20b6e6039ebde59989491d10c11b3"
+          }
+        },
+        {
+          "client_id": "750621970165-7n77s9ogdina49o32lurdqd8jm6nut7k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aaruush.connect",
+            "certificate_hash": "9e9577a5f2fde7c14c2511b675446868731aec3c"
+          }
+        },
+        {
+          "client_id": "750621970165-mu9n00ph22u3npr4f4damc15ui4fg3ak.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aaruush.connect",
+            "certificate_hash": "df5f60cdd403abdcfb61483b4c715467891913bc"
+          }
+        },
+        {
+          "client_id": "750621970165-erlur17q44tco5v0ug057iij1ro5s34v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZtPUkInleTKiZvOIOeV27w7v8p-V-OLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750621970165-26ne2qpdhcfr6dni6002q0ckhej458qh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "750621970165-2rdeh9jjdalbshk3baunhgq3959h5ff2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aaruush.aaruushapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
