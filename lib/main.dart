@@ -5,9 +5,11 @@ import 'package:aarush/Screens/aaruush_app.dart';
 import 'package:aarush/Themes/theme_service.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/firebase_options.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -29,7 +31,10 @@ Future<void> main() async {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-    runApp(AaruushApp());
+    runApp(
+       AaruushApp(), // Wrap your app
+
+        );
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
 

@@ -6,7 +6,7 @@ class BgArea extends StatelessWidget {
   const BgArea({
     Key? key,
     required this.children,
-    this.image = "bg.jpg",
+    this.image = "bg.png",
     this.crossAxisAlignment = CrossAxisAlignment.center,
   }) : super(key: key);
   final List<Widget> children;

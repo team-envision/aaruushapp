@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 extension ThemeExtension on ThemeData {
   Color get colorPrimary => brightness == Brightness.dark
-      ? const Color(0xffFF723D)
-      : const Color(0xffFF723D);
+      ? const Color(0xffF45D08)
+      : const Color(0xffF45D08);
   Color get colorPrimaryDark => brightness == Brightness.dark
       ? const Color(0xff242329)
       : const Color(0xff242329);
@@ -47,8 +47,8 @@ extension ThemeExtension on ThemeData {
   // Color get materialColor9 => const Color(0xfff694c1);
   // Color get materialColorDark9 => const Color(0xff8c0342);
 
-  TextStyle get kTitleTextStyle => GoogleFonts.roboto(
-        fontWeight: FontWeight.w700,
+  TextStyle get kTitleTextStyle => GoogleFonts.montserrat(//roboto
+        fontWeight: FontWeight.w500,
         color: btnTextCol,
         fontSize: 25,
       );
@@ -62,9 +62,15 @@ extension ThemeExtension on ThemeData {
         fontSize: 18,
         color: btnTextCol,
       );
-  TextStyle get kVerySmallTextStyle => GoogleFonts.roboto(
+  TextStyle get kSmallmidTextStyle => GoogleFonts.roboto(
+    fontWeight: FontWeight.w700,
+    fontSize: 16,
+    color: btnTextCol,
+  );
+  TextStyle get kVerySmallTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w500,
         color: btnTextCol,
+
       );
   TextStyle get kBigTextStyle => GoogleFonts.roboto(
         fontWeight: FontWeight.w800,

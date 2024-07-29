@@ -31,6 +31,7 @@ dependencies:
   carousel_slider: ^4.2.1
   change_app_package_name: ^1.1.0
   cupertino_icons: ^1.0.2
+  device_preview: ^1.2.0
   firebase_analytics: ^11.1.0
   firebase_auth: ^5.1.1
   firebase_core: ^3.1.1

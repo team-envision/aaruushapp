@@ -8,65 +8,102 @@ import 'package:aarush/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import '../../components/AuthTextFields.dart';
+import 'login.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
   @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+
+
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.put<AuthController>(AuthController());
+
     return Scaffold(
-        body: SafeArea(
-      child: BgArea(children: [
-        sizeBox(50, 0),
-        SvgPicture.asset(
-          'assets/images/aaruush.svg',
-          height: 200,
-          width: 500,
-        ),
-        Text("AARUUSH",
-            style: Get.theme.kBigTextStyle.copyWith(fontFamily: 'Xirod')),
-        sizeBox(5, 0),
-        Text("Connect", style: Get.theme.kVerySmallTextStyle),
-        sizeBox(50, 0),
-        WhiteBox(
-          height: Get.height * 0.4,
-          width: Get.width,
-          margin: const EdgeInsets.all(20),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
+        body: BgArea(
+          children: [
+            sizeBox(45, 0),
+            Text(
+              "Hello, There",
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(bottom: 13),
+              child: Text("Welcome Back", style: Get.theme.kTitleTextStyle),
+            ),
+
+            Column(
               children: [
-                sizeBox(50, 0),
-                Text('Register or login to continue',
-                    style: Get.theme.kTitleTextStyle
-                        .copyWith(color: Colors.black87)),
-                sizeBox(30, 0),
-                TextButton.icon(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black26.withAlpha(9),
-                        elevation: 8,
-                        shadowColor: Colors.black12,
-                        padding: const EdgeInsets.all(18),
-                        fixedSize: Size.fromWidth(Get.width),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () => controller.googleSignIn(),
-                    icon: SvgPicture.asset('assets/images/google_logo.svg',
-                        height: 24, width: 24),
-                    label: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Text(
-                        'Sign in with Google',
-                        style: Get.theme.kSmallTextStyle
-                            .copyWith(color: Colors.black.withAlpha(138)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 35),
+                  child: Container(
+                    height:60,
+                    decoration: BoxDecoration(
+                  color: Color(0xffF45D08),
+                    borderRadius: BorderRadius.circular(28),
+                  ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: TabBar(
+                        dividerHeight: 0,
+                        unselectedLabelColor: Colors.black,
+                        labelColor: Colors.black,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        indicatorPadding: EdgeInsets.symmetric(horizontal: -48),
+                        indicator: BoxDecoration(
+
+                          color: Colors.white,
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                        controller: tabController,
+                        tabs: [
+                          Tab(text: 'Login     ',
+                          ),
+                          Tab(text: 'Register'),
+                        ],
                       ),
-                    ))
+                    ),
+                  ),
+                ),
+                SizedBox(height: Get.height-295,
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [Login(),Container(color: Colors.pink,)],
+                  ),
+                )
               ],
             ),
-          ),
-        )
-      ]),
-    ));
+
+            SvgPicture.asset(
+              'assets/images/Aarushlogo.svg',
+              height: 100,
+              width: 200,
+            ),
+          ],
+        ));
   }
+
+
 }
