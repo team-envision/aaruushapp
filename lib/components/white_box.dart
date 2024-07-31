@@ -31,8 +31,6 @@ class WhiteBox extends StatelessWidget {
           BoxShadow(
             color: Colors.grey.withOpacity(0.4),
             spreadRadius: 0,
-
-
           ),
         ],
         color: Colors.transparent.withOpacity(0.2),

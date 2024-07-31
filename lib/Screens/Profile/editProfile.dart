@@ -14,7 +14,7 @@ class EditProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<ProfileController>(ProfileController());
-    final homeController = Get.find<HomeController>();
+    final homeController = Get.put<HomeController>(HomeController());
 
     return SafeArea(
       child: Scaffold(

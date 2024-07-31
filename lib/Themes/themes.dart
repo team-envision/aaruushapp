@@ -52,17 +52,17 @@ extension ThemeExtension on ThemeData {
         color: btnTextCol,
         fontSize: 25,
       );
-  TextStyle get kSubTitleTextStyle => GoogleFonts.roboto(
+  TextStyle get kSubTitleTextStyle => GoogleFonts.montserrat(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: btnTextCol,
       );
-  TextStyle get kSmallTextStyle => GoogleFonts.roboto(
+  TextStyle get kSmallTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w500,
         fontSize: 18,
         color: btnTextCol,
       );
-  TextStyle get kSmallmidTextStyle => GoogleFonts.roboto(
+  TextStyle get kSmallmidTextStyle => GoogleFonts.montserrat(
     fontWeight: FontWeight.w700,
     fontSize: 16,
     color: btnTextCol,
@@ -72,12 +72,12 @@ extension ThemeExtension on ThemeData {
         color: btnTextCol,
 
       );
-  TextStyle get kBigTextStyle => GoogleFonts.roboto(
+  TextStyle get kBigTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w800,
         color: btnTextCol,
         fontSize: 40,
       );
-  TextStyle get kVeryBigTextStyle => GoogleFonts.roboto(
+  TextStyle get kVeryBigTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w800,
         color: btnTextCol,
         fontSize: 52,

@@ -18,24 +18,26 @@ class Login extends StatelessWidget {
     return          WhiteBox(
       margin: const EdgeInsets.all(20),
       width: Get.width,
-      height: Get.height * 0.7,
+      height: Get.height * 0.8,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            child: Column(
+            child: Column(mainAxisSize: MainAxisSize.min,
               children: [
                 sizeBox(15, 0),
                 Padding(
                   padding: const EdgeInsets.only(right: 115),
-                  child: Text('Login to Your Account ',
-                      style: Get.theme.kSmallmidTextStyle
-                          .copyWith(color: Colors.white)),
+                  child: FittedBox(
+                    child: Text('Login to Your Account ',
+                        style: Get.theme.kSmallmidTextStyle
+                            .copyWith(color: Colors.white)),
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 7),
-                  child: Text('Make sure you already have an account. '),
+                  padding: const EdgeInsets.only(right: 105),
+                  child: FittedBox(child: Text('Make sure you already have an account. ')),
                 ),
                 sizeBox(20, 0),
                 Padding(
@@ -56,7 +58,7 @@ class Login extends StatelessWidget {
                             return "Please Enter Valid Email";
                           }else{return null;}
 
-                        }, suffixIcon: null, isPasswordObsecure: false.obs,)),
+                        }, isPasswordObsecure: false.obs,)),
                 sizeBox(10, 0),
                 Padding(
                   padding: const EdgeInsets.only(right: 192),
@@ -67,30 +69,25 @@ class Login extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 14),
-                  child: AuthTextFields(
-                    hintText: 'Enter your password',
-                   suffixIcon: Obx((){
-                     return IconButton(
-                       icon:isPasswordObsecure.value?  Icon(Icons.visibility_off): Icon(Icons.visibility),
-                       onPressed: () {
-                         isPasswordObsecure.value=false ;
+                  child:Obx((){
+                    return  AuthTextFields(
+                      hintText: 'Enter your password',
+                      suffixIcon:
+                         IconButton(
+                          icon:isPasswordObsecure.value?  Icon(Icons.visibility_off): Icon(Icons.visibility),
+                          onPressed: () {
+                            isPasswordObsecure.value=isPasswordObsecure.value? isPasswordObsecure.value=false : isPasswordObsecure.value=true ;
+                          },
+                        ),
+                      validator: (value) {
+                        if (value==null || value.isEmpty) {
+                          return 'Please Enter Valid Password';
+                        }else{return null;}
 
-                       },
-                     );
-                   }),
+                      }, isPasswordObsecure: isPasswordObsecure,
 
-
-                    validator: (value) {
-                      if (value==null || value.isEmpty) {
-                        return 'Please Enter Valid Password';
-                      }else{return null;}
-
-                    }, isPasswordObsecure: isPasswordObsecure,
-
-
-
-
-                  ),
+                    );
+                  })
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 0, left: 150, right: 4),
@@ -137,10 +134,12 @@ class Login extends StatelessWidget {
                       label: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10
                             ),
-                        child: Text(
-                          'Sign in with Google',
-                          style: Get.theme.kSmallTextStyle
-                              .copyWith(color: Colors.black.withAlpha(138)),
+                        child: FittedBox(
+                          child: Text(
+                            'Sign in with Google',
+                            style: Get.theme.kSmallTextStyle
+                                .copyWith(color: Colors.black.withAlpha(138)),
+                          ),
                         ),
                       )),
                 )
