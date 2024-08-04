@@ -9,10 +9,12 @@ import 'package:get/get.dart';
 class WhiteBox extends StatelessWidget {
   const WhiteBox(
       {super.key,
-       this.height,
+        required this.height,
       required this.width,
       required this.margin,
-      required this.child});
+      required this.child,
+      this.bordersize=40});
+  final double bordersize;
   final double? height;
   final double width;
   final EdgeInsets margin;
@@ -20,7 +22,7 @@ class WhiteBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double borderSize = 40;
+     double borderSize = bordersize;
     return
       Container(
       height: height,

@@ -4,6 +4,7 @@ import 'package:aarush/Common/default_controller_bindings.dart';
 import 'package:aarush/Screens/aaruush_app.dart';
 import 'package:aarush/Themes/theme_service.dart';
 import 'package:aarush/Themes/themes.dart';
+import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/firebase_options.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,6 +22,7 @@ import 'Data/api_data.dart';
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -31,10 +33,7 @@ Future<void> main() async {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-    runApp(
-       AaruushApp(), // Wrap your app
-
-        );
+    runApp(AaruushApp());
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
 
@@ -46,14 +45,14 @@ class AaruushApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      defaultTransition: t.Transition.circularReveal,
+      defaultTransition: t.Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 800),
       initialBinding: DefaultController(),
       debugShowCheckedModeBanner: false,
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
-      home: AaruushAppScreen(),
+      home: AaruushBottomBar(),
     );
   }
 }

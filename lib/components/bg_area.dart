@@ -18,7 +18,7 @@ class BgArea extends StatelessWidget {
       height: Get.height,
       width: Get.width,
       decoration: BoxDecoration(
-        color: Colors.black87,
+        color: Colors.transparent,
         image: DecorationImage(
             image: AssetImage('assets/images/$image'), fit: BoxFit.cover),
       ),

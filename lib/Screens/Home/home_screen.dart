@@ -9,7 +9,7 @@ import 'package:aarush/Screens/Home/home_controller.dart';
 import 'package:aarush/Screens/Profile/profilepage.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/appBarBlur.dart';
-import 'package:aarush/Utilities/bottombar.dart';
+import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/capitalize.dart';
 import 'package:aarush/Utilities/correct_ellipis.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
@@ -66,7 +66,6 @@ class HomeScreen extends StatelessWidget {
       ),
       body:  BgArea(
         crossAxisAlignment: CrossAxisAlignment.start,
-        image: "bg2.png",
         children: [
           sizeBox(120, 0),
           Padding(
@@ -165,7 +164,7 @@ class HomeScreen extends StatelessWidget {
           sizeBox(100, 0),
         ],
       ),
-      bottomNavigationBar: const AaruushBottomBar(bottomIndex: BottomIndexData.HOME),
+      // bottomNavigationBar:  AaruushBottomBar(bottomIndex: BottomIndexData.HOME),
     );
   }
 

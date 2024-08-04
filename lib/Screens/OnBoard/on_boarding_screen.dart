@@ -9,7 +9,7 @@ import 'package:aarush/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -39,13 +39,9 @@ class OnBoardingScreen extends StatelessWidget {
                 child: ClipRect(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: const Text(
+                    child:  Text(
                       "WELCOME ",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Get.theme.kSmallmidTextStyle.copyWith(fontSize: 23),
                     ),
                   ),
                 ),
