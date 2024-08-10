@@ -212,7 +212,7 @@ class ProfileButtons extends StatelessWidget {
                 child: Text(
                   buttonName,
                   style:Get.theme.kSmallTextStyle.copyWith(
-                    color: Colors.black,fontWeight: FontWeight.w700
+                    color: Colors.black,fontWeight: FontWeight.w500
                   ),
                 ),
               ),
