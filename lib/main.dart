@@ -31,6 +31,11 @@ Future<void> main() async {
     await ApiData.init();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
     runApp(AaruushApp());
@@ -46,13 +51,14 @@ class AaruushApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       defaultTransition: t.Transition.rightToLeft,
-      transitionDuration: const Duration(milliseconds: 800),
+      transitionDuration: const Duration(milliseconds: 400),
       initialBinding: DefaultController(),
       debugShowCheckedModeBanner: false,
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
       home: AaruushBottomBar(),
+
     );
   }
 }

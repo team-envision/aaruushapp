@@ -33,21 +33,15 @@ class _TicketWidgetState extends State<TicketWidget> {
   Widget build(BuildContext context) {
     return ClipPath(
       clipper: TicketClipper(),
-      child: AnimatedContainer(
-        child: widget.child,
-        duration: const Duration(seconds: 1),
-        width: widget.width,
-        height: widget.height,
-        padding: widget.padding,
-        margin: widget.margin,
-        decoration: BoxDecoration(
-          boxShadow: widget.shadow,
-          color: widget.color,
-          borderRadius: widget.isCornerRounded
-              ? BorderRadius.circular(20.0)
-              : BorderRadius.circular(0.0),
-        ),
-      ),
+      child: Container(
+          decoration: BoxDecoration(
+            boxShadow: widget.shadow,
+            color: widget.color,
+            borderRadius: widget.isCornerRounded
+                ? BorderRadius.circular(20.0)
+                : BorderRadius.circular(0.0),
+          ),
+          child: widget.child),
     );
   }
 }
@@ -56,7 +50,6 @@ class TicketClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-
     path.lineTo(0.0, size.height);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0.0);

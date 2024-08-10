@@ -4,6 +4,7 @@ import 'package:aarush/Common/common_controller.dart';
 import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Model/User/attributes.dart';
 import 'package:aarush/Screens/Home/home_screen.dart';
+import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class AuthController extends GetxController {
         await GetStorage().write('accessToken', data['accessToken']);
 
         // Navigate to home screen
-        Get.off(() => HomeScreen());
+        Get.off(() => AaruushBottomBar());
       } else {
         setSnackBar('Error:', response.body,
             icon: const Icon(

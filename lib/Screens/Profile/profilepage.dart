@@ -1,4 +1,5 @@
-import 'package:aarush/Data/bottomIndexData.dart';
+
+
 import 'package:aarush/Screens/About/aboutpage.dart';
 import 'package:aarush/Screens/Profile/editProfile.dart';
 import 'package:aarush/Screens/Tickets/myEvents.dart';
@@ -10,7 +11,6 @@ import 'package:aarush/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../Utilities/AaruushBottomBar.dart';
 import '../Home/home_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -35,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
       body: BgArea(
         children: <Widget>[
           SizedBox(height: 0.3*Get.width,),
-          Row(
+          Row(mainAxisSize: MainAxisSize.min,
             children: [
               Stack(
                 alignment: AlignmentDirectional.center,
@@ -120,24 +120,48 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 100),
           ProfileButtons(
+            leadingIcon: Icons.lock_outlined,
+            trailingIcon: Icons.arrow_forward_ios_outlined,
+            buttonName: 'Change Password',
+            onPressedFunc: () {
+
+            }, color: Colors.white,
+          ),
+          ProfileButtons(
             buttonName: 'My Events',
+            leadingIcon: Icons.celebration_outlined,
+            trailingIcon: Icons.arrow_forward_ios_outlined,
             onPressedFunc: () {
               Get.to(() => MyEvents(
                 eventList: controller.eventList.value,
               ));
-            },
+            }, color: Colors.white,
           ),
           // ProfileButtons(buttonName: 'My Proshows', onPressedFunc: () {}),
+
           ProfileButtons(
             buttonName: 'About Aaruush',
+            leadingIcon: Icons.info_outline_rounded,
+            trailingIcon: Icons.arrow_forward_ios_outlined,
             onPressedFunc: () {
               Get.to(() => const AboutPage());
-            },
+            }, color: Colors.white,
           ),
-          const SizedBox(height: 50),
-          primaryButton(
-            text: "Log out",
-            onTap: () => controller.common.signOutCurrentUser(),
+          ProfileButtons(
+            buttonName: 'Help Section',
+            leadingIcon: Icons.headset_mic_outlined,
+            trailingIcon: Icons.arrow_forward_ios_outlined,
+            onPressedFunc: () {
+
+            }, color: Colors.white,
+          ),
+
+
+
+          const SizedBox(height: 10),
+          ProfileButtons(
+            buttonName: "Log out",
+            onPressedFunc: () => controller.common.signOutCurrentUser(), leadingIcon: Icons.logout, color: Color.fromRGBO(239, 101, 34, 1),
           ),
         ],
       ),
@@ -148,12 +172,17 @@ class ProfileScreen extends StatelessWidget {
 
 class ProfileButtons extends StatelessWidget {
   final String buttonName;
+  final IconData leadingIcon;
+  final Color color;
+   IconData? trailingIcon;
   final VoidCallback onPressedFunc;
 
-  const ProfileButtons({
+   ProfileButtons({
     Key? key,
     required this.buttonName,
     required this.onPressedFunc,
+     required this.leadingIcon,
+    IconData? trailingIcon, required this.color,
   }) : super(key: key);
 
   @override
@@ -165,26 +194,34 @@ class ProfileButtons extends StatelessWidget {
         MediaQuery.of(context).size.width / 15,
         0,
       ),
-      child: SizedBox(
-        width: double.infinity,
-        height: 56,
-        child: TextButton(
-          onPressed: onPressedFunc,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(const Color(0xFF504D50)),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7.05),
-              ),
-            ),
+      child: GestureDetector(onTap: onPressedFunc,
+        child: Container(
+          width: Get.width,
+          height: 56,
+          decoration: BoxDecoration(color: color,borderRadius: BorderRadius.circular(7),
           ),
-          child: Text(
-            buttonName,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.w700,
-            ),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Icon(leadingIcon,color: Colors.black,size: 26,),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                  buttonName,
+                  style:Get.theme.kSmallTextStyle.copyWith(
+                    color: Colors.black,fontWeight: FontWeight.w700
+                  ),
+                ),
+              ),
+             Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Icon(trailingIcon,color: Colors.black,),
+              )
+            ],
           ),
         ),
       ),

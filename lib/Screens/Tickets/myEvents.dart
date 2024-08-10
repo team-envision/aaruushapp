@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:aarush/Data/bottomIndexData.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
+import 'package:aarush/Screens/Home/home_screen.dart';
 
 
 import 'package:aarush/Screens/Tickets/TicketDisplayPage.dart';
@@ -49,7 +50,7 @@ class MyEvents extends StatelessWidget {
         ),
       ]),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.transparent,
           image: DecorationImage(
               image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
@@ -57,7 +58,7 @@ class MyEvents extends StatelessWidget {
         child: CustomScrollView(
           slivers:
              [
-               SliverToBoxAdapter(child: SizedBox(height: 80,),),
+               const SliverToBoxAdapter(child: SizedBox(height: 80,),),
               SliverToBoxAdapter(
                 child:  Center(
                   child: Padding(
@@ -84,12 +85,20 @@ class MyEvents extends StatelessWidget {
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
                     childAspectRatio: 159 / 200),
-                delegate: SliverChildBuilderDelegate((context, index) => TicketTile(
-                  imagePath: registeredEvents[index].image!,
-                  title: registeredEvents[index].name!,
-                  event: registeredEvents[index],
-                ),
-                    childCount: registeredEvents.length),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                      if (controller.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator(color: Colors.white,));
+                      }
+                      else {
+                        final event = controller.eventList.where((e) => e.live!).toList()[index];
+                        print("object");
+                        print(controller.eventList);
+                          return TicketTile(imagePath: event.image!,event: event,title: event.name!,);
+
+                      }
+
+                },
+                   childCount: controller.eventList.where((e) => e.live!).length, ),
               ),
               SliverToBoxAdapter(
                 child:
@@ -112,11 +121,13 @@ class MyEvents extends StatelessWidget {
                     crossAxisSpacing: 10,
                     childAspectRatio: 159 / 200),
 
-                delegate: SliverChildBuilderDelegate((context, index) => TicketTile(
-                  imagePath: registeredEvents[index].image!,
-                  title: registeredEvents[index].name!,
-                  event: registeredEvents[index],
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return TicketTile(
+                    imagePath: registeredEvents[index].image!,
+                    title: registeredEvents[index].name!,
+                    event: registeredEvents[index],
+                  );
+                },
                     childCount: registeredEvents.length),
               ),
                SliverToBoxAdapter(child: SizedBox(height: 0.2*Get.height,),)
@@ -151,37 +162,32 @@ class TicketTile extends StatelessWidget {
             footer: Container(
               height: 48,
               child: GridTileBar(
-                leading: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 40,
-                          left: MediaQuery.of(context).size.width / 35),
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 4.97,
-                          child: Text(
-                            title,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Color(0xFFEF6522),
-                              fontSize: 14,
-                            ),
-                          )),
-                    ),
-                    //padding: EdgeInsets.only(top:MediaQuery.of(context).size.height/60,left:MediaQuery.of(context).size.width/13 ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50),
-                      child: IconButton(
-                          onPressed: () {
-                            Get.to(() => TicketDisplayPage(
-                              event: event,
-                            ));
-                          },
-                          icon: const Icon(Icons.qr_code_scanner_rounded)),
-                    )
-                  ],
+                leading: Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height / 40,
+                      left: MediaQuery.of(context).size.width / 35),
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 4.97,
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Color(0xFFEF6522),
+                          fontSize: 14,
+                        ),
+                      )),
+                ),
+                trailing:  Padding(
+                  padding: const EdgeInsets.only(
+                     left:8,right: 8,top:10),
+                  child: IconButton(
+                      onPressed: () {
+                        print(event);
+                        Get.to(() => TicketDisplayPage(
+                          event: event,
+                        ));
+                      },
+                      icon: const Icon(Icons.qr_code_scanner_rounded)),
                 ),
               ),
             ),

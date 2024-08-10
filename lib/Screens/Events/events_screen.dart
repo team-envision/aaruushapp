@@ -49,7 +49,7 @@ class EventsScreen extends StatelessWidget {
         ],
       ),
       body: BgArea(
-        image: 'bg2.png',
+        image: 'bg.png',
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           sizeBox(100, 0),
