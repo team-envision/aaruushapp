@@ -58,13 +58,10 @@ class MyEvents extends StatelessWidget {
         child: CustomScrollView(
           slivers:
              [
-               const SliverToBoxAdapter(child: SizedBox(height: 80,),),
               SliverToBoxAdapter(
-                child:  Center(
-                  child: Padding(
-                    padding:
-                    EdgeInsets.only(left: MediaQuery.sizeOf(context).width / 25),
-                    child:  Text(
+                child:  SafeArea(
+                  child: Center(
+                    child: Text(
                       'My Events',
                       style:  Get.theme.kSmallTextStyle.copyWith(decoration: TextDecoration.underline,fontSize: 28),
                     ),
@@ -72,9 +69,8 @@ class MyEvents extends StatelessWidget {
                 ),
               ),
               SliverToBoxAdapter(child: Padding(
-                padding:
-                EdgeInsets.only(left: Get.width / 25,top: 30,bottom: 30),
-                child:  Text(
+                padding: EdgeInsets.only(left: Get.width / 25,bottom: 30),
+                child: Text(
                   'Upcoming Events',
                   style: Get.theme.kSmallTextStyle,
                 ),

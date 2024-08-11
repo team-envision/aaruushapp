@@ -132,14 +132,6 @@ class NotificationServices {
   }
 
 
-  void isTokenRefresh()async{
-    messaging.onTokenRefresh.listen((event) {
-      event.toString();
-      if (kDebugMode) {
-        print('refresh');
-      }
-    });
-  }
 
   //handle tap on notification when app is in background or terminated
   Future<void> setupInteractMessage(BuildContext context)async{

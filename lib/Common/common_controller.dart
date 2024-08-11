@@ -4,7 +4,9 @@ import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Screens/Auth/auth_screen.dart';
 import 'package:aarush/Screens/Home/home_screen.dart';
 import 'package:aarush/Screens/OnBoard/on_boarding_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class CommonController extends GetxController {
   var uID = ''.obs;
   var userDetails = <String, dynamic>{}.obs;
   var isLoading = false.obs;
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   void changeBottomBarIndex(int index) {
     bottomBarIndex.value = index;
@@ -47,6 +50,38 @@ class CommonController extends GetxController {
     final user = FirebaseAuth.instance.currentUser;
     return user!;
   }
+
+  Future<bool> isUserAvailable(String email) async {
+    try {
+      CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+      DocumentReference userDoc = users.doc(email);
+
+      DocumentSnapshot userSnapshot = await userDoc.get();
+print(userSnapshot["email"]);
+      if (userSnapshot.exists) {
+        print('User details are available.');
+        return true;
+      } else {
+        print('User details are not available.');
+        return false;
+      }
+    } catch (error) {
+      print('Failed to check user availability: $error');
+      return false;
+    }
+  }
+
+
+  void isTokenRefresh(String userId) {
+    _messaging.onTokenRefresh.listen((newToken) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .update({'fcmToken': newToken});
+    });
+  }
+
 
   Future<void> signOutCurrentUser() async {
     try {

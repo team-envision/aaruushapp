@@ -50,33 +50,36 @@ class HomeScreen extends StatelessWidget {
         children: [
 
           sizeBox(120, 0),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Obx(
-                    () => Text(
-                  "Hi, ${controller.common.userName.value}".useCorrectEllipsis(),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: Get.theme.kSubTitleTextStyle,
-                ),
-              ),
-
-              IconButton(
-                onPressed: () => {Get.to(() => ProfileScreen())},
-                icon: Obx(
-                      () => controller.common.profileUrl.value.isNotEmpty
-                      ? CircleAvatar(
-                    backgroundImage: NetworkImage(controller.common.profileUrl.value),
-                  )
-                      : Image.asset(
-                    'assets/images/profile.png',
-                    height: 30,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Obx(
+                      () => Text(
+                    "Hi, ${controller.common.userName.value}".useCorrectEllipsis(),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: Get.theme.kSubTitleTextStyle,
                   ),
                 ),
-                color: Colors.white,
-                iconSize: 40,
-              ),
-            ],
+
+                IconButton(
+                  onPressed: () => {Get.to(() => ProfileScreen())},
+                  icon: Obx(
+                        () => controller.common.profileUrl.value.isNotEmpty
+                        ? CircleAvatar(
+                      backgroundImage: NetworkImage(controller.common.profileUrl.value),
+                    )
+                        : Image.asset(
+                      'assets/images/profile.png',
+                      height: 30,
+                    ),
+                  ),
+                  color: Colors.white,
+                  iconSize: 40,
+                ),
+              ],
+            ),
           ),
           sizeBox(50, 0),
           Padding(
@@ -163,6 +166,7 @@ class HomeScreen extends StatelessWidget {
           sizeBox(100, 0),
         ],
       ),
+      // bottomNavigationBar: AaruushBottomBar(),
       // bottomNavigationBar:  AaruushBottomBar(bottomIndex: BottomIndexData.HOME),
     );
   }

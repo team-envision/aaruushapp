@@ -11,6 +11,7 @@ class AuthTextFields extends StatelessWidget {
   final IconData? icon;
   final RxBool isPasswordObsecure;
   final  IconButton? suffixIcon;
+  TextInputType? textInputType;
 
 
   AuthTextFields({
@@ -19,6 +20,7 @@ class AuthTextFields extends StatelessWidget {
     this.validator,
     this.obscureText = true,
     this.icon,
+    this.textInputType,
     this.suffixIcon,
     required this.isPasswordObsecure
   });
@@ -28,10 +30,11 @@ class AuthTextFields extends StatelessWidget {
     return TextFormField(
     controller: controller,
     obscureText: isPasswordObsecure.value,
-
+keyboardType: textInputType,
 
     decoration: InputDecoration(
       hintText: hintText,hintStyle: TextStyle(fontSize: 14),suffixIcon: suffixIcon,
+
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(28),
         borderSide: BorderSide(color: Colors.white),

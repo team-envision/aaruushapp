@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:aarush/Common/common_controller.dart';
 import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Model/User/attributes.dart';
+import 'package:aarush/Screens/Auth/registerView.dart';
 import 'package:aarush/Screens/Home/home_screen.dart';
 import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/snackbar.dart';
@@ -17,6 +18,9 @@ class AuthController extends GetxController {
   final CommonController common = Get.find();
 
   Future<void> googleSignIn() async {
+    print(common.emailAddress);
+    print(common.phoneNumber);
+    print(common.userName);
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -58,11 +62,16 @@ class AuthController extends GetxController {
         final data = json.decode(response.body);
         debugPrint('Access token: ${data['accessToken']}');
 
-        // Store access token using GetStorage
         await GetStorage().write('accessToken', data['accessToken']);
+print("common.emailAddress.value");
+print(common.emailAddress.value);
+        if(await common.isUserAvailable(common.emailAddress.value)){
+          Get.offAll(() => AaruushBottomBar());
+        }
+        else{
+          Get.offAll(() => registerView());
+        }
 
-        // Navigate to home screen
-        Get.off(() => AaruushBottomBar());
       } else {
         setSnackBar('Error:', response.body,
             icon: const Icon(

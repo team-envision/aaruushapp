@@ -6,6 +6,7 @@ import 'package:aarush/Themes/theme_service.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     await GetStorage.init();
     await ApiData.init();
     SystemChrome.setPreferredOrientations(
@@ -57,8 +59,9 @@ class AaruushApp extends StatelessWidget {
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
-      // home: AaruushAppScreen(),
       home: AaruushBottomBar(),
+      // home: AaruushAppScreen(),
+
 
     );
   }
