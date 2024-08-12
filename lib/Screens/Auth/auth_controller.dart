@@ -14,13 +14,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 
+import 'Register_controller.dart';
+
 class AuthController extends GetxController {
   final CommonController common = Get.find();
 
+
   Future<void> googleSignIn() async {
-    print(common.emailAddress);
-    print(common.phoneNumber);
-    print(common.userName);
+
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -29,6 +30,8 @@ class AuthController extends GetxController {
       // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth =
       await googleUser.authentication;
+
+
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
@@ -63,9 +66,8 @@ class AuthController extends GetxController {
         debugPrint('Access token: ${data['accessToken']}');
 
         await GetStorage().write('accessToken', data['accessToken']);
-print("common.emailAddress.value");
-print(common.emailAddress.value);
-        if(await common.isUserAvailable(common.emailAddress.value)){
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        if(await common.isUserAvailable(googleUser!.email)){
           Get.offAll(() => AaruushBottomBar());
         }
         else{

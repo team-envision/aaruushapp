@@ -33,108 +33,110 @@ class registerView extends StatelessWidget {
               width: Get.width,
               height:controller.height.value,
               child: SingleChildScrollView(
-                child: Form(
-                  key: controller.formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Column(mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              right: 20.0, left: 20.0, top: 15, bottom: 5),
-                          child: AuthTextFields(
-                              hintText: 'Name',
-                              controller: controller.NameTextEditingController,
-                              isPasswordObsecure: false.obs,
-                              validator: (value) {
-                                if(value!.isEmpty || value == Null){
-                                  return "Enter Your Name";
-                                }
-                              }),
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-                          child: AuthTextFields(
-                              hintText: 'College/University',
-                              controller: controller.CollgeTextEditingController,
-                              isPasswordObsecure: false.obs,
-                              validator: (value) {
-                                if(value!.isEmpty || value == Null){
-                                  return "Enter Your College Name";
-                                }
-
-                              }),
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-                          child: AuthTextFields(
-                              hintText: 'Register Number',
-                              controller: controller.RegNoTextEditingController,
-                              isPasswordObsecure: false.obs,
-                              validator: (value) {
-                                if(value!.isEmpty || value == Null){
-                                  return "Enter Your Register No.";
-                                }
-
-                              }),
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-                          child: AuthTextFields(
-                              hintText: 'Phone Number',
-                              textInputType: TextInputType.phone,
-                              controller: controller.PhNoTextEditingController,
-                              isPasswordObsecure: false.obs,
-                              validator: (value) {
-                                if(value!.isEmpty || value == Null || !value.isPhoneNumber){
-                                  return "Enter Your Ph. No.";
-                                }
-                              }),
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-                          child: AuthTextFields(
-                              hintText: 'Email',
-                              controller: controller.EmailTextEditingController,
-                              isPasswordObsecure: false.obs,
-                              validator: (value) {
-                                if(value!.isEmpty || value == Null){
-                                  return "Enter Your Email";
-                                }
-                              }),
-                        ),
-
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(width: Get.width-150,
-                            child: primaryButton(
-                                text: "Submit",
-                                onTap: () {
-                                  if (controller.formKey.currentState!.validate()) {
-                                    controller.saveUserToFirestore(
-                                        name: controller.NameTextEditingController.text,
-                                        college: controller.CollgeTextEditingController.text,
-                                        registerNumber: controller.RegNoTextEditingController.text,
-                                        phoneNumber: controller.PhNoTextEditingController.text,
-                                        email: controller.EmailTextEditingController.text
-                                    );
-                                    controller.height.value = Get.height*0.55;
-                                  }
-                                  else{
-                                    controller.height.value = Get.height*0.6;
+                child:  Form(
+                    key: controller.formKey,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                right: 20.0, left: 20.0, top: 15, bottom: 5),
+                            child: AuthTextFields(
+                                hintText: 'Name',
+                                controller: controller.NameTextEditingController,
+                                isPasswordObsecure: false.obs,
+                                validator: (value) {
+                                  if(value!.isEmpty || value == Null){
+                                    return "Enter Your Name";
                                   }
                                 }),
                           ),
-                        )
-                      ],
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                            child: AuthTextFields(
+                                hintText: 'College/University',
+                                controller: controller.CollgeTextEditingController,
+                                isPasswordObsecure: false.obs,
+                                validator: (value) {
+                                  if(value!.isEmpty || value == Null){
+                                    return "Enter Your College Name";
+                                  }
+
+                                }),
+                          ),
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                            child: AuthTextFields(
+                                hintText: 'Register Number',
+                                controller: controller.RegNoTextEditingController,
+                                isPasswordObsecure: false.obs,
+                                validator: (value) {
+                                  if(value!.isEmpty || value == Null){
+                                    return "Enter Your Register No.";
+                                  }
+
+                                }),
+                          ),
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                            child: AuthTextFields(
+                                hintText: 'Phone Number',
+                                textInputType: TextInputType.phone,
+                                controller: controller.PhNoTextEditingController,
+                                isPasswordObsecure: false.obs,
+                                validator: (value) {
+                                  if(value!.isEmpty || value == Null || !value.isPhoneNumber){
+                                    return "Enter Your Ph. No.";
+                                  }
+                                }),
+                          ),
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                            child: AuthTextFields(
+                                hintText: 'Email',
+                                controller: controller.EmailTextEditingController,
+                                isPasswordObsecure: false.obs,
+                                validator: (value) {
+                                  if(value!.isEmpty || value == Null){
+                                    return "Enter Your Email";
+                                  }
+                                }),
+                          ),
+
+
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(width: Get.width-150,
+                              child: primaryButton(
+                                  text: "Submit",
+                                  onTap: () {
+                                    if (controller.formKey.currentState!.validate()) {
+                                      controller.saveUserToFirestore(
+                                          name: controller.NameTextEditingController.text,
+                                          college: controller.CollgeTextEditingController.text,
+                                          registerNumber: controller.RegNoTextEditingController.text,
+                                          phoneNumber: controller.PhNoTextEditingController.text,
+                                          email: controller.EmailTextEditingController.text
+                                      );
+                                      controller.updateProfile();
+                                      controller.height.value = Get.height*0.55;
+                                    }
+                                    else{
+                                      controller.height.value = Get.height*0.6;
+                                    }
+                                  }),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
+
               ));
         })
       

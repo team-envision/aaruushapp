@@ -1,5 +1,4 @@
 import 'package:aarush/Common/common_controller.dart';
-import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,11 +14,11 @@ class AaruushAppScreen extends GetView<CommonController> {
         if (snapshot.hasData) {
           return snapshot.data!;
         } else {
-          return  Scaffold(
-            body: const Center(
+          return  const Scaffold(
+            body: Center(
               child: CircularProgressIndicator(),
             ),
-            bottomNavigationBar: AaruushBottomBar(),
+
           );
         }
       },

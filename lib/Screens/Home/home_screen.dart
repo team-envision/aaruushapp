@@ -13,6 +13,7 @@ import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/capitalize.dart';
 import 'package:aarush/Utilities/correct_ellipis.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
+import 'package:aarush/Utilities/removeBracketsIfExist.dart';
 import 'package:aarush/components/bg_area.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +24,12 @@ import '../../components/aaruushappbar.dart';
 import '../Events/events_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+   HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
-
+    RxString userName = (toRemoveTextInBracketsIfExists(controller.common.userName.value).toString()).obs;
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -52,33 +53,35 @@ class HomeScreen extends StatelessWidget {
           sizeBox(120, 0),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Obx(
-                      () => Text(
-                    "Hi, ${controller.common.userName.value}".useCorrectEllipsis(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: Get.theme.kSubTitleTextStyle,
-                  ),
-                ),
-
-                IconButton(
-                  onPressed: () => {Get.to(() => ProfileScreen())},
-                  icon: Obx(
-                        () => controller.common.profileUrl.value.isNotEmpty
-                        ? CircleAvatar(
-                      backgroundImage: NetworkImage(controller.common.profileUrl.value),
-                    )
-                        : Image.asset(
-                      'assets/images/profile.png',
-                      height: 30,
+            child: FittedBox(
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(
+                        () => Text(
+                      "Hi, ${userName.value}".useCorrectEllipsis(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: Get.theme.kSubTitleTextStyle,
                     ),
                   ),
-                  color: Colors.white,
-                  iconSize: 40,
-                ),
-              ],
+              
+                  IconButton(
+                    onPressed: () => {Get.to(() => ProfileScreen())},
+                    icon: Obx(
+                          () => controller.common.profileUrl.value.isNotEmpty
+                          ? CircleAvatar(
+                        backgroundImage: NetworkImage(controller.common.profileUrl.value),
+                      )
+                          : Image.asset(
+                        'assets/images/profile.png',
+                        height: 30,
+                      ),
+                    ),
+                    color: Colors.white,
+                    iconSize: 40,
+                  ),
+                ],
+              ),
             ),
           ),
           sizeBox(50, 0),

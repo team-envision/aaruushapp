@@ -16,72 +16,66 @@ class EditProfile extends StatelessWidget {
     final controller = Get.put<ProfileController>(ProfileController());
     final homeController = Get.put<HomeController>(HomeController());
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFF070709),
-        appBar: AaruushAppBar(
-          title: "Edit Profile",
-          actions: [
-            IconButton(
-              onPressed: () => Get.back(),
-              icon: const Icon(Icons.close_rounded),
-              color: Colors.white,
-              iconSize: 25,
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Form(
-            key: controller.formkey,
-            child: Column(
-              children: <Widget>[
-                sizeBox(150, 0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    IconButton(
-                      iconSize: MediaQuery.of(context).size.height / 6,
-                      onPressed: () {},
-                      icon: Obx(
-                            () => CircleAvatar(
-                          radius: 60,
-                          backgroundImage: homeController.common.profileUrl.value != null
-                              ? NetworkImage(homeController.common.profileUrl.value!)
-                              : AssetImage('assets/images/profile.png') as ImageProvider,
-                        ),
-                      ),
-                      color: Colors.white,
+    return Scaffold(
+      backgroundColor: const Color(0xFF070709),
+      appBar: AaruushAppBar(
+        title: "Edit Profile",
+        actions: [
+          IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(Icons.close_rounded),
+            color: Colors.white,
+            iconSize: 25,
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Form(
+          key: controller.formkey,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50.0,left: 10,right: 10),
+            child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                 Obx(
+                        () => CircleAvatar(
+                      radius: 60,
+                      backgroundImage: homeController.common.profileUrl.value != null
+                          ? NetworkImage(homeController.common.profileUrl.value!)
+                          : AssetImage('assets/images/profile.png') as ImageProvider,
                     ),
-                  ],
-                ),
-                sizeBox(50, 0),
+                  ),
+
+
+
                 CustomTextField(
                   label: 'Name',
                   type: TextInputType.text,
                   controller: controller.nameController,
                 ),
-                sizeBox(50, 0),
+
                 CustomTextField(
                   controller: controller.phoneController,
                   label: 'Phone',
                   type: TextInputType.phone,
                 ),
-                sizeBox(50, 0),
+
                 CustomTextField(
                   controller: controller.emailController,
                   label: 'Email',
                   type: TextInputType.emailAddress,
                   enabled: false,
                 ),
-                sizeBox(50, 0),
-                primaryButton(
-                  text: "Save",
-                  onTap: () {
-                    if (controller.formkey.currentState!.validate()) {
-                      controller.updateProfile();
-                    }
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: primaryButton(
+                    text: "Save",
+                    onTap: () {
+                      if (controller.formkey.currentState!.validate()) {
+                        controller.updateProfile();
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

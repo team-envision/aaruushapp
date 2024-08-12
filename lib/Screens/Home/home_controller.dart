@@ -98,4 +98,5 @@ class HomeController extends GetxController {
       fetchEventDataByCategory(name);
     }
   }
+
 }

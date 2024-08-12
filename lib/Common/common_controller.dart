@@ -4,9 +4,11 @@ import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Screens/Auth/auth_screen.dart';
 import 'package:aarush/Screens/Home/home_screen.dart';
 import 'package:aarush/Screens/OnBoard/on_boarding_screen.dart';
+import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,8 @@ class CommonController extends GetxController {
   var profileUrl = ''.obs;
   var aaruushId = ''.obs;
   var phoneNumber = ''.obs;
+  var RegNo = ''.obs;
+  var college = ''.obs;
   var uID = ''.obs;
   var userDetails = <String, dynamic>{}.obs;
   var isLoading = false.obs;
@@ -38,7 +42,7 @@ class CommonController extends GetxController {
     final isSignedIn = await isUserSignedIn();
     if (isSignedIn) {
       debugPrint("User signed in");
-      return const HomeScreen();
+      return  AaruushBottomBar();
     } else {
       debugPrint("User not signed in");
       return const OnBoardingScreen();
@@ -88,6 +92,8 @@ print(userSnapshot["email"]);
       final GoogleSignInAccount? googleUser = await GoogleSignIn().currentUser;
       await FirebaseAuth.instance.signOut();
       googleUser?.clearAuthCache();
+     print(GetStorage().read('accessToken'));
+      GetStorage().erase();
     } on FirebaseAuthException catch (e) {
       debugPrint("Errr ${e}");
     }
@@ -115,7 +121,9 @@ print(userSnapshot["email"]);
         emailAddress.value = data['email'] ?? "";
         profileUrl.value = data['image'] ?? "";
         aaruushId.value = data['aaruushId'] ?? "";
-        phoneNumber.value = data['phone'] ?? "";
+        phoneNumber.value = data['phone'] ?? data["whatsapp"] ?? data["phone number"] ?? data["Whatsapp Number"] ?? data["whatsappnumber"] ?? data["whatsapp number"] ?? "";
+        RegNo.value = data['registration number (na if not applicable)'] ?? data['college_id'] ?? data['Registration Number'] ?? "";
+        college.value = data['college'] ?? data['college (na if not applicable)'] ?? data['college_name'] ?? "";
         debugPrint("User details: $data");
         return data;
       } else {

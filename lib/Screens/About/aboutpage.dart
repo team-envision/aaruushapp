@@ -2,10 +2,11 @@ import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/aaruushappbar.dart';
 import 'package:aarush/components/bg_area.dart';
-import 'package:aarush/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../components/DynamicWhiteBox.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -42,18 +43,17 @@ class AboutPage extends StatelessWidget {
                   },
                   child: Text("Developed by Team Envision",
                       style: Get.theme.kVerySmallTextStyle
-                          .copyWith(color: Color.fromRGBO(239, 101, 34, 1),)),
+                          .copyWith(color: const Color.fromRGBO(239, 101, 34, 1),)),
                 ),
                 sizeBox(20, 0),
                 Text("About Aaruush", style: Get.theme.kSubTitleTextStyle),
                 sizeBox(20, 0),
-                WhiteBox(
-                  width: Get.width,height: Get.height*0.35,bordersize: 16,
-                  margin: EdgeInsets.all(5),
+                CustomBox(
+                  margin: const EdgeInsets.all(5),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                        "The word 'Aaruush' translates to 'the first rays of the sun'. Started by four visionary final-year college students, Aaruush intended to be a technical fest with 26 events and over 3000 participants, but it exceeded all expectations. And so successful was the idea that the inauguration was presided over by the former president of India, Dr A.P.J. Abdul Kalam",
+                        """Aaruush, SRM Institute of Science and Technology's premier national techno-management fest, has been a beacon of innovation since 2007. Inaugurated by late Dr. A. P. J. Abdul Kalam, it brings together students worldwide for technical workshops, hackathons, lectures, and exhibitions. With 16 domains, 13 committees, 2 teams, and a diverse range of events, Aaruush fosters creativity and transformative experiences under the theme "Towards Infinity" and motto "Rising in the Spirit of Innovation." Join us to experience a festival where imagination meets execution and creativity knows no bounds.""",
                         style: Get.theme.kSmallTextStyle.copyWith(fontSize: 16),textAlign: TextAlign.justify,),
                   ),
                 ),
@@ -61,14 +61,14 @@ class AboutPage extends StatelessWidget {
                 Text("About Team Envision",
                     style: Get.theme.kSubTitleTextStyle),
                 sizeBox(20, 0),
-                WhiteBox(
-                  width: Get.width,height: Get.height*0.63,bordersize: 16,
-                  margin: EdgeInsets.all(5),
+                CustomBox(
+                  bordersize: 16,
+                  margin: const EdgeInsets.all(5),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                        "Team Envision, the multidisciplinary technical team of Aaruush, was formed with the goal of finding solutions to the majority of societal and campus-related problems. It is a consortium of AI-ML, Cyber Security, Blockchain, Editorial, Game Developers, Web Developers, App Developers and Designers who work closely to ideate, fabricate and develop products that tackle the above-mentioned problems. Team Envision promotes learning and growth through effective solutions. Our team is composed of diligent and meticulous members, who through their skills have won various accolades for our institution. As a team, we have participated in various hackathons, namely the Smart India Hackathon, Rajasthan Hackathon, Mozofest Hackathon, Accenture Blockchain Hackathon etc. and have come out victorious. In Smart India Hackathon 2022, our team has successfully emerged as the winner.",
-                        style: Get.theme.kSmallTextStyle.copyWith(fontSize: 14),textAlign: TextAlign.justify,),
+                        "Team Envision is a multidisciplinary technical team of Aaruush, dedicated to solving societal and campus challenges through innovative solutions. With expertise in in a variety of technical fields, they consistently excel in prestigious competitions like the Smart India Hackathon. The team develops cutting-edge technologies, crafts user-friendly applications, secures digital transactions, and creates visually impactful designs, driving technological advancement and making a significant impact on both society and the campus community.",
+                        style: Get.theme.kSmallTextStyle.copyWith(fontSize: 16),textAlign: TextAlign.justify,),
                   ),
                 ),
               ],
@@ -77,3 +77,8 @@ class AboutPage extends StatelessWidget {
         ]));
   }
 }
+
+
+
+
+

@@ -59,8 +59,8 @@ class AaruushApp extends StatelessWidget {
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
-      home: AaruushBottomBar(),
-      // home: AaruushAppScreen(),
+      // home: AaruushBottomBar(),
+      home: AaruushAppScreen(),
 
 
     );

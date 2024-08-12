@@ -7,7 +7,6 @@ import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/correct_ellipis.dart';
 import 'package:aarush/components/aaruushappbar.dart';
 import 'package:aarush/components/bg_area.dart';
-import 'package:aarush/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
         title: "Profile",
         actions: [
           IconButton(
-            onPressed: () => Get.back(),
+            onPressed: () {},
             icon: const Icon(Icons.close_rounded),
             color: Colors.white,
             iconSize: 25,
@@ -119,14 +118,14 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 100),
-          ProfileButtons(
-            leadingIcon: Icons.lock_outlined,
-            trailingIcon: Icons.arrow_forward_ios_outlined,
-            buttonName: 'Change Password',
-            onPressedFunc: () {
-
-            }, color: Colors.white,
-          ),
+          // ProfileButtons(
+          //   leadingIcon: Icons.lock_outlined,
+          //   trailingIcon: Icons.arrow_forward_ios_outlined,
+          //   buttonName: 'Change Password',
+          //   onPressedFunc: () {
+          //
+          //   }, color: Colors.white,
+          // ),
           ProfileButtons(
             buttonName: 'My Events',
             leadingIcon: Icons.celebration_outlined,

@@ -28,6 +28,8 @@ class ApiData {
   static set accessToken(String token) {
     final box = GetStorage();
     box.write('accessToken', token);
+    print("token");
+    print(token);
   }
 
 // TODO: Remember to import the .env file by calling ApiData.init() in your main.dart or relevant initialization file.
