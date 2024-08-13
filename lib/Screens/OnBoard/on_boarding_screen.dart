@@ -9,7 +9,7 @@ import 'package:aarush/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -17,55 +17,50 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: BgArea(children: [
-          sizeBox(50, 0),
-          SvgPicture.asset(
-            'assets/images/aaruush.svg',
-            height: 200,
-            width: 500,
-          ),
-          Text("AARUUSH",
-              style: Get.theme.kBigTextStyle.copyWith(fontFamily: 'Xirod')),
-          sizeBox(5, 0),
-          Text("Connect", style: Get.theme.kVerySmallTextStyle),
-          sizeBox(50, 0),
-          WhiteBox(
-            margin: const EdgeInsets.all(20),
-            height: 320,
-            width: Get.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                sizeBox(50, 0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: ClipRect(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: const Text(
-                        "WELCOME TO\nAARUUSH '23",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+      body: BgArea(children: [
+        sizeBox(50, 0),
+        SvgPicture.asset(
+          'assets/images/Aarushlogo.svg',
+          height: 300,
+          width: 500,
+        ),
+
+        sizeBox(50, 0),
+        WhiteBox(
+          margin: const EdgeInsets.all(20),
+          height: 320,
+          width: Get.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              sizeBox(50, 0),
+              Padding(
+                padding: const EdgeInsets.only(left: 60.0),
+                child: ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child:  Text(
+                      "WELCOME ",
+                      style: Get.theme.kSmallmidTextStyle.copyWith(fontSize: 23),
                     ),
                   ),
                 ),
-                sizeBox(25, 0),
-                Flexible(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text("Shifting Paradigms, Enriching Wellbeing",
-                      style: Get.theme.kSmallTextStyle
-                          .copyWith(color: Colors.black45)),
-                )),
-                sizeBox(30, 0),
-                Center(
+              ),
+              sizeBox(25, 0),
+              Flexible(
+                  child: Padding(
+                padding: const EdgeInsets.only(left: 60.0,right: 20.0),
+                child: Text("Embracing Change, Pioneering Excellence",
+                    style: Get.theme.kSmallTextStyle
+                        .copyWith(color: Colors.white)),
+              )),
+              sizeBox(30, 0),
+              Center(
+                child: SizedBox(
+                  height: 60,
+
                   child: primaryButton(
-                      text: "Get Started",
+                      text:'Get Started',
                       onTap: () => {
                             // if (GetStorage().read('givenIntro') ?? true)
                             //   {GetStorage().write('givenIntro', false)},
@@ -73,11 +68,11 @@ class OnBoardingScreen extends StatelessWidget {
                             Get.off(() => AuthScreen()),
                           }),
                 ),
-              ],
-            ),
-          )
-        ]),
-      ),
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 }

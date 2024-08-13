@@ -14,10 +14,11 @@ class AaruushAppScreen extends GetView<CommonController> {
         if (snapshot.hasData) {
           return snapshot.data!;
         } else {
-          return const Scaffold(
+          return  const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
+
           );
         }
       },

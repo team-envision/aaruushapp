@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 extension ThemeExtension on ThemeData {
   Color get colorPrimary => brightness == Brightness.dark
-      ? const Color(0xffFF723D)
-      : const Color(0xffFF723D);
+      ? const Color(0xffF45D08)
+      : const Color(0xffF45D08);
   Color get colorPrimaryDark => brightness == Brightness.dark
       ? const Color(0xff242329)
       : const Color(0xff242329);
@@ -47,31 +47,37 @@ extension ThemeExtension on ThemeData {
   // Color get materialColor9 => const Color(0xfff694c1);
   // Color get materialColorDark9 => const Color(0xff8c0342);
 
-  TextStyle get kTitleTextStyle => GoogleFonts.roboto(
-        fontWeight: FontWeight.w700,
+  TextStyle get kTitleTextStyle => GoogleFonts.montserrat(//roboto
+        fontWeight: FontWeight.w500,
         color: btnTextCol,
         fontSize: 25,
       );
-  TextStyle get kSubTitleTextStyle => GoogleFonts.roboto(
+  TextStyle get kSubTitleTextStyle => GoogleFonts.montserrat(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: btnTextCol,
       );
-  TextStyle get kSmallTextStyle => GoogleFonts.roboto(
+  TextStyle get kSmallTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w500,
         fontSize: 18,
         color: btnTextCol,
       );
-  TextStyle get kVerySmallTextStyle => GoogleFonts.roboto(
+  TextStyle get kSmallmidTextStyle => GoogleFonts.montserrat(
+    fontWeight: FontWeight.w700,
+    fontSize: 16,
+    color: btnTextCol,
+  );
+  TextStyle get kVerySmallTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w500,
         color: btnTextCol,
+
       );
-  TextStyle get kBigTextStyle => GoogleFonts.roboto(
+  TextStyle get kBigTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w800,
         color: btnTextCol,
         fontSize: 40,
       );
-  TextStyle get kVeryBigTextStyle => GoogleFonts.roboto(
+  TextStyle get kVeryBigTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w800,
         color: btnTextCol,
         fontSize: 52,
@@ -81,6 +87,7 @@ extension ThemeExtension on ThemeData {
 class Themes {
   static final light = ThemeData.light().copyWith(
     // backgroundColor: Colors.white,
+
     appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Color(0xffffffff),

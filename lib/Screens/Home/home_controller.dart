@@ -3,6 +3,9 @@ import 'package:aarush/Common/common_controller.dart';
 import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
 import 'package:aarush/Services/notificationServices.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -24,10 +27,29 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    NotificationServices notificationServices = NotificationServices();
     common = Get.find<CommonController>();
     common.fetchAndLoadDetails();
-    NotificationServices().requestNotificationPermission();
     fetchEventData();
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.firebaseInit(Get.context!);
+    notificationServices.setupInteractMessage(Get.context!);
+
+    notificationServices.getDeviceToken().then((value){
+      if (kDebugMode) {
+        print('device token');
+        print(value);
+      }
+    });
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(common.emailAddress.value)
+          .update({'fcmToken': newToken});
+    });
+
+
   }
 
   Future<void> fetchEventData() async {
@@ -76,4 +98,5 @@ class HomeController extends GetxController {
       fetchEventDataByCategory(name);
     }
   }
+
 }

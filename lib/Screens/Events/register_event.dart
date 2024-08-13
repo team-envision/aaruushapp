@@ -42,6 +42,7 @@ class RegisterEvent extends GetView<EventsController> {
           WhiteBox(
             width: Get.width,
             margin: const EdgeInsets.all(20),
+            height: null,
             child: Form(
               key: controller.registerFormKey,
               child: Column(

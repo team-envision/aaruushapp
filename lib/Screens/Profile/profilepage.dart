@@ -1,15 +1,15 @@
-import 'package:aarush/Data/bottomIndexData.dart';
+
+
 import 'package:aarush/Screens/About/aboutpage.dart';
 import 'package:aarush/Screens/Profile/editProfile.dart';
 import 'package:aarush/Screens/Tickets/myEvents.dart';
 import 'package:aarush/Themes/themes.dart';
 import 'package:aarush/Utilities/correct_ellipis.dart';
 import 'package:aarush/components/aaruushappbar.dart';
-import 'package:aarush/components/primaryButton.dart';
+import 'package:aarush/components/bg_area.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../Utilities/bottombar.dart';
 import '../Home/home_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -19,131 +19,169 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put<HomeController>(HomeController());
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AaruushAppBar(
-          title: "Profile",
-          actions: [
-            IconButton(
-              onPressed: () => Get.back(),
-              icon: const Icon(Icons.close_rounded),
-              color: Colors.white,
-              iconSize: 25,
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: <Widget>[
-              Row(
+    return Scaffold(extendBody: true,extendBodyBehindAppBar: true,
+      appBar: AaruushAppBar(
+        title: "Profile",
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.close_rounded),
+            color: Colors.white,
+            iconSize: 25,
+          ),
+        ],
+      ),
+      body: BgArea(
+        children: <Widget>[
+          SizedBox(height: 0.3*Get.width,),
+          Row(mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                alignment: AlignmentDirectional.center,
                 children: [
-                  Stack(
-                    alignment: AlignmentDirectional.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        iconSize: MediaQuery.of(context).size.height / 6,
-                        icon: Obx(
-                              () => CircleAvatar(
-                            radius: 50,
-                            backgroundImage: controller.common.profileUrl.value != null
-                                ? NetworkImage(controller.common.profileUrl.value!)
-                                : AssetImage('assets/images/profile.png') as ImageProvider,
-                          ),
-                        ),
+                  IconButton(
+                    onPressed: () {},
+                    iconSize: MediaQuery.of(context).size.height / 6,
+                    icon: Obx(
+                          () => CircleAvatar(
+                        radius: 50,
+                        backgroundImage: controller.common.profileUrl.value != null
+                            ? NetworkImage(controller.common.profileUrl.value!)
+                            : AssetImage('assets/images/profile.png') as ImageProvider,
                       ),
-                      Positioned(
-                        bottom: 20,
-                        right: 10,
-                        child: GestureDetector(
-                          onTap: () => Get.to(() => EditProfile()),
-                          child: Container(
-                            width: MediaQuery.of(context).size.height / 20,
-                            height: MediaQuery.of(context).size.height / 20,
-                            decoration: const ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(0.00, -1.00),
-                                end: Alignment(0, 1),
-                                colors: [Color(0xFFED6522), Color(0xFFC59123)],
-                              ),
-                              shape: OvalBorder(),
-                            ),
-                            child: const Icon(Icons.edit),
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Obx(
-                              () => Text(
-                            controller.common.userName.value.useCorrectEllipsis(),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: Get.theme.kTitleTextStyle,
+                  Positioned(
+                    bottom: 20,
+                    right: 10,
+                    child: GestureDetector(
+                      onTap: () => Get.to(() => EditProfile()),
+                      child: Container(
+                        width: MediaQuery.of(context).size.height / 20,
+                        height: MediaQuery.of(context).size.height / 20,
+                        decoration: const ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(0.00, -1.00),
+                            end: Alignment(0, 1),
+                            colors: [Color(0xFFED6522), Color(0xFFC59123)],
                           ),
+                          shape: OvalBorder(),
                         ),
-                        const SizedBox(height: 10),
-                        Text(
+                        child: const Icon(Icons.edit),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Obx(
+                          () => Padding(
+                            padding: const EdgeInsets.only(right: 18.0),
+                            child: FittedBox(
+                              child: Text(
+                                controller.common.userName.value.useCorrectEllipsis(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: Get.theme.kTitleTextStyle,
+                                                        ),
+                            ),
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 18.0),
+                      child: FittedBox(
+                        child: Text(
                           controller.common.emailAddress.value,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: Get.theme.kVerySmallTextStyle,
                         ),
-                        Text(
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 18.0),
+                      child: FittedBox(
+                        child: Text(
                           controller.common.aaruushId.value,
                           style: Get.theme.kVerySmallTextStyle,
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 100),
-              ProfileButtons(
-                buttonName: 'My Events',
-                onPressedFunc: () {
-                  Get.to(() => MyEvents(
-                    eventList: controller.eventList.value,
-                  ));
-                },
-              ),
-              // ProfileButtons(buttonName: 'My Proshows', onPressedFunc: () {}),
-              ProfileButtons(
-                buttonName: 'About Aaruush',
-                onPressedFunc: () {
-                  Get.to(() => const AboutPage());
-                },
-              ),
-              const SizedBox(height: 50),
-              primaryButton(
-                text: "Log out",
-                onTap: () => controller.common.signOutCurrentUser(),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        bottomNavigationBar: const AaruushBottomBar(
-          bottomIndex: BottomIndexData.PROFILE,
-        ),
+          const SizedBox(height: 100),
+          // ProfileButtons(
+          //   leadingIcon: Icons.lock_outlined,
+          //   trailingIcon: Icons.arrow_forward_ios_outlined,
+          //   buttonName: 'Change Password',
+          //   onPressedFunc: () {
+          //
+          //   }, color: Colors.white,
+          // ),
+          ProfileButtons(
+            buttonName: 'My Events',
+            leadingIcon: Icons.celebration_outlined,
+            trailingIcon: Icons.arrow_forward_ios_outlined,
+            onPressedFunc: () {
+              Get.to(() => MyEvents(
+                eventList: controller.eventList.value,
+              ));
+            }, color: Colors.white,
+          ),
+          // ProfileButtons(buttonName: 'My Proshows', onPressedFunc: () {}),
+
+          ProfileButtons(
+            buttonName: 'About Aaruush',
+            leadingIcon: Icons.info_outline_rounded,
+            trailingIcon: Icons.arrow_forward_ios_outlined,
+            onPressedFunc: () {
+              Get.to(() => const AboutPage());
+            }, color: Colors.white,
+          ),
+          ProfileButtons(
+            buttonName: 'Help Section',
+            leadingIcon: Icons.headset_mic_outlined,
+            trailingIcon: Icons.arrow_forward_ios_outlined,
+            onPressedFunc: () {
+
+            }, color: Colors.white,
+          ),
+
+
+
+          const SizedBox(height: 10),
+          ProfileButtons(
+            buttonName: "Log out",
+            onPressedFunc: () => controller.common.signOutCurrentUser(), leadingIcon: Icons.logout, color: Color.fromRGBO(239, 101, 34, 1),
+          ),
+        ],
       ),
+
     );
   }
 }
 
 class ProfileButtons extends StatelessWidget {
   final String buttonName;
+  final IconData leadingIcon;
+  final Color color;
+   IconData? trailingIcon;
   final VoidCallback onPressedFunc;
 
-  const ProfileButtons({
+   ProfileButtons({
     Key? key,
     required this.buttonName,
     required this.onPressedFunc,
+     required this.leadingIcon,
+    IconData? trailingIcon, required this.color,
   }) : super(key: key);
 
   @override
@@ -155,26 +193,34 @@ class ProfileButtons extends StatelessWidget {
         MediaQuery.of(context).size.width / 15,
         0,
       ),
-      child: SizedBox(
-        width: double.infinity,
-        height: 56,
-        child: TextButton(
-          onPressed: onPressedFunc,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(const Color(0xFF504D50)),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7.05),
-              ),
-            ),
+      child: GestureDetector(onTap: onPressedFunc,
+        child: Container(
+          width: Get.width,
+          height: 56,
+          decoration: BoxDecoration(color: color,borderRadius: BorderRadius.circular(7),
           ),
-          child: Text(
-            buttonName,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.w700,
-            ),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Icon(leadingIcon,color: Colors.black,size: 26,),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                  buttonName,
+                  style:Get.theme.kSmallTextStyle.copyWith(
+                    color: Colors.black,fontWeight: FontWeight.w500
+                  ),
+                ),
+              ),
+             Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Icon(trailingIcon,color: Colors.black,),
+              )
+            ],
           ),
         ),
       ),

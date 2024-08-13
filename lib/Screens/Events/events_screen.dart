@@ -5,7 +5,7 @@ import 'package:aarush/Model/Events/event_list_model.dart';
 import 'package:aarush/Screens/Events/events_controller.dart';
 import 'package:aarush/Screens/Events/register_event.dart';
 import 'package:aarush/Themes/themes.dart';
-import 'package:aarush/Utilities/bottombar.dart';
+import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/Utilities/snackbar.dart';
 import 'package:aarush/components/aaruushappbar.dart';
@@ -49,7 +49,7 @@ class EventsScreen extends StatelessWidget {
         ],
       ),
       body: BgArea(
-        image: 'bg2.png',
+        image: 'bg.png',
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           sizeBox(100, 0),
@@ -256,7 +256,7 @@ class EventsScreen extends StatelessWidget {
           sizeBox(200, 0),
         ],
       ),
-      bottomNavigationBar: const AaruushBottomBar(bottomIndex: BottomIndexData.NONE),
+      // bottomNavigationBar:  AaruushBottomBar(bottomIndex: BottomIndexData.NONE),
     );
   }
 

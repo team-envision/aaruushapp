@@ -86,7 +86,7 @@ class EventsController extends GetxController {
 
     registerFieldData.clear();
     isLoading.value = false;
-    Get.offAll(() => const HomeScreen());
+    Get.offAll(() =>  HomeScreen());
   }
 
   void openMapWithLocation(String latitude, String longitude) async {

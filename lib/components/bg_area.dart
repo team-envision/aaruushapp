@@ -6,7 +6,7 @@ class BgArea extends StatelessWidget {
   const BgArea({
     Key? key,
     required this.children,
-    this.image = "bg.jpg",
+    this.image = "bg.png",
     this.crossAxisAlignment = CrossAxisAlignment.center,
   }) : super(key: key);
   final List<Widget> children;
@@ -18,7 +18,7 @@ class BgArea extends StatelessWidget {
       height: Get.height,
       width: Get.width,
       decoration: BoxDecoration(
-        color: Colors.black87,
+        color: Colors.transparent,
         image: DecorationImage(
             image: AssetImage('assets/images/$image'), fit: BoxFit.cover),
       ),

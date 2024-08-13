@@ -30,7 +30,10 @@ dependencies:
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1
   change_app_package_name: ^1.1.0
+  cloud_firestore: ^5.2.1
   cupertino_icons: ^1.0.2
+  curved_navigation_bar: ^1.0.6
+  device_preview: ^1.2.0
   firebase_analytics: ^11.1.0
   firebase_auth: ^5.1.1
   firebase_core: ^3.1.1
@@ -40,6 +43,7 @@ dependencies:
     sdk: flutter
   flutter_dotenv: ^5.1.0
   flutter_html: ^3.0.0-alpha.6
+  flutter_local_notifications: ^17.2.2
   flutter_native_splash: ^2.3.2
   flutter_svg: ^2.0.7
   flutter_svg_provider: ^1.0.6
@@ -96,5 +100,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/AppBarIcons/
     - assets/images/
     - assets/images/icons/
+    - assets/profilePageIcon/
