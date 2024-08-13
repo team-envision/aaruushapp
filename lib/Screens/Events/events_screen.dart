@@ -222,7 +222,7 @@ class EventsScreen extends StatelessWidget {
                       }
                     }
                   } else {
-                    if (await canLaunch(event.reglink!)) {
+                    if (await canLaunchUrl(Uri.parse(event.reglink.toString()))) {
                       if (controller.isEventRegistered.value) {
                         setSnackBar(
                           "INFO:",
@@ -233,9 +233,8 @@ class EventsScreen extends StatelessWidget {
                           ),
                         );
                       } else {
-                        launch(
-                          event.reglink!,
-                          forceSafariVC: false,
+                        launchUrl(
+                          Uri.parse(event.reglink!.toString()),
                         );
                         controller.registerEvent(e: event);
                       }
