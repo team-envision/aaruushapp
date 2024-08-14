@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cached_network_image: ^3.2.3
+  flip_card: ^0.7.0
   carousel_slider: ^4.2.1
   change_app_package_name: ^1.1.0
   cloud_firestore: ^5.2.1
@@ -103,4 +104,5 @@ flutter:
     - assets/AppBarIcons/
     - assets/images/
     - assets/images/icons/
+    - assets/json/timeLine.json
     - assets/profilePageIcon/
