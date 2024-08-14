@@ -152,7 +152,7 @@ class AuthScreen extends StatelessWidget {
               Flexible(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 60.0,right: 20.0),
-                    child: Text("Shifting Paradigms, Enriching Wellbeing",
+                    child: Text("Embracing Change, Pioneering Excellence",
                         style: Get.theme.kSmallTextStyle
                             .copyWith(color: Colors.white)),
                   )),
