@@ -62,7 +62,7 @@ class CommonController extends GetxController {
       DocumentReference userDoc = users.doc(email);
 
       DocumentSnapshot userSnapshot = await userDoc.get();
-print(userSnapshot["email"]);
+
       if (userSnapshot.exists) {
         print('User details are available.');
         return true;
@@ -92,7 +92,6 @@ print(userSnapshot["email"]);
       final GoogleSignInAccount? googleUser = await GoogleSignIn().currentUser;
       await FirebaseAuth.instance.signOut();
       googleUser?.clearAuthCache();
-     print(GetStorage().read('accessToken'));
       GetStorage().erase();
     } on FirebaseAuthException catch (e) {
       debugPrint("Errr ${e}");

@@ -41,14 +41,7 @@ class MyEvents extends StatelessWidget {
     // controller.common.signOutCurrentUser();;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(title: "AARUUSH", actions: [
-        IconButton(
-          onPressed: () => {Get.back()},
-          icon: const Icon(Icons.close_rounded),
-          color: Colors.white,
-          iconSize: 25,
-        ),
-      ]),
+      appBar: AaruushAppBar(title: "AARUUSH",),
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.transparent,

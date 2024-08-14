@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
-    RxString userName = (toRemoveTextInBracketsIfExists(controller.common.userName.value).toString()).obs;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -56,14 +56,13 @@ class HomeScreen extends StatelessWidget {
             child: FittedBox(
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Obx(
-                        () => Text(
-                      "Hi, ${userName.value}".useCorrectEllipsis(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: Get.theme.kSubTitleTextStyle,
-                    ),
-                  ),
+                   Obx(()=>
+                       Text(
+                         "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}".useCorrectEllipsis(),
+                         overflow: TextOverflow.ellipsis,
+                         maxLines: 1,
+                         style: Get.theme.kSubTitleTextStyle,
+                       )),
               
                   IconButton(
                     onPressed: () => {Get.to(() => ProfileScreen())},
@@ -128,16 +127,22 @@ class HomeScreen extends StatelessWidget {
               if (controller.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
-              return SingleChildScrollView(
+
+              return controller.LiveEventsList.isNotEmpty ? SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 primary: false,
                 child: Row(
                   children: controller.eventList
                       .where((e) => e.live! && (controller.sortName.value == "All" || controller.sortName.value == e.sortCategory))
-                      .map((e) {
-                    return eventCard(e, () => Get.to(() => EventsScreen(event: e)));
+                      .map((event) {
+                    return eventCard(event, () => Get.to(() => EventsScreen(event: event)));
                   }).toList(),
+                )
+              ) :  const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("Currently No Live Events",style: TextStyle(letterSpacing: 4),),
                 ),
               );
             },

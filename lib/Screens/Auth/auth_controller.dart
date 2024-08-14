@@ -32,7 +32,6 @@ class AuthController extends GetxController {
       await googleUser.authentication;
 
 
-
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,

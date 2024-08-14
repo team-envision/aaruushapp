@@ -22,14 +22,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(extendBody: true,extendBodyBehindAppBar: true,
       appBar: AaruushAppBar(
         title: "Profile",
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.close_rounded),
-            color: Colors.white,
-            iconSize: 25,
-          ),
-        ],
+
       ),
       body: BgArea(
         children: <Widget>[
@@ -146,14 +139,14 @@ class ProfileScreen extends StatelessWidget {
               Get.to(() => const AboutPage());
             }, color: Colors.white,
           ),
-          ProfileButtons(
-            buttonName: 'Help Section',
-            leadingIcon: Icons.headset_mic_outlined,
-            trailingIcon: Icons.arrow_forward_ios_outlined,
-            onPressedFunc: () {
-
-            }, color: Colors.white,
-          ),
+          // ProfileButtons(
+          //   buttonName: 'Help Section',
+          //   leadingIcon: Icons.headset_mic_outlined,
+          //   trailingIcon: Icons.arrow_forward_ios_outlined,
+          //   onPressedFunc: () {
+          //
+          //   }, color: Colors.white,
+          // ),
 
 
 

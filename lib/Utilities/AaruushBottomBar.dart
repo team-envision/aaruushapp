@@ -35,7 +35,7 @@ class AaruushBottomBar extends StatelessWidget {
         buttonBackgroundColor: Color.fromRGBO(239, 101, 34, 1),
         height: 60,
         animationCurve: Curves.linear,
-        animationDuration: Duration(milliseconds: 500),
+        animationDuration: Duration(milliseconds: 350),
         index: _selectedIndex.value,
         onTap: (index) {
           _selectedIndex.value = index;
