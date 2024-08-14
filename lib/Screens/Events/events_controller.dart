@@ -4,6 +4,7 @@ import 'package:aarush/Common/common_controller.dart';
 import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
 import 'package:aarush/Screens/Home/home_screen.dart';
+import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -86,7 +87,7 @@ class EventsController extends GetxController {
 
     registerFieldData.clear();
     isLoading.value = false;
-    Get.offAll(() =>  HomeScreen());
+    Get.offAll(() =>  AaruushBottomBar());
   }
 
   void openMapWithLocation(String latitude, String longitude) async {

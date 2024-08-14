@@ -1,0 +1,123 @@
+[
+
+  {
+    "id": 2,
+    "description": "Aaruush 2023 redefined innovation with 100+ events, workshops on forensics, blockchain, and Pro-Nite by Nikhil D'Souza! ",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/23.1.webp",
+    "year": 2023,
+    "tagline": "Shifting Paradigms, Enriching Wellbeing"
+  },
+  {
+    "id": 3,
+    "description": "The 16th Aaruush in 2022 returned offline with 100+ events, headlined by Vivek Desai, Raag, When Chai Met Toast, and Sahil Shah.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea22-cab36833.webp",
+    "year": 2022,
+    "tagline": "Devising Ideologies, Unravelling Miracles"
+  },
+  {
+    "id": 4,
+    "description": "Aaruush 2021, the 15th edition, featured Shajo Titus, Ninad Deshpande, and more in its Unconference and Conclave.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea21-44873652.webp",
+    "year": 2021,
+    "tagline": "Revolutionizing Virtuality, Redesigning Reality"
+  },
+  {
+    "id": 5,
+    "description": "In 2020, Aaruush went online, inaugurated by Dr. V K Aatre, with Nishant Suri headlining the comedy night.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea20-3416315a.webp",
+    "year": 2020,
+
+    "tagline": "The Future: A Journey Into Tomorrow"
+  },
+  {
+    "id": 6,
+    "description": "\nAaruush 2019 featured Dr. V Natarajan as the chief guest, with Abhishek Upmanyu, Arjun Kanungo, and Pakizah performing.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea19-8a7eb9b9.webp",
+    "year": 2019,
+    "tagline": "Assimilating Aspirations, Inspiring Innovation"
+  },
+  {
+    "id": 7,
+    "description": "\nAaruush 2018, inaugurated by Dr. A.S. Kiran Kumar, featured Varun Thakur, Attva, and The Local Train in key events.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea18-a38ead22.webp",
+    "year": 2018,
+    "tagline": "Harmonizing dreams, Inspiring ingenuity"
+  },
+  {
+    "id": 8,
+    "description": "\nIn 2017, Aaruush gained UNESCO Patronage, with Retd. General V.K. Singh inaugurating and Mira Erda, Arjun Vajpai speaking.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea17-9e675bd6.webp",
+    "year": 2017,
+    "tagline": "Empowering Designs, Exalting Intelligence"
+  },
+  {
+    "id": 9,
+    "description": "\nIn 2016, Aaruush celebrated its 10th edition with T-Summit, featuring Dilip Chhabria, WittyFeed founders, Nikhil D'Souza, and Kenny Sebastian.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea16-1de73445.webp",
+    "year": 2016,
+    "tagline": "Fostering ideas, Innovating strategies"
+  },
+  {
+    "id": 10,
+    "description": "\nIn 2015, Aaruush featured Dr. V. K. Saraswat, Anand Kumar, Shradha Sharma, and dynamic CEOs Sanjay and Shravan, with a stellar performance by Agnee.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea15-010a6594.webp",
+    "year": 2015,
+    "tagline": "Unleashing Creativity, Imagineering dimensions"
+  },
+  {
+    "id": 11,
+    "description": "In 2014, Aaruush hosted Dr. K. Kasturirangan and Sam Pitroda, unveiled the Arjun Mark-II Tank, and had Dr. Eesa Mohammad Basatki at the Valedictory Ceremony.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea14-cf08391d.webp",
+    "year": 2014,
+    "tagline": ""
+  },
+  {
+    "id": 12,
+    "description": "In 2013, Aaruush featured Dr. Tessy Thomas, Krispian Lawrence, and Aakash Sinha for guest lectures and hosted its first hacktrack.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea13-420519c3.webp",
+    "year": 2013,
+    "tagline": ""
+  },
+  {
+    "id": 13,
+    "description": "\nIn 2012, Aaruush featured Rajan Anandan and Richard Stallman, and launched Swastika, a national-level school quiz competition.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea12-d4e6cc2e.webp",
+    "year": 2012,
+    "tagline": ""
+  },
+  {
+    "id": 14,
+    "description": "In 2011, Aaruush was recognized by international organizations including IEEE, DRDO, PETA, WWF, and the European Space Agency.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea11-939fc95e.webp",
+    "year": 2011,
+    "tagline": ""
+  },
+  {
+    "id": 15,
+    "description": "\nIn 2010, Aaruush hosted renowned author Chetan Bhagat for the Main Quiz and featured the Arjuna Tank of the Indian Army.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea10-e436d454.webp",
+    "year": 2010,
+    "tagline": ""
+  },
+  {
+    "id": 16,
+    "description": "Apart from achieving nationwide participation, Aaruush transformed into a Techno-Management Fest in the year 2009.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea9-c93f0d79.webp",
+    "year": 2009,
+    "tagline": ""
+  },
+  {
+    "id": 17,
+    "description": "Aaruush transcended into a National Level Technological Fest in 2008. The fest had over 4500 participants.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea8-2d5b969a.webp",
+    "year": 2008,
+    "tagline": ""
+  },
+  {
+    "id": 18,
+    "description": "Aaruush, inaugurated in 2007 by Dr. A.P.J. Abdul Kalam, thrives on his words: \"Innovation will guide you through.",
+    "image": "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/timelinea7-aa600071.webp",
+    "year": 2007,
+    "tagline": ""
+  }
+]

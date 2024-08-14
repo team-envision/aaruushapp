@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
+import '../Screens/TimeLine/timeline_view.dart';
+
 class AaruushBottomBar extends StatelessWidget {
   AaruushBottomBar({
     super.key,
@@ -21,7 +23,7 @@ class AaruushBottomBar extends StatelessWidget {
 
   final RxInt _selectedIndex = 0.obs;
 
-  final RxList<Widget> _screens = [HomeScreen(), MyEvents(),MyEvents(), ProfileScreen()].obs;
+  final RxList<Widget> _screens = [HomeScreen(), MyEvents(),TimelineView(), ProfileScreen()].obs;
 
   @override
   Widget build(BuildContext context) {
