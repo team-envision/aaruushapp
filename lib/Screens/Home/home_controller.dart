@@ -8,28 +8,34 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+
 
 class HomeController extends GetxController {
   var eventList = <EventListModel>[].obs;
-  late CommonController common;
+  var templiveEventList = <EventListModel>[].obs;
+  RxList LiveEventsList = [].obs;
+  final common = Get.find<CommonController>();
   var isLoading = false.obs;
   var sortName = "All".obs;
-
+  RxString userName = "".obs;
   final List<String> catList = [
     "workshops",
     "hackathons",
     "initiatives",
     "panel-discussions",
-    "domain-events"
+    "domain-events",
   ];
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     NotificationServices notificationServices = NotificationServices();
-    common = Get.find<CommonController>();
+    // common = Get.find<CommonController>();
     common.fetchAndLoadDetails();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().currentUser;
     fetchEventData();
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
@@ -54,12 +60,18 @@ class HomeController extends GetxController {
 
   Future<void> fetchEventData() async {
     isLoading.value = true;
+
     try {
       final response = await http.get(Uri.parse('${ApiData.API}/events'));
       if (response.statusCode == 200) {
         String data = utf8.decode(response.bodyBytes);
         List jsonResponse = json.decode(data);
+        List<dynamic> filteredLiveEvents = jsonResponse.where((event) => event['live'] == true).toList();
         eventList.assignAll(jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
+        templiveEventList.assignAll(filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
+
+         LiveEventsList.value = templiveEventList.map((e) => e.name).toList();
+
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load events');
@@ -74,11 +86,22 @@ class HomeController extends GetxController {
   Future<void> fetchEventDataByCategory(String category) async {
     isLoading.value = true;
     try {
-      final response = await http.get(Uri.parse('${ApiData.API}/events/$category'));
+      final response = await http.get(Uri.parse('${ApiData.API}/events/'));
+
       if (response.statusCode == 200) {
         String data = utf8.decode(response.bodyBytes);
-        List jsonResponse = json.decode(data);
-        eventList.assignAll(jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
+        List<dynamic> jsonResponse = json.decode(data);
+
+        var filteredEvents = jsonResponse.where((event) {
+          return event['sortCategory'] == category ;
+        }).toList();
+
+
+        eventList.assignAll(filteredEvents.map((e) => EventListModel.fromMap(e)).toList());
+
+
+
+
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load events');

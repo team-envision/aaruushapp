@@ -53,7 +53,7 @@ class AaruushApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       defaultTransition: t.Transition.rightToLeft,
-      transitionDuration: const Duration(milliseconds: 400),
+      transitionDuration: const Duration(milliseconds: 300),
       initialBinding: DefaultController(),
       debugShowCheckedModeBanner: false,
       theme: Themes.light,

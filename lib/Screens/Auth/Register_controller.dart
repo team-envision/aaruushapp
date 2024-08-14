@@ -34,12 +34,7 @@ class RegisterController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-print("common.emailAddress.value");
-print("common.userName.value");
-print("common.phoneNumber.value");
-print(googleUser!.email);
-print(googleUser.displayName);
-print(googleUser!.id);
+
     EmailTextEditingController.text = googleUser!.email;
     NameTextEditingController.text =  toRemoveTextInBracketsIfExists(googleUser.displayName!).toString();
     PhNoTextEditingController.text = common.phoneNumber.value;
@@ -133,19 +128,23 @@ print(googleUser!.id);
 
 
 
-     print(common.isUserAvailable(email).toString());
+
      Future<bool> isAvailable = common.isUserAvailable(email);
      if(!await isAvailable){
        kDebugMode ? print('User data saved successfully!'):null;
        try{
        await users.doc(email).set(userData);
        Get.offAll(()=>AaruushBottomBar());
-     }
+     } on FirebaseException catch(e){
+         kDebugMode ? print(e.message):null;
+         setSnackBar(e.code, e.message!);
+       }
    catch(error){
      printError(info: error.toString());
    }
 
      }
+
 
 
 
