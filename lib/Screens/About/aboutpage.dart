@@ -49,6 +49,7 @@ class AboutPage extends StatelessWidget {
                 Text("About Aaruush", style: Get.theme.kSubTitleTextStyle),
                 sizeBox(20, 0),
                 CustomBox(
+                  bordersize: 16,
                   margin: const EdgeInsets.all(5),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
