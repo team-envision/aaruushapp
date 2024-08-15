@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:aarush/Screens/TimeLine/timeline_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -91,7 +92,7 @@ class TimelineView extends GetView<TimelineController> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-                  image: NetworkImage(image),
+                  image: CachedNetworkImageProvider(image,),
                   fit: BoxFit.cover,
                 ),
               ),

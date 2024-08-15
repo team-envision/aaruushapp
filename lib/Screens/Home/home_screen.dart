@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:aarush/Data/api_data.dart';
@@ -19,6 +20,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '../../components/aaruushappbar.dart';
 import '../Events/events_screen.dart';
@@ -30,152 +32,160 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: AaruushAppBar(
+    return UpgradeAlert(
+      showLater: false,
+      showIgnore: false,
+      shouldPopScope: ()=>false,
+      barrierDismissible: false,
+      showReleaseNotes: false,
+      dialogStyle: Platform.isAndroid? UpgradeDialogStyle.material : UpgradeDialogStyle.cupertino,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        extendBody: true,
+        appBar: AaruushAppBar(
 
-        actions: [
-          IconButton(
-            onPressed: () => {Get.to(() => AboutPage())},
-            icon: const Icon(Icons.info_outlined),
-            color: Colors.white,
-            iconSize: 25,
-          ),
-        ],
-        title:
-          "AARUUSH",
-      ),
-      body:  BgArea(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+          actions: [
+            IconButton(
+              onPressed: () => {Get.to(() => AboutPage())},
+              icon: const Icon(Icons.info_outlined),
+              color: Colors.white,
+              iconSize: 25,
+            ),
+          ],
+          title:
+            "AARUUSH",
+        ),
+        body:  BgArea(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
 
-          sizeBox(120, 0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: FittedBox(
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                   Obx(()=>
-                       Text(
-                         "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}".useCorrectEllipsis(),
-                         overflow: TextOverflow.ellipsis,
-                         maxLines: 1,
-                         style: Get.theme.kSubTitleTextStyle,
-                       )),
-              
-                  IconButton(
-                    onPressed: () => {Get.to(() => ProfileScreen())},
-                    icon: Obx(
-                          () => controller.common.profileUrl.value.isNotEmpty
-                          ? CircleAvatar(
-                        backgroundImage: NetworkImage(controller.common.profileUrl.value),
-                      )
-                          : Image.asset(
-                        'assets/images/profile.png',
-                        height: 30,
+            sizeBox(120, 0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: FittedBox(
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                     Obx(()=>
+                         Text(
+                           "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}".useCorrectEllipsis(),
+                           overflow: TextOverflow.ellipsis,
+                           maxLines: 1,
+                           style: Get.theme.kSubTitleTextStyle,
+                         )),
+
+                    IconButton(
+                      onPressed: () => {Get.to(() => ProfileScreen())},
+                      icon: Obx(
+                            () => controller.common.profileUrl.value.isNotEmpty
+                            ? CircleAvatar(
+                          backgroundImage: NetworkImage(controller.common.profileUrl.value),
+                        )
+                            : Image.asset(
+                          'assets/images/profile.png',
+                          height: 30,
+                        ),
                       ),
+                      color: Colors.white,
+                      iconSize: 40,
                     ),
-                    color: Colors.white,
-                    iconSize: 40,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          sizeBox(50, 0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text(
-              "Categories",
-              style: Get.theme.kTitleTextStyle,
-            ),
-          ),
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            primary: false,
-            child: Row(
-              children: [
-                categoryButton(
-                  iconData: Icons.all_inclusive_rounded,
-                  name: "All",
-                  onTap: () => controller.setSortCategory("All"),
-                ),
-                ...controller.catList.map((e) {
-                  return categoryButton(
-                    icon: "${ApiData.CDN_URL}/icons/categories/${e.toLowerCase().split(' ').join('-')}.png",
-                    name: e.toLowerCase().split('-').join(' ').toCapitalized(),
-                    onTap: () => controller.setSortCategory(e),
-                  );
-                }).toList(),
-              ],
-            ),
-          ),
-          sizeBox(50, 0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-            child: Obx(
-                  () => Text(
-                "${controller.sortName.value.toLowerCase().split('-').join(' ').toCapitalized()} Live Events",
+            sizeBox(50, 0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                "Categories",
                 style: Get.theme.kTitleTextStyle,
               ),
             ),
-          ),
-          Obx(
-                () {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              return controller.LiveEventsList.isNotEmpty ? SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                primary: false,
-                child: Row(
-                  children: controller.eventList
-                      .where((e) => e.live! && (controller.sortName.value == "All" || controller.sortName.value == e.sortCategory))
-                      .map((event) {
-                    return eventCard(event, () => Get.to(() => EventsScreen(event: event)));
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              primary: false,
+              child: Row(
+                children: [
+                  categoryButton(
+                    iconData: Icons.all_inclusive_rounded,
+                    name: "All",
+                    onTap: () => controller.setSortCategory("All"),
+                  ),
+                  ...controller.catList.map((e) {
+                    return categoryButton(
+                      icon: "${ApiData.CDN_URL}/icons/categories/${e.toLowerCase().split(' ').join('-')}.png",
+                      name: e.toLowerCase().split('-').join(' ').toCapitalized(),
+                      onTap: () => controller.setSortCategory(e),
+                    );
                   }).toList(),
-                )
-              ) :  const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Currently No Live Events",style: TextStyle(letterSpacing: 4),),
-                ),
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-            child: Text(
-              "Past Events",
-              style: Get.theme.kTitleTextStyle,
+                ],
+              ),
             ),
-          ),
-          Obx(
-                () {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                primary: false,
-                child: Row(
-                  children: controller.eventList.where((e) => !e.live!).map((e) {
-                    return eventCard(e, () => Get.to(() => EventsScreen(event: e)));
-                  }).toList(),
+            sizeBox(50, 0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              child: Obx(
+                    () => Text(
+                  "${controller.sortName.value.toLowerCase().split('-').join(' ').toCapitalized()} Live Events",
+                  style: Get.theme.kTitleTextStyle,
                 ),
-              );
-            },
-          ),
-          sizeBox(100, 0),
-        ],
+              ),
+            ),
+            Obx(
+                  () {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return controller.LiveEventsList.isNotEmpty ? SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  primary: false,
+                  child: Row(
+                    children: controller.eventList
+                        .where((e) => e.live! && (controller.sortName.value == "All" || controller.sortName.value == e.sortCategory))
+                        .map((event) {
+                      return eventCard(event, () => Get.to(() => EventsScreen(event: event)));
+                    }).toList(),
+                  )
+                ) :  const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text("Currently No Live Events",style: TextStyle(letterSpacing: 4),),
+                  ),
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              child: Text(
+                "Past Events",
+                style: Get.theme.kTitleTextStyle,
+              ),
+            ),
+            Obx(
+                  () {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  primary: false,
+                  child: Row(
+                    children: controller.eventList.where((e) => !e.live!).map((e) {
+                      return eventCard(e, () => Get.to(() => EventsScreen(event: e)));
+                    }).toList(),
+                  ),
+                );
+              },
+            ),
+            sizeBox(100, 0),
+          ],
+        ),
+        // bottomNavigationBar: AaruushBottomBar(),
+        // bottomNavigationBar:  AaruushBottomBar(bottomIndex: BottomIndexData.HOME),
       ),
-      // bottomNavigationBar: AaruushBottomBar(),
-      // bottomNavigationBar:  AaruushBottomBar(bottomIndex: BottomIndexData.HOME),
     );
   }
 
