@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart' as t;
+import 'package:url_launcher/url_launcher.dart';
 
 import 'Data/api_data.dart';
 
@@ -70,6 +71,17 @@ class AaruushApp extends StatelessWidget {
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
+  // make sure you call `initializeApp`
+  if (message.data['url'] != null) {
+    launchURL(message.data['url']);
+  }
   await Firebase.initializeApp();
+}
+Future<void> launchURL(String url) async {
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(Uri.parse(url));
+  } else {
+
+    print('Could not launch $url');
+  }
 }

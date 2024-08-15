@@ -49,10 +49,21 @@ class HomeController extends GetxController {
       }
     });
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(common.emailAddress.value)
-          .update({'fcmToken': newToken});
+      if (kDebugMode) {
+        print('device token updated');
+        print(newToken);
+      }
+      try{
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(common.emailAddress.value)
+            .update({'fcmToken': newToken});
+      } on FirebaseException catch(e){
+        print("Firebase Exception occured while updating new token: ${e.message}");
+      }
+      catch(e){
+        print("Error occured while updating new token: ${e}");
+      }
     });
 
 

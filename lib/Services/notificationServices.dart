@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../main.dart';
+
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin  = FlutterLocalNotificationsPlugin();
@@ -35,11 +37,17 @@ class NotificationServices {
       RemoteNotification? notification = message.notification ;
       AndroidNotification? android = message.notification!.android ;
 
+      String? url = message.data['url'];
+      String? key = message.data['key'];
+
+      if (url != null && url.isNotEmpty) {
+        launchURL(url);
+      }
       if (kDebugMode) {
         print("notifications title:${notification!.title}");
         print("notifications body:${notification.body}");
         print('count:${android!.count}');
-        print('data:${message.data.toString()}');
+        print('data:${message.toString()}');
       }
 
       if(Platform.isIOS){
@@ -151,12 +159,23 @@ class NotificationServices {
 
   }
 
-  void handleMessage(BuildContext context, RemoteMessage message) {
+  Future<void> handleMessage(BuildContext context, RemoteMessage message) async {
 
-    if(message.data['type'] =='msj'){
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => HomeScreen(
-          )));
+
+
+    String? url = message.data['url'];
+    String? key = message.data['key'];
+
+    if (url != null && url.isNotEmpty) {
+      await launchURL(url);
+    } else {
+
+      if (kDebugMode) {
+        print('No valid URL or key in the notification.');
+        print(message);
+        print('message.data["url"]');
+        print(message.data["url"]);
+      }
     }
   }
 

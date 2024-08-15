@@ -210,7 +210,7 @@ class EventsScreen extends StatelessWidget {
                     } else {
                       if (controller.eventData.value.live!) {
                         Get.to(() => RegisterEvent(event: event));
-                      } else {
+                      } else if (!controller.eventData.value.live!) {
                         setSnackBar(
                           "INFO:",
                           "Event is not live now!",
@@ -223,6 +223,8 @@ class EventsScreen extends StatelessWidget {
                     }
                   } else {
                     if (await canLaunchUrl(Uri.parse(event.reglink.toString()))) {
+                      print("event.reglink");
+                      print(event.reglink);
                       if (controller.isEventRegistered.value) {
                         setSnackBar(
                           "INFO:",
