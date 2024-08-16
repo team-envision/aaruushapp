@@ -12,7 +12,7 @@ import '../../components/profile_text_field.dart';
 import '../../components/white_box.dart';
 
 class RegisterEvent extends GetView<EventsController> {
-  const RegisterEvent({Key? key, required this.event}) : super(key: key);
+  const RegisterEvent({super.key, required this.event});
 
   final EventListModel event;
 

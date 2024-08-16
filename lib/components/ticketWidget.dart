@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class TicketWidget extends StatefulWidget {
   const TicketWidget({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.child,
@@ -13,7 +13,7 @@ class TicketWidget extends StatefulWidget {
     this.color = Colors.white,
     this.isCornerRounded = false,
     this.shadow,
-  }) : super(key: key);
+  });
 
   final double width;
   final double height;

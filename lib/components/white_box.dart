@@ -1,9 +1,6 @@
-import 'dart:ui';
 
 import 'package:aarush/Themes/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class WhiteBox extends StatelessWidget {
@@ -46,9 +43,9 @@ class WhiteBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderSize),
           gradient: RadialGradient(
 
-              center: Alignment(0.7, -0.6),
+              center: const Alignment(0.7, -0.6),
 
-              stops: [
+              stops: const [
                 0.298,
                 1,
               ],

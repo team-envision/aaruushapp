@@ -6,10 +6,7 @@ import 'package:aarush/Services/notificationServices.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -32,41 +29,55 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    NotificationServices notificationServices = NotificationServices();
-    // common = Get.find<CommonController>();
+    common.isEventRegistered;
     common.fetchAndLoadDetails();
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().currentUser;
     fetchEventData();
+
+    NotificationServices notificationServices = NotificationServices();
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
-    notificationServices.firebaseInit(Get.context!);
-    notificationServices.setupInteractMessage(Get.context!);
 
-    notificationServices.getDeviceToken().then((value){
+
+    notificationServices.getDeviceToken().then((newToken) async {
       if (kDebugMode) {
         print('device token');
-        print(value);
-      }
-    });
-    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
-      if (kDebugMode) {
-        print('device token updated');
         print(newToken);
       }
-      try{
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(common.emailAddress.value)
-            .update({'fcmToken': newToken});
-      } on FirebaseException catch(e){
-        print("Firebase Exception occured while updating new token: ${e.message}");
+      try {
+
+        String? email = common.getCurrentUser().email;
+
+        DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(email);
+
+
+        DocumentSnapshot userSnapshot = await userDoc.get();
+        String? currentToken = userSnapshot.get("fcmToken");
+        if (kDebugMode) {
+          print("saved token ${currentToken!}");
+        }
+
+        if (currentToken != newToken) {
+          await userDoc.update({'fcmToken': newToken});
+          if (kDebugMode) {
+            print('Token updated in Firestore');
+          }
+        } else {
+          if (kDebugMode) {
+            print('Token is the same. No update required.');
+          }
+        }
+      } on FirebaseException catch (e) {
+        if (kDebugMode) {
+          print("Firebase Exception occurred while updating new token: ${e.message}");
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print("Error occurred while updating new token: $e");
+        }
       }
-      catch(e){
-        print("Error occured while updating new token: ${e}");
-      }
+
+
     });
-
-
   }
 
   Future<void> fetchEventData() async {
@@ -109,9 +120,6 @@ class HomeController extends GetxController {
 
 
         eventList.assignAll(filteredEvents.map((e) => EventListModel.fromMap(e)).toList());
-
-
-
 
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");

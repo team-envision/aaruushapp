@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-//Todo : delete flutter_svg_provider package if not used.
+
 
 class QrGeneratorFunc extends StatelessWidget {
   const QrGeneratorFunc({super.key, required this.qrGeneratingString});

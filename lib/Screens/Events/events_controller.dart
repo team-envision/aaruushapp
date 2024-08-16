@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:aarush/Common/common_controller.dart';
 import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
-import 'package:aarush/Screens/Home/home_screen.dart';
 import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -94,8 +92,8 @@ class EventsController extends GetxController {
     final mapUrl = Uri.parse(
         "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude");
 
-    if (await canLaunch(mapUrl.toString())) {
-      await launch(mapUrl.toString(), forceSafariVC: false);
+    if (await canLaunchUrl(mapUrl)) {
+      await launchUrl(mapUrl);
     } else {
       debugPrint("Cannot launch map url");
     }

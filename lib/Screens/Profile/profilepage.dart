@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import '../Home/home_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +39,16 @@ class ProfileScreen extends StatelessWidget {
                           () => CircleAvatar(
                         radius: 50,
                         backgroundImage: controller.common.profileUrl.value != null
-                            ? NetworkImage(controller.common.profileUrl.value!)
-                            : AssetImage('assets/images/profile.png') as ImageProvider,
+                            ? NetworkImage(controller.common.profileUrl.value)
+                            : const AssetImage('assets/images/profile.png') as ImageProvider,
                       ),
                     ),
                   ),
                   Positioned(
-                    bottom: 20,
-                    right: 10,
+                    bottom: 12,
+                    right: 3,
                     child: GestureDetector(
-                      onTap: () => Get.to(() => EditProfile()),
+                      onTap: () => Get.to(() => const EditProfile()),
                       child: Container(
                         width: MediaQuery.of(context).size.height / 20,
                         height: MediaQuery.of(context).size.height / 20,
@@ -125,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
             trailingIcon: Icons.arrow_forward_ios_outlined,
             onPressedFunc: () {
               Get.to(() => MyEvents(
-                eventList: controller.eventList.value,
+                eventList: controller.eventList,
               ));
             }, color: Colors.white,
           ),
@@ -153,7 +153,7 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 10),
           ProfileButtons(
             buttonName: "Log out",
-            onPressedFunc: () => controller.common.signOutCurrentUser(), leadingIcon: Icons.logout, color: Color.fromRGBO(239, 101, 34, 1),
+            onPressedFunc: () => controller.common.signOutCurrentUser(), leadingIcon: Icons.logout, color: const Color.fromRGBO(239, 101, 34, 1),
           ),
         ],
       ),
@@ -170,12 +170,12 @@ class ProfileButtons extends StatelessWidget {
   final VoidCallback onPressedFunc;
 
    ProfileButtons({
-    Key? key,
+    super.key,
     required this.buttonName,
     required this.onPressedFunc,
      required this.leadingIcon,
     IconData? trailingIcon, required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +208,7 @@ class ProfileButtons extends StatelessWidget {
                   ),
                 ),
               ),
-             Spacer(),
+             const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Icon(trailingIcon,color: Colors.black,),

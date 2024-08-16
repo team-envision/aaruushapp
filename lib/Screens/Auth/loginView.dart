@@ -35,8 +35,8 @@ class Login extends StatelessWidget {
                             .copyWith(color: Colors.white)),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 105),
+                const Padding(
+                  padding: EdgeInsets.only(right: 105),
                   child: FittedBox(child: Text('Make sure you already have an account. ')),
                 ),
                 sizeBox(20, 0),
@@ -45,7 +45,7 @@ class Login extends StatelessWidget {
                   child: Text('Email Address',
                       style: Get.theme.kSmallmidTextStyle),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -64,7 +64,7 @@ class Login extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 192),
                   child: Text('Password', style: Get.theme.kSmallmidTextStyle),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -74,7 +74,7 @@ class Login extends StatelessWidget {
                       hintText: 'Enter your password',
                       suffixIcon:
                          IconButton(
-                          icon:isPasswordObsecure.value?  Icon(Icons.visibility_off): Icon(Icons.visibility),
+                          icon:isPasswordObsecure.value?  const Icon(Icons.visibility_off): const Icon(Icons.visibility),
                           onPressed: () {
                             isPasswordObsecure.value=isPasswordObsecure.value? isPasswordObsecure.value=false : isPasswordObsecure.value=true ;
                           },
@@ -93,12 +93,12 @@ class Login extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 0, left: 150, right: 4),
                   child: TextButton(
                       onPressed: () {},
-                      child: Text(
+                      child: const Text(
                         "Forgot Password ?",
                         style: TextStyle(color: Colors.white),
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Center(
@@ -109,12 +109,12 @@ class Login extends StatelessWidget {
                         onTap: () => {
                           if (_formKey.currentState!.validate())
                             {
-                              print("hello"),
+
                             }
                         }),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(

@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:aarush/Screens/Home/home_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +36,6 @@ class NotificationServices {
       AndroidNotification? android = message.notification!.android ;
 
       String? url = message.data['url'];
-      String? key = message.data['key'];
 
       if (url != null && url.isNotEmpty) {
         launchURL(url);
@@ -164,7 +161,6 @@ class NotificationServices {
 
 
     String? url = message.data['url'];
-    String? key = message.data['key'];
 
     if (url != null && url.isNotEmpty) {
       await launchURL(url);

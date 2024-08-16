@@ -1,16 +1,10 @@
 import 'dart:io';
-import 'dart:ui';
-
 import 'package:aarush/Data/api_data.dart';
-import 'package:aarush/Data/bottomIndexData.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
 import 'package:aarush/Screens/About/aboutpage.dart';
-
 import 'package:aarush/Screens/Home/home_controller.dart';
 import 'package:aarush/Screens/Profile/profilepage.dart';
 import 'package:aarush/Themes/themes.dart';
-import 'package:aarush/Utilities/appBarBlur.dart';
-import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/capitalize.dart';
 import 'package:aarush/Utilities/correct_ellipis.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
@@ -18,15 +12,13 @@ import 'package:aarush/Utilities/removeBracketsIfExist.dart';
 import 'package:aarush/components/bg_area.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:upgrader/upgrader.dart';
-
 import '../../components/aaruushappbar.dart';
 import '../Events/events_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-   HomeScreen({super.key});
+   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +38,7 @@ class HomeScreen extends StatelessWidget {
 
           actions: [
             IconButton(
-              onPressed: () => {Get.to(() => AboutPage())},
+              onPressed: () => {Get.to(() => const AboutPage())},
               icon: const Icon(Icons.info_outlined),
               color: Colors.white,
               iconSize: 25,
@@ -60,9 +52,9 @@ class HomeScreen extends StatelessWidget {
           children: [
 
             sizeBox(120, 0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: FittedBox(
+            FittedBox(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                      Obx(()=>
@@ -72,9 +64,9 @@ class HomeScreen extends StatelessWidget {
                            maxLines: 1,
                            style: Get.theme.kSubTitleTextStyle,
                          )),
-
+              
                     IconButton(
-                      onPressed: () => {Get.to(() => ProfileScreen())},
+                      onPressed: () => {Get.to(() => const ProfileScreen())},
                       icon: Obx(
                             () => controller.common.profileUrl.value.isNotEmpty
                             ? CircleAvatar(
@@ -117,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                       name: e.toLowerCase().split('-').join(' ').toCapitalized(),
                       onTap: () => controller.setSortCategory(e),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),
@@ -145,7 +137,7 @@ class HomeScreen extends StatelessWidget {
                     children: controller.eventList
                         .where((e) => e.live! && (controller.sortName.value == "All" || controller.sortName.value == e.sortCategory))
                         .map((event) {
-                      return eventCard(event, () => Get.to(() => EventsScreen(event: event)));
+                      return eventCard(event, () => Get.to(() => EventsScreen(event: event)),controller);
                     }).toList(),
                   )
                 ) :  const Center(
@@ -173,8 +165,8 @@ class HomeScreen extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   primary: false,
                   child: Row(
-                    children: controller.eventList.where((e) => !e.live!).map((e) {
-                      return eventCard(e, () => Get.to(() => EventsScreen(event: e)));
+                    children: controller.eventList.where((e) => !e.live! &&  e.startdate!=null ? (e.startdate!.contains(DateTime.now().year.toString()) ? true : false) : false ).map((e) {
+                      return eventCard(e, () => Get.to(() => EventsScreen(event: e)),controller);
                     }).toList(),
                   ),
                 );
@@ -183,8 +175,6 @@ class HomeScreen extends StatelessWidget {
             sizeBox(100, 0),
           ],
         ),
-        // bottomNavigationBar: AaruushBottomBar(),
-        // bottomNavigationBar:  AaruushBottomBar(bottomIndex: BottomIndexData.HOME),
       ),
     );
   }
@@ -228,7 +218,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget eventCard(EventListModel event, VoidCallback onTap) {
+  Widget eventCard(EventListModel event, VoidCallback onTap,HomeController controller,) {
+
+controller.common.getUserDetails().then((value) {
+  controller.common.checkRegistered(event);
+});
     return Container(
       padding: const EdgeInsets.all(16.0),
       height: 250,
@@ -265,7 +259,7 @@ class HomeScreen extends StatelessWidget {
               fixedSize: const Size.fromWidth(130),
             ),
             child: Text(
-              event.live ?? false ? "Register Now" : "View Event", // Default to false if live status is null
+              event.live ?? false ? controller.common.isEventRegistered.value? "Registered": "Register Now" : "View Event", // Default to false if live status is null
               style: Get.theme.kVerySmallTextStyle,
             ),
           ),

@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 
 class BgArea extends StatelessWidget {
   const BgArea({
-    Key? key,
+    super.key,
     required this.children,
     this.image = "bg.png",
     this.crossAxisAlignment = CrossAxisAlignment.center,
-  }) : super(key: key);
+  });
   final List<Widget> children;
   final String? image;
   final CrossAxisAlignment? crossAxisAlignment;

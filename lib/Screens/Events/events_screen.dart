@@ -1,11 +1,8 @@
 import 'dart:ui';
-
-import 'package:aarush/Data/bottomIndexData.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
 import 'package:aarush/Screens/Events/events_controller.dart';
 import 'package:aarush/Screens/Events/register_event.dart';
 import 'package:aarush/Themes/themes.dart';
-import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/Utilities/snackbar.dart';
 import 'package:aarush/components/aaruushappbar.dart';
@@ -14,12 +11,11 @@ import 'package:aarush/components/primaryButton.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EventsScreen extends StatelessWidget {
-  EventsScreen({super.key, required this.event, this.fromMyEvents = false});
+  const EventsScreen({super.key, required this.event, this.fromMyEvents = false});
 
   final EventListModel event;
   final bool fromMyEvents;
@@ -70,7 +66,7 @@ class EventsScreen extends StatelessWidget {
           Padding(
             padding:
             const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-            child: Text(event.name!, style: Get.theme.kBigTextStyle),
+            child: Text(event.name!, style: Get.theme.kSubTitleTextStyle),
           ),
           Padding(
             padding:
@@ -170,7 +166,7 @@ class EventsScreen extends StatelessWidget {
                   margin: const EdgeInsets.all(20),
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(44, 255, 255, 255),
+                    color: const Color.fromARGB(44, 255, 255, 255),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.white, width: 2),
                   ),
@@ -192,39 +188,13 @@ class EventsScreen extends StatelessWidget {
           sizeBox(20, 0),
           if (!fromMyEvents)
             Obx(() {
-              return primaryButton(
-                text: controller.isEventRegistered.value
-                    ? 'Registered'
-                    : 'Register now',
-                onTap: () async {
-                  if (event.reqdfields != null && event.reqdfields!) {
-                    if (controller.isEventRegistered.value) {
-                      setSnackBar(
-                        "INFO:",
-                        "You have already registered",
-                        icon: const Icon(
-                          Icons.info,
-                          color: Colors.orange,
-                        ),
-                      );
-                    } else {
-                      if (controller.eventData.value.live!) {
-                        Get.to(() => RegisterEvent(event: event));
-                      } else if (!controller.eventData.value.live!) {
-                        setSnackBar(
-                          "INFO:",
-                          "Event is not live now!",
-                          icon: const Icon(
-                            Icons.warning_amber_rounded,
-                            color: Colors.red,
-                          ),
-                        );
-                      }
-                    }
-                  } else {
-                    if (await canLaunchUrl(Uri.parse(event.reglink.toString()))) {
-                      print("event.reglink");
-                      print(event.reglink);
+              if(event.live!){
+                return primaryButton(
+                  text: controller.isEventRegistered.value
+                      ? 'Registered'
+                      : 'Register now',
+                  onTap: () async {
+                    if (event.reqdfields != null && event.reqdfields!) {
                       if (controller.isEventRegistered.value) {
                         setSnackBar(
                           "INFO:",
@@ -235,24 +205,111 @@ class EventsScreen extends StatelessWidget {
                           ),
                         );
                       } else {
-                        launchUrl(
-                          Uri.parse(event.reglink!.toString()),
-                        );
-                        controller.registerEvent(e: event);
+                        if (controller.eventData.value.live!) {
+                          Get.to(() => RegisterEvent(event: event));
+                        } else if (!controller.eventData.value.live!) {
+                          setSnackBar(
+                            "INFO:",
+                            "Event is not live now!",
+                            icon: const Icon(
+                              Icons.warning_amber_rounded,
+                              color: Colors.red,
+                            ),
+                          );
+                        }
                       }
                     } else {
-                      setSnackBar(
-                        "ERROR:",
-                        "Invalid URL",
-                        icon: const Icon(
-                          Icons.error,
-                          color: Colors.red,
-                        ),
-                      );
+                      if (await canLaunchUrl(Uri.parse(event.reglink.toString()))) {
+                        if (controller.isEventRegistered.value) {
+                          setSnackBar(
+                            "INFO:",
+                            "You have already registered",
+                            icon: const Icon(
+                              Icons.info,
+                              color: Colors.orange,
+                            ),
+                          );
+                        } else {
+                          launchUrl(
+                            Uri.parse(event.reglink!.toString()),
+                          );
+                          controller.registerEvent(e: event);
+                        }
+                      } else {
+                        setSnackBar(
+                          "ERROR:",
+                          "Invalid URL",
+                          icon: const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          ),
+                        );
+                      }
                     }
-                  }
-                },
-              );
+                  },
+                );
+              }
+              else{
+                return primaryButton(
+                  text: controller.isEventRegistered.value
+                      ? 'Registered'
+                      : 'Register now',
+                  onTap: () async {
+                    if (event.reqdfields != null && event.reqdfields!) {
+                      if (controller.isEventRegistered.value) {
+                        setSnackBar(
+                          "INFO:",
+                          "You have already registered",
+                          icon: const Icon(
+                            Icons.info,
+                            color: Colors.orange,
+                          ),
+                        );
+                      } else {
+                        if (controller.eventData.value.live!) {
+                          Get.to(() => RegisterEvent(event: event));
+                        } else if (!controller.eventData.value.live!) {
+                          setSnackBar(
+                            "INFO:",
+                            "Event is not live now!",
+                            icon: const Icon(
+                              Icons.warning_amber_rounded,
+                              color: Colors.red,
+                            ),
+                          );
+                        }
+                      }
+                    } else {
+                      if (await canLaunchUrl(Uri.parse(event.reglink.toString()))) {
+                        if (controller.isEventRegistered.value) {
+                          setSnackBar(
+                            "INFO:",
+                            "You have already registered",
+                            icon: const Icon(
+                              Icons.info,
+                              color: Colors.orange,
+                            ),
+                          );
+                        } else {
+                          launchUrl(
+                            Uri.parse(event.reglink!.toString()),
+                          );
+                          controller.registerEvent(e: event);
+                        }
+                      } else {
+                        setSnackBar(
+                          "ERROR:",
+                          "Invalid URL",
+                          icon: const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          ),
+                        );
+                      }
+                    }
+                  },isDisabled: true,
+                );
+              }
             }),
           sizeBox(200, 0),
         ],
