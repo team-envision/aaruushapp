@@ -5,8 +5,6 @@ import 'package:aarush/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
-import '../../Utilities/custom_sizebox.dart';
 import 'Register_controller.dart';
 
 class registerView extends StatelessWidget {

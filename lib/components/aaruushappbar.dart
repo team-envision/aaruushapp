@@ -1,10 +1,8 @@
 import 'package:aarush/Themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../Utilities/appBarBlur.dart';
 
 AppBar AaruushAppBar({required String title, List<Widget>? actions,double? fontsize}) {
   return AppBar(

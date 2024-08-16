@@ -1,5 +1,4 @@
 import 'package:aarush/Screens/Profile/profileController.dart';
-import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/aaruushappbar.dart';
 import 'package:aarush/components/primaryButton.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import '../../components/profile_text_field.dart';
 import '../Home/home_controller.dart';
 
 class EditProfile extends StatelessWidget {
-  const EditProfile({Key? key});
+  const EditProfile({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +40,8 @@ class EditProfile extends StatelessWidget {
                         () => CircleAvatar(
                       radius: 60,
                       backgroundImage: homeController.common.profileUrl.value != null
-                          ? NetworkImage(homeController.common.profileUrl.value!)
-                          : AssetImage('assets/images/profile.png') as ImageProvider,
+                          ? NetworkImage(homeController.common.profileUrl.value)
+                          : const AssetImage('assets/images/profile.png') as ImageProvider,
                     ),
                   ),
 
@@ -88,12 +87,12 @@ class EditProfile extends StatelessWidget {
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.type,
     required this.label,
     this.enabled,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final TextInputType type;
   final String label;

@@ -14,7 +14,7 @@ class AuthTextFields extends StatelessWidget {
   TextInputType? textInputType;
 
 
-  AuthTextFields({
+  AuthTextFields({super.key,
     required this.hintText,
     this.controller,
     this.validator,
@@ -33,11 +33,11 @@ class AuthTextFields extends StatelessWidget {
 keyboardType: textInputType,
 
     decoration: InputDecoration(
-      hintText: hintText,hintStyle: TextStyle(fontSize: 14),suffixIcon: suffixIcon,
+      hintText: hintText,hintStyle: const TextStyle(fontSize: 14),suffixIcon: suffixIcon,
 
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(28),
-        borderSide: BorderSide(color: Colors.white),
+        borderSide: const BorderSide(color: Colors.white),
 
       ),
       border: OutlineInputBorder(

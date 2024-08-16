@@ -1,20 +1,11 @@
-import 'dart:ui';
 
-import 'package:aarush/Data/bottomIndexData.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
-import 'package:aarush/Screens/Home/home_screen.dart';
-
-
 import 'package:aarush/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:aarush/Themes/themes.dart';
-import 'package:aarush/Utilities/custom_sizebox.dart';
 import 'package:aarush/components/aaruushappbar.dart';
-import 'package:aarush/components/bg_area.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import '../../Utilities/AaruushBottomBar.dart';
 import '../Events/events_screen.dart';
 import '../Home/home_controller.dart';
 
@@ -25,7 +16,7 @@ class MyEvents extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeController controller = Get.find();
     eventList == null
-        ? eventList = controller.eventList.value
+        ? eventList = controller.eventList
         : eventList = eventList;
     controller.common.fetchAndLoadDetails();
     final eventIds = controller.common.registeredEvents();
@@ -80,8 +71,7 @@ class MyEvents extends StatelessWidget {
                       }
                       else {
                         final event = controller.eventList.where((e) => e.live!).toList()[index];
-                        print("object");
-                        print(controller.eventList);
+
                           return TicketTile(imagePath: event.image!,event: event,title: event.name!,);
 
                       }
@@ -134,7 +124,7 @@ class TicketTile extends StatelessWidget {
   final String title;
   final EventListModel event;
 
-  const TicketTile({
+  const TicketTile({super.key,
     required this.imagePath,
     required this.title,
     required this.event,
@@ -148,7 +138,7 @@ class TicketTile extends StatelessWidget {
         child: Container(
           color: const Color(0xFFA39E9E).withOpacity(0.11),
           child: GridTile(
-            footer: Container(
+            footer: SizedBox(
               height: 48,
               child: GridTileBar(
                 leading: Padding(
@@ -171,7 +161,6 @@ class TicketTile extends StatelessWidget {
                      left:8,right: 8,top:10),
                   child: IconButton(
                       onPressed: () {
-                        print(event);
                         Get.to(() => TicketDisplayPage(
                           event: event,
                         ));

@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import '../../components/aaruushappbar.dart';
 
 class TimelineView extends GetView<TimelineController> {
+  const TimelineView({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +21,13 @@ class TimelineView extends GetView<TimelineController> {
         future: DefaultAssetBundle.of(context).loadString("assets/json/timeLine.json"),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(color: Colors.white),
             );
           } else if (snapshot.hasData) {
             var data = jsonDecode(snapshot.data.toString());
             return Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
@@ -43,11 +45,11 @@ class TimelineView extends GetView<TimelineController> {
               ),
             );
           } else if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text("Something Went Wrong", style: TextStyle(color: Colors.white)),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text("No Data Available", style: TextStyle(color: Colors.white)),
             );
           }
@@ -63,16 +65,16 @@ class TimelineView extends GetView<TimelineController> {
         Container(
           width: 50,
           height: 200,
-          margin: EdgeInsets.only(right: 20),
+          margin: const EdgeInsets.only(right: 20),
           child: Padding(
-            padding: EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 10),
             child: FittedBox(
               alignment: Alignment.topCenter,
               child: Column(
                 children: [
                   Text(
                     year.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white70,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -97,7 +99,7 @@ class TimelineView extends GetView<TimelineController> {
                 ),
               ),
               child: Container(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -110,14 +112,14 @@ class TimelineView extends GetView<TimelineController> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                       height: 32,
                       width: 45,
                       child: Image.asset('assets/images/aaruush.png'),
                     ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 13, bottom: 7),
+                    const Spacer(),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 13, bottom: 7),
                       child: Icon(Icons.info, color: Colors.white),
                     ),
                   ],
@@ -137,7 +139,7 @@ class TimelineView extends GetView<TimelineController> {
                 padding: const EdgeInsets.all(7),
                 child: Text(
                   description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontFamily: 'xirod',
                     fontSize: 13,

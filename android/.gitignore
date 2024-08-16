@@ -11,7 +11,7 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
-
+app/upload_certificate.pem
 
 # Firebase configuration files for android
 android/app/google-services.json

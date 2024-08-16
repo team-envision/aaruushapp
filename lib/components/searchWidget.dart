@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'CustomIcons.dart';
-// Color color1 = Color(0xFFFF723D) ;
+
  bool i=true;
 findcolor(bool i){
   if (i){
-    return Color(0xFFFF723D);
+    return const Color(0xFFFF723D);
   }
   else{
     return Colors.black;
   }
 }
 class searchWidget extends StatefulWidget {
-  const searchWidget({Key? key}) : super(key: key);
+  const searchWidget({super.key});
 
   @override
   State<searchWidget> createState() => _searchWidgetState();

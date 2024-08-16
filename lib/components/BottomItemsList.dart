@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 class BottomItemsList extends StatelessWidget {
-  const BottomItemsList({Key? key}) : super(key: key);
+  const BottomItemsList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +36,15 @@ class BottomItemsList extends StatelessWidget {
 }
 
 class Tileitem extends StatelessWidget {
-  const Tileitem({Key? key}) : super(key: key);
+  const Tileitem({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
+    return  const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5),
       child: Card(
         child: Row(
-          children:  const <Widget>[
+          children:  <Widget>[
             Spacer(),
             Text('11-march-2023',style: TextStyle(fontFamily: 'Xirod'),),
             Spacer(),

@@ -40,7 +40,6 @@ Future<void> main() async {
       ),
     );
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
     runApp(AaruushApp());
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
@@ -60,10 +59,7 @@ class AaruushApp extends StatelessWidget {
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
-      // home: AaruushBottomBar(),
       home: AaruushAppScreen(),
-
-
     );
   }
 }

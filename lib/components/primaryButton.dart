@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class primaryButton extends StatelessWidget {
-  const primaryButton({
+    primaryButton({
     super.key,
     required this.text,
     required this.onTap,
+   this.isDisabled = false,
   });
   final String text;
   final VoidCallback onTap;
+  bool? isDisabled;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,10 +21,10 @@ class primaryButton extends StatelessWidget {
               elevation: 4,
               padding: const EdgeInsets.all(10),
               fixedSize: Size.fromWidth(Get.width),
-              backgroundColor: Get.theme.colorPrimary,
+              backgroundColor: isDisabled!? Colors.grey :Get.theme.colorPrimary,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(19))),
-          onPressed: onTap,
+          onPressed: isDisabled!? null: onTap,
           child: Text(
             text,
             style: Get.theme.kSmallTextStyle,

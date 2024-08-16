@@ -1,9 +1,7 @@
 
 import 'dart:convert';
-
 import 'package:aarush/Screens/Home/home_controller.dart';
 import 'package:aarush/Utilities/AaruushBottomBar.dart';
-import 'package:aarush/Utilities/capitalize.dart';
 import 'package:aarush/Utilities/removeBracketsIfExist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

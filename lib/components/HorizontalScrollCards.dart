@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class horizontalScrollCards extends StatefulWidget {
-  const horizontalScrollCards({Key? key}) : super(key: key);
+  const horizontalScrollCards({super.key});
 
   @override
   State<horizontalScrollCards> createState() => _horizontalScrollCardsState();

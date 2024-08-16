@@ -1,13 +1,11 @@
 import 'dart:convert';
-
 import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Screens/Auth/auth_screen.dart';
-import 'package:aarush/Screens/Home/home_screen.dart';
 import 'package:aarush/Screens/OnBoard/on_boarding_screen.dart';
 import 'package:aarush/Utilities/AaruushBottomBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
@@ -15,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Model/Events/event_list_model.dart';
+import '../Services/notificationServices.dart';
 
 class CommonController extends GetxController {
   var bottomBarIndex = 0.obs;
@@ -28,7 +27,25 @@ class CommonController extends GetxController {
   var uID = ''.obs;
   var userDetails = <String, dynamic>{}.obs;
   var isLoading = false.obs;
-  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  var isEventRegistered = false.obs;
+
+@override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+
+  }
+
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+
+
+  }
+
+
 
   void changeBottomBarIndex(int index) {
     bottomBarIndex.value = index;
@@ -64,37 +81,36 @@ class CommonController extends GetxController {
       DocumentSnapshot userSnapshot = await userDoc.get();
 
       if (userSnapshot.exists) {
-        print('User details are available.');
+        if (kDebugMode) {
+          print('User details are available.');
+        }
         return true;
       } else {
-        print('User details are not available.');
+        if (kDebugMode) {
+          print('User details are not available.');
+        }
         return false;
       }
     } catch (error) {
-      print('Failed to check user availability: $error');
+      if (kDebugMode) {
+        print('Failed to check user availability: $error');
+      }
       return false;
     }
   }
 
 
-  void isTokenRefresh(String userId) {
-    _messaging.onTokenRefresh.listen((newToken) {
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .update({'fcmToken': newToken});
-    });
-  }
+
 
 
   Future<void> signOutCurrentUser() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().currentUser;
+      final GoogleSignInAccount? googleUser = GoogleSignIn().currentUser;
       await FirebaseAuth.instance.signOut();
       googleUser?.clearAuthCache();
       GetStorage().erase();
     } on FirebaseAuthException catch (e) {
-      debugPrint("Errr ${e}");
+      debugPrint("Errr $e");
     }
     Get.offAll(() => const AuthScreen());
   }
@@ -143,12 +159,17 @@ class CommonController extends GetxController {
     return events;
   }
 
-  Future<void> fetchAndLoadDetails() async {
-    userDetails.value = await getUserDetails();
+  void checkRegistered(EventListModel e) {
+    if (userDetails['events'] != null) {
+      isEventRegistered.value = userDetails['events'].contains(e.id);
+    }
   }
 
-  @override
-  void onInit() async {
-    super.onInit();
+  Future<void> fetchAndLoadDetails() async {
+    userDetails.value = await getUserDetails();
+    // isEventRegistered.value = userDetails['events'].contains(e.id);
   }
+
+
+
 }

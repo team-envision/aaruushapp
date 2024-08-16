@@ -62,10 +62,7 @@ class OnBoardingScreen extends StatelessWidget {
                   child: primaryButton(
                       text:'Get Started',
                       onTap: () => {
-                            // if (GetStorage().read('givenIntro') ?? true)
-                            //   {GetStorage().write('givenIntro', false)},
-                            // Get.off(() => LoginScreen()),
-                            Get.off(() => AuthScreen()),
+                            Get.off(() => const AuthScreen()),
                           }),
                 ),
               ),
