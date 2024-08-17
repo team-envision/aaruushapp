@@ -218,54 +218,54 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget eventCard(EventListModel event, VoidCallback onTap,HomeController controller,) {
+   Widget eventCard(EventListModel event, VoidCallback onTap, HomeController controller) {
 
-controller.common.getUserDetails().then((value) {
-  controller.common.checkRegistered(event);
-});
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      height: 250,
-      width: 250,
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        border: Border.all(width: 2, color: Colors.white),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-      ),
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          GestureDetector(
-            onTap: onTap,
-            child: CachedNetworkImage(
-              progressIndicatorBuilder: (ctx, url, progress) => CircularProgressIndicator(
-                value: progress.progress,
-                color: Get.theme.colorPrimary,
-              ),
-              imageUrl: event.image!,
-              fit: BoxFit.fill,
-              errorWidget: (context, url, error) => Image.asset("assets/images/error404.png"),
-              width: 400,
-              height: 250,
-            ),
-          ),
-          TextButton(
-            onPressed: onTap,
-            style: TextButton.styleFrom(
-              backgroundColor: Get.theme.curveBG.withOpacity(0.7),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              fixedSize: const Size.fromWidth(130),
-            ),
-            child: Text(
-              event.live ?? false ? controller.common.isEventRegistered.value? "Registered": "Register Now" : "View Event", // Default to false if live status is null
-              style: Get.theme.kVerySmallTextStyle,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+     return Container(
+       padding: const EdgeInsets.all(16.0),
+       height: 250,
+       width: 250,
+       margin: const EdgeInsets.symmetric(horizontal: 4),
+       decoration: BoxDecoration(
+         border: Border.all(width: 2, color: Colors.white),
+         borderRadius: const BorderRadius.all(Radius.circular(20)),
+       ),
+       child: Stack(
+         alignment: Alignment.bottomCenter,
+         children: [
+           GestureDetector(
+             onTap: onTap,
+             child: CachedNetworkImage(
+               progressIndicatorBuilder: (ctx, url, progress) => CircularProgressIndicator(
+                 value: progress.progress,
+                 color: Get.theme.colorPrimary,
+               ),
+               imageUrl: event.image!,
+               fit: BoxFit.fill,
+               errorWidget: (context, url, error) => Image.asset("assets/images/error404.png"),
+               width: 400,
+               height: 250,
+             ),
+           ),
+           TextButton(
+             onPressed: onTap,
+             style: TextButton.styleFrom(
+               backgroundColor: Get.theme.curveBG.withOpacity(0.7),
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(20),
+               ),
+               fixedSize: const Size.fromWidth(130),
+             ),
+             child: Text(
+               event.live ?? false
+                   ? (controller.regEvents.contains(event.id) ? "Registered" : "Register Now")
+                   : "View Event",
+               style: Get.theme.kVerySmallTextStyle,
+             ),
+           ),
+         ],
+       ),
+     );
+   }
+
 
 }
