@@ -4,7 +4,6 @@ import 'package:aarush/Data/api_data.dart';
 import 'package:aarush/Model/Events/event_list_model.dart';
 import 'package:aarush/Services/notificationServices.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +13,7 @@ class HomeController extends GetxController {
   var eventList = <EventListModel>[].obs;
   var templiveEventList = <EventListModel>[].obs;
   RxList LiveEventsList = [].obs;
+  RxList regEvents = [].obs;
   final common = Get.find<CommonController>();
   var isLoading = false.obs;
   var sortName = "All".obs;
@@ -92,7 +92,7 @@ class HomeController extends GetxController {
         eventList.assignAll(jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
         templiveEventList.assignAll(filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
 
-         LiveEventsList.value = templiveEventList.map((e) => e.name).toList();
+         LiveEventsList.value = templiveEventList.map((e) => e.id).toList();
 
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");
@@ -102,6 +102,7 @@ class HomeController extends GetxController {
       debugPrint('Error fetching events: $e');
     } finally {
       isLoading.value = false;
+      regEvents.value = common.registeredEvents();
     }
   }
 

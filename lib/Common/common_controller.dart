@@ -56,6 +56,7 @@ class CommonController extends GetxController {
   }
 
   Future<Widget> getLandingPage() async {
+
     final isSignedIn = await isUserSignedIn();
     if (isSignedIn) {
       debugPrint("User signed in");

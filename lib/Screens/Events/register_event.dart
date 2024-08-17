@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Model/Events/event_list_model.dart';
+import '../../components/DynamicWhiteBox.dart';
 import '../../components/profile_text_field.dart';
-import '../../components/white_box.dart';
 
 class RegisterEvent extends GetView<EventsController> {
   const RegisterEvent({super.key, required this.event});
@@ -39,10 +39,8 @@ class RegisterEvent extends GetView<EventsController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           sizeBox(150, 0),
-          WhiteBox(
-            width: Get.width,
+          CustomBox(
             margin: const EdgeInsets.all(20),
-            height: null,
             child: Form(
               key: controller.registerFormKey,
               child: Column(
@@ -52,12 +50,12 @@ class RegisterEvent extends GetView<EventsController> {
                     ...event.dynamicform!.map((e) {
                       if (e.type == "select") {
                         return Obx(() => dropDownSelector(
-                          hint: e.label!,
-                          list: e.options!.split(','),
+                          hint: e.label ?? "Select",
+                          list: e.options?.split(',') ?? [],
                           onChanged: (v) {
-                            controller.registerFieldData.value[e.label!] = v;
+                            controller.registerFieldData[e.label!] = v;
                           },
-                          value: controller.registerFieldData.value[e.label],
+                          value: controller.registerFieldData[e.label] ?? "",
                         ));
                       } else {
                         return profileTextField(
