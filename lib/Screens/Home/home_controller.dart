@@ -24,6 +24,7 @@ class HomeController extends GetxController {
     "initiatives",
     "panel-discussions",
     "domain-events",
+    "events",
   ];
 
   @override
