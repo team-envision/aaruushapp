@@ -30,11 +30,27 @@
           }
         },
         {
+          "client_id": "750621970165-b4h47j7t4kqhs9v8kusl3jrbv0jl8601.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aaruush.connect",
+            "certificate_hash": "df87d7c234315a95853e2ef39e07ebd70c69a0b7"
+          }
+        },
+        {
           "client_id": "750621970165-mu9n00ph22u3npr4f4damc15ui4fg3ak.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.aaruush.connect",
             "certificate_hash": "df5f60cdd403abdcfb61483b4c715467891913bc"
+          }
+        },
+        {
+          "client_id": "750621970165-v1v53g4qttr6sfjfgq0ji063b02k7l4g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aaruush.connect",
+            "certificate_hash": "e28bcb9aecdf4e0867879f13db7c08c56d9b52fd"
           }
         },
         {

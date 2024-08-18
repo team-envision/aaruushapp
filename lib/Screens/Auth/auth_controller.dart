@@ -74,6 +74,8 @@ class AuthController extends GetxController {
         }
 
       } else {
+        print("response");
+        print(response);
         setSnackBar('Error:', response.body,
             icon: const Icon(
               Icons.warning_amber_rounded,
@@ -82,12 +84,16 @@ class AuthController extends GetxController {
         throw Exception('Failed to register user');
       }
     } on FirebaseAuthException catch (e) {
+      print("deeee");
+      print(e);
       setSnackBar('Error:', e.message!,
           icon: const Icon(
             Icons.warning_amber_rounded,
             color: Colors.red,
           ));
     } catch (e) {
+      print("deeeee");
+      print(e);
       setSnackBar('Error:', e.toString(),
           icon: const Icon(
             Icons.warning_amber_rounded,
