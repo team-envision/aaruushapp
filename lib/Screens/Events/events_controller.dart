@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:aarush/Common/common_controller.dart';
-import 'package:aarush/Data/api_data.dart';
-import 'package:aarush/Model/Events/event_list_model.dart';
-import 'package:aarush/Utilities/AaruushBottomBar.dart';
-import 'package:aarush/Utilities/snackbar.dart';
+import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
+import 'package:AARUUSH_CONNECT/Data/api_data.dart';
+import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
+import 'package:AARUUSH_CONNECT/Utilities/AaruushBottomBar.dart';
+import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -51,7 +51,8 @@ class EventsController extends GetxController {
           'Authorization': ApiData.accessToken,
         },
         body: json.encode({
-          ...?registerFieldData.value, // Use null-aware operator to avoid null values
+          ...?registerFieldData.value,
+          "aaruushId": userDetails["aaruushId"]??'',
           'email': userDetails['email'] ?? '',
           'events': userDetails['events'] ?? [],
           'event': e.toMap(),
@@ -121,6 +122,30 @@ class EventsController extends GetxController {
   void checkRegistered(EventListModel e) {
     isEventRegistered.value = userDetails['events']?.contains(e.id) ?? false;
   }
+
+  Future<void> fetchEventData(String eventId) async {
+    isLoading.value = true;
+
+    try {
+      final response = await http.get(Uri.parse('${ApiData.API}/events'));
+      if (response.statusCode == 200) {
+        String data = utf8.decode(response.bodyBytes);
+        List jsonResponse = json.decode(data);
+        List<dynamic> filteredLiveEvents = jsonResponse.where((event) => event['id'] == eventId).toList();
+        // templiveEventList.assignAll(filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
+eventData.value=filteredLiveEvents.map((e) => EventListModel.fromMap(e)).first;
+
+      } else {
+        debugPrint("Error banners: ${response.body} ${response.statusCode}");
+        throw Exception('Failed to load events');
+      }
+    } catch (e) {
+      debugPrint('Error fetching events: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
 
   @override
   void dispose() {

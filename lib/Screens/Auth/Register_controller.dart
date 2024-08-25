@@ -1,8 +1,8 @@
 
 import 'dart:convert';
-import 'package:aarush/Screens/Home/home_controller.dart';
-import 'package:aarush/Utilities/AaruushBottomBar.dart';
-import 'package:aarush/Utilities/removeBracketsIfExist.dart';
+import 'package:AARUUSH_CONNECT/Screens/Home/home_controller.dart';
+import 'package:AARUUSH_CONNECT/Utilities/AaruushBottomBar.dart';
+import 'package:AARUUSH_CONNECT/Utilities/removeBracketsIfExist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -26,7 +26,6 @@ class RegisterController extends GetxController {
   TextEditingController EmailTextEditingController = TextEditingController();
   final common = Get.put(CommonController());
   final homeController = Get.put(HomeController());
-  // final authController = Get.put(AuthController());
  @override
   Future<void> onInit() async {
     // TODO: implement onInit
@@ -87,10 +86,10 @@ class RegisterController extends GetxController {
       );
       debugPrint("ERROR : ${userRes.body}");
       debugPrint("ERROR : ${userRes.reasonPhrase}");
-      // Consider throwing an exception or logging the error here.
+
     }
 
-    // Fetch and reload details after updating profile
+
     homeController.common.fetchAndLoadDetails();
   }
 
@@ -103,14 +102,16 @@ class RegisterController extends GetxController {
     required String phoneNumber,
     required String email,
   }) async {
-    print(FirebaseAuth.instance.currentUser!.getIdToken());
+    if (kDebugMode) {
+      print(FirebaseAuth.instance.currentUser!.getIdToken());
+    }
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     String? fcmToken = await messaging.getToken();
 
-    // Reference to Firestore collection
+
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-    // Data to store
+
     Map<String, dynamic> userData = {
       'name': name,
       'college': college,
@@ -121,10 +122,6 @@ class RegisterController extends GetxController {
       'createdAt': FieldValue.serverTimestamp(),
       "Uid" : FirebaseAuth.instance.currentUser!.uid
     };
-
-    // Store the data
-
-
 
 
      Future<bool> isAvailable = common.isUserAvailable(email);

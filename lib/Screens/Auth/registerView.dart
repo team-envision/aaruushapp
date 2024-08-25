@@ -1,7 +1,7 @@
-import 'package:aarush/components/AuthTextFields.dart';
-import 'package:aarush/components/bg_area.dart';
-import 'package:aarush/components/primaryButton.dart';
-import 'package:aarush/components/white_box.dart';
+import 'package:AARUUSH_CONNECT/components/AuthTextFields.dart';
+import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
+import 'package:AARUUSH_CONNECT/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';

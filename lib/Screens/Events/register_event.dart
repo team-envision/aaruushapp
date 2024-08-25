@@ -1,9 +1,9 @@
-import 'package:aarush/Screens/Events/events_controller.dart';
-import 'package:aarush/Themes/themes.dart';
-import 'package:aarush/Utilities/custom_sizebox.dart';
-import 'package:aarush/components/bg_area.dart';
-import 'package:aarush/components/primaryButton.dart';
-import 'package:aarush/components/dropdown_selector.dart';
+import 'package:AARUUSH_CONNECT/Screens/Events/events_controller.dart';
+import 'package:AARUUSH_CONNECT/Themes/themes.dart';
+import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
+import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
+import 'package:AARUUSH_CONNECT/components/dropdown_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

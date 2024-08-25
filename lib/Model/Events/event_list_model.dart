@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:aarush/Model/Events/sponsor.dart';
+import 'package:AARUUSH_CONNECT/Model/Events/sponsor.dart';
 
 import 'dynamicform.dart';
 

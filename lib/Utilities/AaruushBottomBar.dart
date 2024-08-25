@@ -1,7 +1,7 @@
 
-import 'package:aarush/Screens/Home/home_screen.dart';
-import 'package:aarush/Screens/Profile/profilepage.dart';
-import 'package:aarush/Screens/Tickets/myEvents.dart';
+import 'package:AARUUSH_CONNECT/Screens/Home/home_screen.dart';
+import 'package:AARUUSH_CONNECT/Screens/Profile/profilepage.dart';
+import 'package:AARUUSH_CONNECT/Screens/Tickets/myEvents.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

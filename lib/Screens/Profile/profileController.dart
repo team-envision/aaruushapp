@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:aarush/Data/api_data.dart';
-import 'package:aarush/Screens/Home/home_controller.dart';
+import 'package:AARUUSH_CONNECT/Data/api_data.dart';
+import 'package:AARUUSH_CONNECT/Screens/Home/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';

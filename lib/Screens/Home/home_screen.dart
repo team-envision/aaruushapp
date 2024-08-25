@@ -1,19 +1,20 @@
 import 'dart:io';
-import 'package:aarush/Data/api_data.dart';
-import 'package:aarush/Model/Events/event_list_model.dart';
-import 'package:aarush/Screens/About/aboutpage.dart';
-import 'package:aarush/Screens/Home/home_controller.dart';
-import 'package:aarush/Screens/Profile/profilepage.dart';
-import 'package:aarush/Themes/themes.dart';
-import 'package:aarush/Utilities/capitalize.dart';
-import 'package:aarush/Utilities/correct_ellipis.dart';
-import 'package:aarush/Utilities/custom_sizebox.dart';
-import 'package:aarush/Utilities/removeBracketsIfExist.dart';
-import 'package:aarush/components/bg_area.dart';
+import 'package:AARUUSH_CONNECT/Data/api_data.dart';
+import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
+import 'package:AARUUSH_CONNECT/Screens/About/aboutpage.dart';
+import 'package:AARUUSH_CONNECT/Screens/Home/home_controller.dart';
+import 'package:AARUUSH_CONNECT/Screens/Profile/profilepage.dart';
+import 'package:AARUUSH_CONNECT/Themes/themes.dart';
+import 'package:AARUUSH_CONNECT/Utilities/capitalize.dart';
+import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
+import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
+import 'package:AARUUSH_CONNECT/Utilities/removeBracketsIfExist.dart';
+import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:upgrader/upgrader.dart';
+import '../../Utilities/appRating.dart';
 import '../../components/aaruushappbar.dart';
 import '../Events/events_screen.dart';
 
@@ -37,6 +38,12 @@ class HomeScreen extends StatelessWidget {
         appBar: AaruushAppBar(
 
           actions: [
+            IconButton(
+              onPressed: () => {Get.to(() => const AboutPage())},
+              icon: const Icon(Icons.notifications),
+              color: Colors.white,
+              iconSize: 25,
+            ),
             IconButton(
               onPressed: () => {Get.to(() => const AboutPage())},
               icon: const Icon(Icons.info_outlined),

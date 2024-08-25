@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:aarush/Screens/TimeLine/timeline_controller.dart';
+import 'package:AARUUSH_CONNECT/Screens/TimeLine/timeline_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';

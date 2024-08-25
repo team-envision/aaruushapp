@@ -1,15 +1,20 @@
 import 'dart:convert';
-import 'package:aarush/Common/common_controller.dart';
-import 'package:aarush/Data/api_data.dart';
-import 'package:aarush/Model/Events/event_list_model.dart';
-import 'package:aarush/Services/notificationServices.dart';
+import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
+import 'package:AARUUSH_CONNECT/Data/api_data.dart';
+import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
+import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
+import 'package:AARUUSH_CONNECT/Utilities/appRating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 
-class HomeController extends GetxController {
+
+
+
+class HomeController extends GetxController{
   var eventList = <EventListModel>[].obs;
   var templiveEventList = <EventListModel>[].obs;
   RxList LiveEventsList = [].obs;
@@ -27,17 +32,19 @@ class HomeController extends GetxController {
     "events",
   ];
 
+  AppLifecycleState appLifecycleState = AppLifecycleState.detached;
+
   @override
   Future<void> onInit() async {
     super.onInit();
     common.isEventRegistered;
     common.fetchAndLoadDetails();
     fetchEventData();
-
     NotificationServices notificationServices = NotificationServices();
+    notificationServices.setupInteractMessage(Get.context!);
+    notificationServices.firebaseInit(Get.context!);
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
-
 
     notificationServices.getDeviceToken().then((newToken) async {
       if (kDebugMode) {
@@ -49,7 +56,6 @@ class HomeController extends GetxController {
         String? email = common.getCurrentUser().email;
 
         DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(email);
-
 
         DocumentSnapshot userSnapshot = await userDoc.get();
         String? currentToken = userSnapshot.get("fcmToken");
@@ -76,10 +82,25 @@ class HomeController extends GetxController {
           print("Error occurred while updating new token: $e");
         }
       }
-
-
     });
+
+
+
   }
+
+
+
+  @override
+  onReady(){
+    final AppRating = appRating();
+    AppRating.rateApp(Get.context!);
+
+  }
+  onDispose(){
+  super.dispose();
+}
+
+
 
   Future<void> fetchEventData() async {
     isLoading.value = true;
@@ -144,3 +165,4 @@ class HomeController extends GetxController {
   }
 
 }
+
