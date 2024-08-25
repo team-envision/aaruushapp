@@ -1,6 +1,6 @@
-import 'package:aarush/Screens/Profile/profileController.dart';
-import 'package:aarush/components/aaruushappbar.dart';
-import 'package:aarush/components/primaryButton.dart';
+import 'package:AARUUSH_CONNECT/Screens/Profile/profileController.dart';
+import 'package:AARUUSH_CONNECT/components/aaruushappbar.dart';
+import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

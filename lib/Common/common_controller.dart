@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:aarush/Data/api_data.dart';
-import 'package:aarush/Screens/Auth/auth_screen.dart';
-import 'package:aarush/Screens/OnBoard/on_boarding_screen.dart';
-import 'package:aarush/Utilities/AaruushBottomBar.dart';
+import 'package:AARUUSH_CONNECT/Data/api_data.dart';
+import 'package:AARUUSH_CONNECT/Screens/Auth/auth_screen.dart';
+import 'package:AARUUSH_CONNECT/Screens/OnBoard/on_boarding_screen.dart';
+import 'package:AARUUSH_CONNECT/Utilities/AaruushBottomBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';

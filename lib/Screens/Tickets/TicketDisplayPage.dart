@@ -1,10 +1,10 @@
 
-import 'package:aarush/Themes/themes.dart';
-import 'package:aarush/Utilities/custom_sizebox.dart';
-import 'package:aarush/components/aaruushappbar.dart';
-import 'package:aarush/components/bg_area.dart';
-import 'package:aarush/components/ticketWidget.dart';
-import 'package:aarush/components/white_box.dart';
+import 'package:AARUUSH_CONNECT/Themes/themes.dart';
+import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
+import 'package:AARUUSH_CONNECT/components/aaruushappbar.dart';
+import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:AARUUSH_CONNECT/components/ticketWidget.dart';
+import 'package:AARUUSH_CONNECT/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';

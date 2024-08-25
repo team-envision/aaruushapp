@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:aarush/Common/common_controller.dart';
-import 'package:aarush/Data/api_data.dart';
-import 'package:aarush/Model/User/attributes.dart';
-import 'package:aarush/Screens/Auth/registerView.dart';
-import 'package:aarush/Screens/Home/home_screen.dart';
-import 'package:aarush/Utilities/AaruushBottomBar.dart';
-import 'package:aarush/Utilities/snackbar.dart';
+import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
+import 'package:AARUUSH_CONNECT/Data/api_data.dart';
+import 'package:AARUUSH_CONNECT/Model/User/attributes.dart';
+import 'package:AARUUSH_CONNECT/Screens/Auth/registerView.dart';
+import 'package:AARUUSH_CONNECT/Screens/Home/home_screen.dart';
+import 'package:AARUUSH_CONNECT/Utilities/AaruushBottomBar.dart';
+import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +14,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 
-import 'Register_controller.dart';
 
 class AuthController extends GetxController {
   final CommonController common = Get.find();
@@ -74,8 +73,7 @@ class AuthController extends GetxController {
         }
 
       } else {
-        print("response");
-        print(response);
+
         setSnackBar('Error:', response.body,
             icon: const Icon(
               Icons.warning_amber_rounded,
@@ -84,16 +82,13 @@ class AuthController extends GetxController {
         throw Exception('Failed to register user');
       }
     } on FirebaseAuthException catch (e) {
-      print("deeee");
-      print(e);
       setSnackBar('Error:', e.message!,
           icon: const Icon(
             Icons.warning_amber_rounded,
             color: Colors.red,
           ));
     } catch (e) {
-      print("deeeee");
-      print(e);
+
       setSnackBar('Error:', e.toString(),
           icon: const Icon(
             Icons.warning_amber_rounded,
