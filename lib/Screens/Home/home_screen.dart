@@ -261,6 +261,7 @@ class HomeScreen extends StatelessWidget {
                  borderRadius: BorderRadius.circular(20),
                ),
                fixedSize: const Size.fromWidth(130),
+
              ),
              child: Text(
                event.live ?? false
