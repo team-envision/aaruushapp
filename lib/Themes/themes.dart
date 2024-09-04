@@ -57,6 +57,11 @@ extension ThemeExtension on ThemeData {
         fontWeight: FontWeight.w700,
         color: btnTextCol,
       );
+  TextStyle get kSubTitleTextStyle2 => GoogleFonts.montserrat(
+    fontSize: 30,
+    fontWeight: FontWeight.w500,
+    color: btnTextCol,
+  );
   TextStyle get kSmallTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w500,
         fontSize: 18,
@@ -77,6 +82,11 @@ extension ThemeExtension on ThemeData {
         color: btnTextCol,
         fontSize: 40,
       );
+  TextStyle get kBigTextStyle1 => GoogleFonts.montserrat(
+    fontWeight: FontWeight.w600,
+    color: btnTextCol,
+    fontSize: 80,
+  );
   TextStyle get kVeryBigTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w800,
         color: btnTextCol,
