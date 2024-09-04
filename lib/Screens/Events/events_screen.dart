@@ -5,14 +5,19 @@ import 'package:AARUUSH_CONNECT/Screens/Events/register_event.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
-import 'package:AARUUSH_CONNECT/components/aaruushappbar.dart';
+
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
-import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../components/MapScreen.dart';
+import '../../components/ticketButton.dart';
 
 class EventsScreen extends StatelessWidget {
   const EventsScreen({
@@ -49,17 +54,39 @@ class EventsScreen extends StatelessWidget {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(
-        title: "Aaruush",
-        actions: [
-          IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(Icons.close_rounded),
+      appBar: AppBar(
+
+        backgroundColor: Colors.transparent,
+
+          leading:IconButton(
+            icon: Icon(Icons.arrow_back),
+
             color: Colors.white,
-            iconSize: 25,
+              onPressed: ()=>{Navigator.pop(context)},
+
           ),
+
+
+
+        actions: [ Container(
+            height: 49,
+            width: 64,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Color(0xFF504C45),
+            ),
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.favorite_border),
+              color: Colors.white,
+              iconSize: 25,
+            ),
+          )
         ],
+
+        centerTitle: true,
       ),
+
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
@@ -79,32 +106,64 @@ class EventsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             sizeBox(100, 0),
-            CachedNetworkImage(
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  Center(
-                    child: CircularProgressIndicator(
-                      value: downloadProgress.progress,
-                      color: Get.theme.colorPrimary,
+
+            Column(
+              children: [
+                ImageColoredShadow(link: eventData.image!),
+                Row(crossAxisAlignment: CrossAxisAlignment.center,verticalDirection: VerticalDirection.up,
+                  children: [
+                    Expanded(flex: 1,
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5,),
+                        child: Text(eventData.name!,
+                            style: Get.theme.kSmallTextStyle.copyWith(fontSize:21 )), //X-play
+                      ),
                     ),
-                  ),
-              imageUrl: eventData.image!,
-              fit: BoxFit.contain,
-              width: Get.width,
-              height: 300,
+
+                    Column(
+                      children: [
+
+
+                    Container(
+                      height: 40,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Color(0xFFEF6522),
+                      ),
+                      child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: _iconWithText(eventData.time ?? '')),
+                    ), SizedBox(height: 10,),
+                        Container(
+                          height: 40,
+                          width: 140,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Color(0xFFEF6522),
+                          ),
+                          child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: _iconWithText(eventData.date ?? '')),
+                        ),
+
+                      ],
+                    ),
+
+                  ],
+                ),
+              ],
             ),
-            sizeBox(10, 0),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-              child: Text(eventData.name!, style: Get.theme.kSubTitleTextStyle),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
               child: Text(
                 eventData.oneliner ?? "Nil",
                 style: Get.theme.kVerySmallTextStyle,
               ),
             ),
-            sizeBox(20, 0),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SizedBox(
@@ -112,52 +171,7 @@ class EventsScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _iconWithText(Icons.calendar_month, eventData.date ?? ''),
-                    sizeBox(10, 0),
-                    _iconWithText(Icons.access_time, eventData.time ?? ''),
-                    sizeBox(10, 0),
-                    GestureDetector(
-                      onTap: () {
-                        print("eventData.locationLat!");
-                        print(eventData.location!);
-                        print(eventData.locationLat);
-                        // print( eventData.locationLng!);
 
-                        if (eventData.location != null &&
-                            eventData.locationLat != null &&
-                            eventData.locationLng != null) {
-                          print("eventData.location!");
-                          controller.openMapWithLocation(
-                              eventData.locationLat!, eventData.locationLng!
-
-                          );
-                        }
-                        else{
-                          print("latitude and log in null");
-                          // controller.openMapWithLocation(
-                          //   // eventData.locationLat!, eventData.locationLng!
-                          //   "12.8240104753402", "80.0457505142571",
-                          //
-                          // );
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.pin_drop,
-                            color: Colors.blue,
-                          ),
-                          sizeBox(0, 3),
-                          Text(
-                            eventData.location ?? '',
-                            style: Get.theme.kVerySmallTextStyle.copyWith(
-                              fontSize: 11,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -175,64 +189,144 @@ class EventsScreen extends StatelessWidget {
                   },
                 ),
               ),
-            Container(
-              width: Get.width,
-              margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 22),
-              height: 5,
-              decoration: BoxDecoration(
-                color: Get.theme.colorPrimary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
+            // Container(
+            //   width: Get.width,
+            //   margin:
+            //       const EdgeInsets.symmetric(horizontal: 10.0, vertical: 22),
+            //   height: 5,
+            //   decoration: BoxDecoration(
+            //     color: Get.theme.colorPrimary,
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            // ),
             DefaultTabController(
               length: 3,
               child: Column(
                 children: [
                   TabBar(
+
                     labelColor: Colors.white,
-                    unselectedLabelColor: Get.theme.curveBG.withOpacity(0.5),
+                    indicatorPadding: EdgeInsets.all(12),padding: EdgeInsets.all(12),labelPadding: EdgeInsets.all(12),
+                    unselectedLabelColor: Colors.white10,
                     labelStyle: Get.theme.kVerySmallTextStyle.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
                     physics: const BouncingScrollPhysics(),
                     indicatorColor: Colors.transparent,
-                    tabs: const [
-                      Tab(text: 'About'),
-                      Tab(text: 'Structure'),
-                      Tab(text: 'Contact'),
+                    tabs:  [
+                      Container(  width:250,decoration: BoxDecoration(
+                        color: Color.fromRGBO(29, 29, 29, 1),
+                       borderRadius: BorderRadius.circular(13),
+
+                      ),
+                          child: Tab(text: 'About',)
+                          ),
+                      Container(  width:250,decoration: BoxDecoration(
+                        color: Color.fromRGBO(29, 29, 29, 1),
+                        borderRadius: BorderRadius.circular(13),
+
+                      ),
+                          child: Tab(text: 'Structure',)
+                      ),
+                      Container(  width:250,decoration: BoxDecoration(
+                        color: Color.fromRGBO(29, 29, 29, 1),
+                        borderRadius: BorderRadius.circular(13),
+
+                      ),
+                          child: Tab(text: 'Contact',)
+                      ),
                     ],
                   ),
                   Container(
                     width: Get.width,
-                    height: Get.height * 0.4,
+                    height: Get.height * 0.24,
                     padding: const EdgeInsets.all(20),
                     margin: const EdgeInsets.all(20),
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(44, 255, 255, 255),
+
+                      color: Colors.transparent,
+
+
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white, width: 2),
+                    //  border: Border.all(color: Colors.white, width: 0),
                     ),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: TabBarView(
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          _tabDataWidget(text: eventData.about ?? "Nil"),
-                          _tabDataWidget(text: eventData.structure ?? "Nil"),
-                          _tabDataWidget(text: eventData.contact ?? "Nil"),
-                        ],
-                      ),
+                    child: TabBarView(
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        _tabDataWidget(text: eventData.about ?? "Nil"),
+                        _tabDataWidget(text: eventData.structure ?? "Nil"),
+                        _tabDataWidget(text: eventData.contact ?? "Nil"),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(('LOCATION '),style: TextStyle(fontSize: 24,color: Colors.grey),),
+
+                  GestureDetector(
+                    onTap: () {
+                      print("eventData.locationLat!");
+                      print(eventData.location!);
+                      print(eventData.locationLat);
+                      // print( eventData.locationLng!);
+
+                      if (eventData.location != null &&
+                          eventData.locationLat != null &&
+                          eventData.locationLng != null) {
+                        print("eventData.location!");
+                        controller.openMapWithLocation(
+                            eventData.locationLat!, eventData.locationLng!
+
+                        );
+                      }
+                      else{
+                        print("latitude and log in null");
+                        controller.openMapWithLocation(
+                          // eventData.locationLat!, eventData.locationLng!
+                          "12.8240104753402", "80.0457505142571",
+
+                        );
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        const Icon(
+                          Icons.pin_drop,
+                          color: Colors.grey,
+                        ),
+                        sizeBox(0, 3),
+                        Text(
+                          eventData.location ?? '',
+                          style: Get.theme.kVerySmallTextStyle.copyWith(
+                            fontSize: 11,
+                            color: Colors.grey,
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ),
+
+
+                    ],
+                  ),
+
+                  Container(
+                    height: 150,
+                    width: 340,
+                     decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(210)
+                     ),
+                    child:Mapscreen(),
+                  ) ],),
             ),
             sizeBox(20, 0),
             if (!fromMyEvents)
               Obx(() {
-                return primaryButton(
+                return TicketButton(
                   text: controller.isEventRegistered.value
                       ? 'Registered'
                       : 'Register now',
@@ -262,7 +356,8 @@ class EventsScreen extends StatelessWidget {
                         }
                       }
                     } else {
-                      if (await canLaunchUrl(Uri.parse(eventData.reglink.toString()))) {
+                      if (await canLaunchUrl(
+                          Uri.parse(eventData.reglink.toString()))) {
                         if (controller.isEventRegistered.value) {
                           setSnackBar(
                             "INFO:",
@@ -291,7 +386,7 @@ class EventsScreen extends StatelessWidget {
                   isDisabled: !eventData.live!,
                 );
               }),
-            sizeBox(200, 0),
+            sizeBox(150, 0),
           ],
         );
       }),
@@ -299,19 +394,20 @@ class EventsScreen extends StatelessWidget {
     );
   }
 
-  Widget _iconWithText(IconData icon, String text) {
+  Widget _iconWithText(String text) {
     return Row(
       children: [
         Icon(icon),
         sizeBox(0, 10),
         Text(
           text,
-          style: Get.theme.kVerySmallTextStyle.copyWith(fontSize: 11),
+          style: Get.theme.kBigTextStyle1.copyWith(fontSize: 11),
         ),
       ],
     );
   }
 }
+
 
 class _tabDataWidget extends StatelessWidget {
   const _tabDataWidget({
@@ -339,3 +435,52 @@ class _tabDataWidget extends StatelessWidget {
   }
 }
 
+class ImageColoredShadow extends StatelessWidget {
+  const ImageColoredShadow({
+    Key? key,
+    required this.link,
+  }) : super(key: key);
+
+  final String link;
+
+  @override
+  Widget build(BuildContext context) {
+    double width = Get.width;
+    double height = 300.0;
+    double blurRadius = 60.0;
+    double blurSigma = 100;
+    String imageUrl = link;
+
+    return Stack(children: [
+      Center(
+          child: ClipRRect(
+              child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: new Container(
+                    width: width + blurRadius,
+                    height: height + blurRadius,
+                    decoration: new BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        image: new DecorationImage(
+                            fit: BoxFit.contain,
+                            image: new NetworkImage(imageUrl))),
+                  )))),
+      Positioned.fill(
+          child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+              child: Container(color: Colors.black.withOpacity(0)))),
+      Positioned.fill( bottom: 20,
+        child: Center(
+          child: new Container(
+              width: width - 20,
+              height: height,
+              decoration: new BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  image: new DecorationImage(
+                      fit: BoxFit.contain, image:  CachedNetworkImageProvider(imageUrl)))),
+        ),
+      ),
+
+    ]);
+  }
+}

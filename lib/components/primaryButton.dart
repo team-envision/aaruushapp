@@ -8,6 +8,7 @@ class primaryButton extends StatelessWidget {
     required this.text,
     required this.onTap,
    this.isDisabled = false,
+
   });
   final String text;
   final VoidCallback onTap;

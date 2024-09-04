@@ -27,6 +27,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+
+  http: ^1.2.2
+  location: ^7.0.0
   cached_network_image: ^3.2.3
   flip_card: ^0.7.0
   carousel_slider: ^4.2.1
@@ -61,6 +64,9 @@ dependencies:
   path_provider: ^2.1.4
   timeago: ^3.7.0
   firebase_in_app_messaging: ^0.8.0+5
+  flutter_map: ^5.0.0 # or your desired version
+  latlong2: ^0.9.0 # or your desired version
+
 
 flutter_launcher_icons:
   android: true
@@ -113,3 +119,4 @@ flutter:
     - assets/images/icons/
     - assets/json/timeLine.json
     - assets/profilePageIcon/
+
