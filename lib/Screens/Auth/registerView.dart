@@ -73,7 +73,10 @@ class registerView extends StatelessWidget {
                                 isPasswordObsecure: false.obs,
                                 validator: (value) {
                                   if(value!.isEmpty || value == Null){
-                                    return "Enter Your Register No.";
+                                    return "Enter Your Register No. / College id";
+                                  }
+                                  else if(value.length.isLowerThan(5) || controller.RegNoTextEditingController.text == controller.PhNoTextEditingController.text){
+                                    return "Enter valid Id";
                                   }
 
                                 }),

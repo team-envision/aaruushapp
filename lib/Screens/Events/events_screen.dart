@@ -118,11 +118,27 @@ class EventsScreen extends StatelessWidget {
                     sizeBox(10, 0),
                     GestureDetector(
                       onTap: () {
+                        print("eventData.locationLat!");
+                        print(eventData.location!);
+                        print(eventData.locationLat);
+                        // print( eventData.locationLng!);
+
                         if (eventData.location != null &&
                             eventData.locationLat != null &&
                             eventData.locationLng != null) {
+                          print("eventData.location!");
                           controller.openMapWithLocation(
-                              eventData.locationLat!, eventData.locationLng!);
+                              eventData.locationLat!, eventData.locationLng!
+
+                          );
+                        }
+                        else{
+                          print("latitude and log in null");
+                          // controller.openMapWithLocation(
+                          //   // eventData.locationLat!, eventData.locationLng!
+                          //   "12.8240104753402", "80.0457505142571",
+                          //
+                          // );
                         }
                       },
                       child: Row(

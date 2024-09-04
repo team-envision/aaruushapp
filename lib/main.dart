@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart' as t;
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Common/default_controller_bindings.dart';
@@ -33,6 +36,8 @@ Future<void> main() async {
 
     await GetStorage.init();
     await ApiData.init();
+    final directory = await getApplicationDocumentsDirectory();
+    Hive.init(directory.path);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     SystemChrome.setSystemUIOverlayStyle(
@@ -69,16 +74,35 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp`
   await Firebase.initializeApp();
+  final directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+
+  // Open the Hive box
+  var box = await Hive.openBox('BackgroundNotifications');
+
+  // Store the notification
+  await box.add({
+    'title': message.notification?.title,
+    'body': message.notification?.body,
+    'linkAndroid': message.notification?.android!.imageUrl,
+    // 'linkApple': message.notification?.apple!.imageUrl,
+    'data': message.data,
+    'receivedAt': DateTime.now(),
+  });
+
+
+
+
   if (message.data['url'] != null) {
-    if (kDebugMode) {
-      print(message);
+    // if (kDebugMode) {
+    //   print(message);
       // final prefs = await SharedPreferences.getInstance();
       // String url = message.data['url'].toString();
       // await prefs.setString('KEY_LAUNCH_URL', url);
-    }
-    else{
-
-    }
+    // }
+    // else{
+    //
+    // }
   }
   else{
     if (kDebugMode) {

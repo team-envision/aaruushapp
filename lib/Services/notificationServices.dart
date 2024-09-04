@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:AARUUSH_CONNECT/Screens/Events/events_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -5,7 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NotificationServices {
@@ -17,7 +19,6 @@ class NotificationServices {
     var androidInitializationSettings = const AndroidInitializationSettings(
         '@mipmap/ic_launcher');
     var iosInitializationSettings = const DarwinInitializationSettings();
-
     var initializationSetting = InitializationSettings(
       android: androidInitializationSettings,
       iOS: iosInitializationSettings,
@@ -26,6 +27,7 @@ class NotificationServices {
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSetting,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
+        _saveNotification(message);
         handleMessage(context, message);
       },
     );
@@ -35,12 +37,15 @@ class NotificationServices {
     FirebaseMessaging.onMessage.listen((message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
+      _saveNotification(message);
 
       String? url = message.data['url'];
-print(message);
+      if (kDebugMode) {
+        print(message);
+      }
       if (url != null && url.isNotEmpty) {
         print(message.data["url"]);
-      }else{
+      } else {
         print(notification!.body);
       }
 
@@ -90,7 +95,7 @@ print(message);
     AndroidNotificationChannel channel = AndroidNotificationChannel(
       message.notification!.android!.channelId ?? 'default_channel',
       message.notification!.android!.channelId ?? 'Default Channel',
-      importance: Importance.high,
+      importance: Importance.max,
       showBadge: true,
       playSound: true,
       enableLights: true,
@@ -101,9 +106,9 @@ print(message);
       channel.id,
       channel.name,
       channelDescription: 'channel description',
-      importance: Importance.high,
+      importance: Importance.max,
       enableLights: true,
-      priority: Priority.high,
+      priority: Priority.max,
       playSound: true,
       groupAlertBehavior: GroupAlertBehavior.all,
       ticker: 'ticker',
@@ -140,30 +145,61 @@ print(message);
         .getInitialMessage();
     if (initialMessage != null) {
       handleMessage(context, initialMessage);
+      _saveNotification(initialMessage);
     }
 
     // When app is in background
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('A new onMessageOpenedApp event was published!');
-      print("app is in background");
-      print(message.data);
+      if (kDebugMode) {
+        print('A new onMessageOpenedApp event was published!');
+        print("app is in background");
+        print(message.data);
+      }
       handleMessage(context, message);
       // get_launch_url();
     });
   }
 
+
+
+
+  Future<void> _saveNotification(RemoteMessage message) async {
+    print("Notification saved");
+    final directory = await getApplicationDocumentsDirectory();
+    Hive.init(directory.path);
+    // Open the Hive box
+    var box = await Hive.openBox('notifications');
+
+    // Store the notification
+    await box.add({
+      'title': message.notification?.title,
+      'body': message.notification?.body,
+      'linkAndroid': message.notification?.android?.imageUrl,
+      'linkApple': message.notification?.apple?.imageUrl,
+      'data': message.data,
+      'receivedAt': DateTime.now(),
+    });
+
+  }
+
+
   Future<void> handleMessage(BuildContext context,
       RemoteMessage message) async {
+    _saveNotification(message);
     String? url = message.data['url'];
     String? eventRoute = message.data['event'];
 
     if (url != null && url.isNotEmpty) {
-      print("handleMessage1$url");
+      if (kDebugMode) {
+        print("handleMessage1$url");
+      }
       await launchUrl(Uri.parse(url));
     }
-    else if(eventRoute != null && eventRoute.isNotEmpty){
-      print("eventroute");
-Get.to(EventsScreen(fromNotificationRoute: true,EventId: eventRoute,));
+    else if (eventRoute != null && eventRoute.isNotEmpty) {
+      if (kDebugMode) {
+        print("eventroute");
+      }
+      Get.to(EventsScreen(fromNotificationRoute: true, EventId: eventRoute,));
     }
     else {
       if (kDebugMode) {
@@ -172,6 +208,9 @@ Get.to(EventsScreen(fromNotificationRoute: true,EventId: eventRoute,));
       }
     }
   }
+
+
+
 
   // void get_launch_url() async {
   //   print("get_launch_url");
@@ -206,12 +245,12 @@ Get.to(EventsScreen(fromNotificationRoute: true,EventId: eventRoute,));
   Future<void> forgroundMessage() async {
     print("forgroundMessage");
     // get_launch_url();
-    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(alert: true,badge: true,sound: true);
-
+    final message = await FirebaseMessaging.instance.getInitialMessage();
+    if(message != null){ await _saveNotification(message!);}
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
   }
-
-
-
 }
 
 

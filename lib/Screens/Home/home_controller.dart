@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 
 
 
-class HomeController extends GetxController{
+class HomeController extends GetxController {
   var eventList = <EventListModel>[].obs;
   var templiveEventList = <EventListModel>[].obs;
   RxList LiveEventsList = [].obs;
@@ -32,7 +32,7 @@ class HomeController extends GetxController{
     "events",
   ];
 
-  AppLifecycleState appLifecycleState = AppLifecycleState.detached;
+
 
   @override
   Future<void> onInit() async {
@@ -45,7 +45,6 @@ class HomeController extends GetxController{
     notificationServices.firebaseInit(Get.context!);
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
-
     notificationServices.getDeviceToken().then((newToken) async {
       if (kDebugMode) {
         print('device token');
@@ -94,7 +93,6 @@ class HomeController extends GetxController{
   onReady(){
     final AppRating = appRating();
     AppRating.rateApp(Get.context!);
-
   }
   onDispose(){
   super.dispose();

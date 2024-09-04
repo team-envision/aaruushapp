@@ -29,7 +29,6 @@ class MyEvents extends StatelessWidget {
         }
       }
     }
-    // controller.common.signOutCurrentUser();;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AaruushAppBar(title: "AARUUSH",),

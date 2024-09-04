@@ -57,6 +57,10 @@ dependencies:
   upgrader: ^10.3.0
   rate_my_app: ^2.2.0
   shared_preferences: ^2.3.2
+  hive: ^2.2.3
+  path_provider: ^2.1.4
+  timeago: ^3.7.0
+  firebase_in_app_messaging: ^0.8.0+5
 
 flutter_launcher_icons:
   android: true
