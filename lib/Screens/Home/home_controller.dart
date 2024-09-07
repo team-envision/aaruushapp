@@ -3,18 +3,18 @@ import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
-import 'package:AARUUSH_CONNECT/Utilities/appRating.dart';
+import 'package:AARUUSH_CONNECT/Services/appRating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 
 
 
 
-class HomeController extends GetxController{
+class HomeController extends GetxController {
   var eventList = <EventListModel>[].obs;
   var templiveEventList = <EventListModel>[].obs;
   RxList LiveEventsList = [].obs;
@@ -32,7 +32,7 @@ class HomeController extends GetxController{
     "events",
   ];
 
-  AppLifecycleState appLifecycleState = AppLifecycleState.detached;
+
 
   @override
   Future<void> onInit() async {
@@ -45,7 +45,6 @@ class HomeController extends GetxController{
     notificationServices.firebaseInit(Get.context!);
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
-
     notificationServices.getDeviceToken().then((newToken) async {
       if (kDebugMode) {
         print('device token');
@@ -83,28 +82,63 @@ class HomeController extends GetxController{
         }
       }
     });
-
-
-
+    updateProfile();
   }
-
 
 
   @override
   onReady(){
     final AppRating = appRating();
     AppRating.rateApp(Get.context!);
-
   }
   onDispose(){
   super.dispose();
 }
 
 
+  Future<void> updateProfile() async {
+    final attributes = common.getCurrentUser();
+    final response = await get(
+        Uri.parse('https://api.aaruush.org/api/v1/users/${attributes.email}'),
+        headers: {'Authorization': ApiData.accessToken});
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      if (data["message"] == "Unauthorized") {
+        debugPrint("unauthorized");
+        common.signOutCurrentUser();
+      }
+
+      var collection = FirebaseFirestore.instance.collection('users');
+      collection
+          .doc(attributes.email)
+          .update({
+        "aaruushId": data['aaruushId'] ?? "",
+        "email": data['email'] ?? "",
+        "name" : data['name'] ?? "",
+        "college" : data['college'] ?? data['college (na if not applicable)'] ?? data['college_name'] ?? "",
+        "registerNumber" : data['registration number (na if not applicable)'] ?? data['college_id'] ?? data['Registration Number'] ?? "",
+        "phone": data['phone'] ?? data["whatsapp"] ?? data["phone number"] ?? data["Whatsapp Number"] ?? data["whatsappnumber"] ?? data["whatsapp number"] ?? ""
+      })
+          .then((_) => debugPrint('from HomeController: Success in updating info from aws to firebase'))
+          .catchError((error) { if (kDebugMode) {
+        print('from HomeController: error in updating info from aws to firebase');
+            print('Failed: $error');
+          }});
+    } else {
+      if (kDebugMode) {
+        print('from HomeController: error in updating info from aws to firebase');
+        print("ERROR : ${response.body}");
+      }
+
+    }
+
+
+    }
+
+
 
   Future<void> fetchEventData() async {
     isLoading.value = true;
-
     try {
       final response = await http.get(Uri.parse('${ApiData.API}/events'));
       if (response.statusCode == 200) {

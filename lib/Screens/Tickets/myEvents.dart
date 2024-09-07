@@ -23,13 +23,11 @@ class MyEvents extends StatelessWidget {
     var registeredEvents = <EventListModel>[];
     for (var i = 0; i < eventIds.length; i++) {
       for (var j = 0; j < eventList!.length; j++) {
-        debugPrint("Ids: ${eventList![j].id}");
         if (eventIds[i] == eventList![j].id) {
           registeredEvents.add(eventList![j]);
         }
       }
     }
-    // controller.common.signOutCurrentUser();;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AaruushAppBar(title: "AARUUSH",),
@@ -175,7 +173,7 @@ class TicketTile extends StatelessWidget {
                 //TODO: make this gesture detector redirect to events page
                 onTap: () => Get.to(() => EventsScreen(
                   event: event,
-                  fromMyEvents: true,
+                  fromMyEvents: true.obs,
                 )),
                 child: Card(
                   child: Container(

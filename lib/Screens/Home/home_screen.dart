@@ -3,6 +3,7 @@ import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/About/aboutpage.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/home_controller.dart';
+import 'package:AARUUSH_CONNECT/Screens/Notification/NotificationScreen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/profilepage.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/capitalize.dart';
@@ -14,7 +15,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:upgrader/upgrader.dart';
-import '../../Utilities/appRating.dart';
 import '../../components/aaruushappbar.dart';
 import '../Events/events_screen.dart';
 
@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
 
           actions: [
             IconButton(
-              onPressed: () => {Get.to(() => const AboutPage())},
+              onPressed: () => {Get.to(() => const NotificationScreen())},
               icon: const Icon(Icons.notifications),
               color: Colors.white,
               iconSize: 25,
@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                     children: controller.eventList
                         .where((e) => e.live! && (controller.sortName.value == "All" || controller.sortName.value == e.sortCategory))
                         .map((event) {
-                      return eventCard(event, () => Get.to(() => EventsScreen(event: event)),controller);
+                      return eventCard(event, () => Get.to(() => EventsScreen(event: event, fromMyEvents: false.obs,)),controller);
                     }).toList(),
                   )
                 ) :  const Center(
@@ -173,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                   primary: false,
                   child: Row(
                     children: controller.eventList.where((e) => !e.live! &&  e.startdate!=null ? (e.startdate!.contains(DateTime.now().year.toString()) ? true : false) : false ).map((e) {
-                      return eventCard(e, () => Get.to(() => EventsScreen(event: e)),controller);
+                      return eventCard(e, () => Get.to(() => EventsScreen(event: e, fromMyEvents: false.obs,)),controller);
                     }).toList(),
                   ),
                 );

@@ -17,9 +17,11 @@ Widget dropDownSelector(
       isExpanded: true,
       onChanged: enabled?onChanged:null,
       underline: const SizedBox(),
-      hint: Text(
-        value.isEmpty ? hint : "$hint: $value",
-        style: Get.theme.kSubTitleTextStyle,
+      hint: FittedBox(
+        child: Text(
+          value.isEmpty ? hint : "$hint: $value",
+          style: Get.theme.kSmallTextStyle,
+        ),
       ),
       items: list.map((value) {
         return DropdownMenuItem<String>(

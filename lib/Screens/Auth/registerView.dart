@@ -5,6 +5,7 @@ import 'package:AARUUSH_CONNECT/components/white_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'Register_controller.dart';
 
 class registerView extends StatelessWidget {
@@ -73,7 +74,10 @@ class registerView extends StatelessWidget {
                                 isPasswordObsecure: false.obs,
                                 validator: (value) {
                                   if(value!.isEmpty || value == Null){
-                                    return "Enter Your Register No.";
+                                    return "Enter Your Register No. / College id";
+                                  }
+                                  else if(value.length.isLowerThan(5) || controller.RegNoTextEditingController.text == controller.PhNoTextEditingController.text){
+                                    return "Enter valid Id";
                                   }
 
                                 }),
@@ -112,14 +116,14 @@ class registerView extends StatelessWidget {
                             child: SizedBox(width: Get.width-150,
                               child: primaryButton(
                                   text: "Submit",
-                                  onTap: () {
+                                  onTap: () async {
                                     if (controller.formKey.currentState!.validate()) {
                                       controller.saveUserToFirestore(
                                           name: controller.NameTextEditingController.text,
                                           college: controller.CollgeTextEditingController.text,
                                           registerNumber: controller.RegNoTextEditingController.text,
                                           phoneNumber: controller.PhNoTextEditingController.text,
-                                          email: controller.EmailTextEditingController.text
+                                          email: controller.EmailTextEditingController.text,
                                       );
                                       controller.updateProfile();
                                       controller.height.value = Get.height*0.55;

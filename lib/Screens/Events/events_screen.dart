@@ -11,25 +11,23 @@ import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/MapScreen.dart';
 import '../../components/ticketButton.dart';
 
 class EventsScreen extends StatelessWidget {
-  const EventsScreen({
-    Key? key,
+   EventsScreen({
+    super.key,
     this.event,
-    this.fromMyEvents = false,
+    required this.fromMyEvents,
     this.fromNotificationRoute = false,
     this.EventId,
-  }) : super(key: key);
+  });
 
   final EventListModel? event;
-  final bool fromMyEvents;
+   RxBool fromMyEvents =  false.obs;
   final bool fromNotificationRoute;
   final String? EventId;
 
@@ -39,17 +37,16 @@ class EventsScreen extends StatelessWidget {
 
     // Fetch event data if accessed from the notification route
     if (fromNotificationRoute && EventId != null) {
-      print("fromRoute");
       controller.fetchEventData(EventId!);
-      print("controller.eventData");
-      print(controller.eventData);
     } else if (event != null) {
       // Use the passed event data
       controller.eventData.value = event!;
-      controller.getUser().then((value) {
+      controller.getUser().then((value) async {
         controller.checkRegistered(controller.eventData.value);
+
       });
     }
+    final eventData = controller.eventData.value;
 
     return Scaffold(
       extendBody: true,
@@ -59,30 +56,13 @@ class EventsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
 
           leading:IconButton(
-            icon: Icon(Icons.arrow_back),
-
+            icon: const Icon(Icons.arrow_back),
             color: Colors.white,
               onPressed: ()=>{Navigator.pop(context)},
 
           ),
 
 
-
-        actions: [ Container(
-            height: 49,
-            width: 64,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Color(0xFF504C45),
-            ),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.favorite_border),
-              color: Colors.white,
-              iconSize: 25,
-            ),
-          )
-        ],
 
         centerTitle: true,
       ),
@@ -94,20 +74,14 @@ class EventsScreen extends StatelessWidget {
           );
         }
 
-        if (controller.eventData.value == null) {
-          // Display a loading indicator or an appropriate message
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        final eventData = controller.eventData.value;
         return BgArea(
           image: 'bg.png',
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             sizeBox(100, 0),
 
-            Column(
+            Column(crossAxisAlignment: CrossAxisAlignment.start,
+
               children: [
                 ImageColoredShadow(link: eventData.image!),
                 Row(crossAxisAlignment: CrossAxisAlignment.center,verticalDirection: VerticalDirection.up,
@@ -116,48 +90,81 @@ class EventsScreen extends StatelessWidget {
                       child: Padding(
                         padding:
                             const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5,),
-                        child: Text(eventData.name!,
-                            style: Get.theme.kSmallTextStyle.copyWith(fontSize:21 )), //X-play
-                      ),
-                    ),
-
-                    Column(
-                      children: [
-
-
-                    Container(
-                      height: 40,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Color(0xFFEF6522),
-                      ),
-                      child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: _iconWithText(eventData.time ?? '')),
-                    ), SizedBox(height: 10,),
-                        Container(
-                          height: 40,
-                          width: 140,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Color(0xFFEF6522),
+                        child: RichText(
+                          text: TextSpan(
+                              text:eventData.name!.trim(),
+                              style: Get.theme.kTitleTextStyle.copyWith(fontSize:27 ),
+                            children: [
+                              TextSpan(text: "\n\nDate: ",style:Get.theme.kVerySmallTextStyle.copyWith(fontSize: 18,)),
+                              TextSpan(text: eventData.date,style:Get.theme.kVerySmallTextStyle.copyWith(fontSize: 18,color: Color(0xFFEF6522))),
+                            ]
                           ),
-                          child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: _iconWithText(eventData.date ?? '')),
-                        ),
 
-                      ],
+                        ),
+                      ),
                     ),
+
+
 
                   ],
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 3),
+                  child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: RichText(
+                        text: TextSpan(
+                            style: Get.theme.kTitleTextStyle.copyWith(fontSize:21 ),
+                            children: [
+                              TextSpan(text: "Time: ",style:Get.theme.kVerySmallTextStyle.copyWith(fontSize: 18,)),
+                              TextSpan(text: eventData.time,style: Get.theme.kVerySmallTextStyle.copyWith(fontSize: 18,color: Color(0xFFEF6522))),
+
+                            ]
+                        ),
+
+                      ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 3),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: RichText(
+                      text: TextSpan(
+                          style: Get.theme.kTitleTextStyle.copyWith(fontSize:21 ),
+                          children: [
+                            TextSpan(text: "Mode: ",style:Get.theme.kVerySmallTextStyle.copyWith(fontSize: 18,)),
+                            TextSpan(text: eventData.mode,style: Get.theme.kVerySmallTextStyle.copyWith(fontSize: 18,color: Color(0xFFEF6522))),
+
+                          ]
+                      ),
+
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 3),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: RichText(
+                      text: TextSpan(
+                          style: Get.theme.kTitleTextStyle.copyWith(fontSize:21 ),
+                          children: [
+                            TextSpan(text: "Location: ",style:Get.theme.kVerySmallTextStyle.copyWith(fontSize: 18,)),
+                            TextSpan(text: eventData.location,style: Get.theme.kVerySmallTextStyle.copyWith(fontSize: 18,color: Color(0xFFEF6522))),
+
+                          ]
+                      ),
+
+                    ),
+                  ),
                 ),
               ],
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                  const EdgeInsets.only(left: 20.0,right: 20.0, top: 25),
               child: Text(
                 eventData.oneliner ?? "Nil",
                 style: Get.theme.kVerySmallTextStyle,
@@ -168,7 +175,7 @@ class EventsScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SizedBox(
                 width: Get.width,
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 
@@ -189,25 +196,19 @@ class EventsScreen extends StatelessWidget {
                   },
                 ),
               ),
-            // Container(
-            //   width: Get.width,
-            //   margin:
-            //       const EdgeInsets.symmetric(horizontal: 10.0, vertical: 22),
-            //   height: 5,
-            //   decoration: BoxDecoration(
-            //     color: Get.theme.colorPrimary,
-            //     borderRadius: BorderRadius.circular(10),
-            //   ),
-            // ),
+
+
+
+
             DefaultTabController(
               length: 3,
               child: Column(
                 children: [
                   TabBar(
-                    
+
                     labelColor: Colors.white,
-                    indicatorPadding: EdgeInsets.all(12),padding: EdgeInsets.all(12),labelPadding: EdgeInsets.all(12),
-                    unselectedLabelColor: Colors.white10,
+                    indicatorPadding: const EdgeInsets.all(12),padding: const EdgeInsets.all(12),labelPadding: const EdgeInsets.all(12),
+                    unselectedLabelColor: Colors.white60,
                     labelStyle: Get.theme.kVerySmallTextStyle.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -216,41 +217,40 @@ class EventsScreen extends StatelessWidget {
                     indicatorColor: Colors.transparent,
                     tabs:  [
                       Container(  width:250,decoration: BoxDecoration(
-                        color: Color.fromRGBO(29, 29, 29, 1),
+                        color: const Color.fromRGBO(29, 29, 29, 1),
                        borderRadius: BorderRadius.circular(13),
 
                       ),
-                          child: Tab(text: 'About',)
+                          child: const Tab(text: 'About',)
                           ),
                       Container(  width:250,decoration: BoxDecoration(
-                        color: Color.fromRGBO(29, 29, 29, 1),
+                        color: const Color.fromRGBO(29, 29, 29, 1),
                         borderRadius: BorderRadius.circular(13),
 
                       ),
-                          child: Tab(text: 'Structure',)
+                          child: const Tab(text: 'Structure',)
                       ),
                       Container(  width:250,decoration: BoxDecoration(
-                        color: Color.fromRGBO(29, 29, 29, 1),
+                        color: const Color.fromRGBO(29, 29, 29, 1),
                         borderRadius: BorderRadius.circular(13),
 
                       ),
-                          child: Tab(text: 'Contact',)
+                          child: const Tab(text: 'Contact',)
                       ),
                     ],
                   ),
+
+
                   Container(
                     width: Get.width,
-                    height: Get.height * 0.24,
+                    height: Get.height * 0.34,
                     padding: const EdgeInsets.all(20),
                     margin: const EdgeInsets.all(20),
-                    clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
 
                       color: Colors.transparent,
 
-
                       borderRadius: BorderRadius.circular(20),
-                    //  border: Border.all(color: Colors.white, width: 0),
                     ),
                     child: TabBarView(
                       physics: const BouncingScrollPhysics(),
@@ -261,149 +261,82 @@ class EventsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(('LOCATION '),style: TextStyle(fontSize: 24,color: Colors.grey),),
-
-                  GestureDetector(
-                    onTap: () {
-                      print("eventData.locationLat!");
-                      print(eventData.location!);
-                      print(eventData.locationLat);
-                      // print( eventData.locationLng!);
-
-                      if (eventData.location != null &&
-                          eventData.locationLat != null &&
-                          eventData.locationLng != null) {
-                        print("eventData.location!");
-                        controller.openMapWithLocation(
-                            eventData.locationLat!, eventData.locationLng!
-
-                        );
-                      }
-                      else{
-                        print("latitude and log in null");
-                        controller.openMapWithLocation(
-                          // eventData.locationLat!, eventData.locationLng!
-                          "12.8240104753402", "80.0457505142571",
-
-                        );
-                      }
-                    },
-                    child: Column(
-                      children: [
-                        const Icon(
-                          Icons.pin_drop,
-                          color: Colors.grey,
-                        ),
-                        sizeBox(0, 3),
-                        Text(
-                          eventData.location ?? '',
-                          style: Get.theme.kVerySmallTextStyle.copyWith(
-                            fontSize: 11,
-                            color: Colors.grey,
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
+                  Text('LOCATION ',style: Get.theme.kVerySmallTextStyle.copyWith(fontSize: 20,color: Colors.grey,)),
+                  SizedBox(height: 10,),
 
 
-                    ],
-                  ),
-
-                  Container(
-                    height: 150,
-                    width: 340,
-                     decoration: BoxDecoration(
-                       borderRadius: BorderRadius.circular(210)
-                     ),
-                    child:Mapscreen(),
-                  ) ],),
+                  ClipRRect(borderRadius: BorderRadius.circular(21),child: eventData.mode!.toLowerCase()=="online" ? SizedBox(height: 10,):  Container( height: 200,
+                    width: Get.width*0.9,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(210)
+                    ),child: Mapscreen(Lattitude: eventData.locationLat,Longitude: eventData.locationLng,location: eventData.location ))) ],),
             ),
-            sizeBox(20, 0),
-            if (!fromMyEvents)
-              Obx(() {
-                return TicketButton(
-                  text: controller.isEventRegistered.value
-                      ? 'Registered'
-                      : 'Register now',
-                  onTap: () async {
-                    if (eventData.reqdfields != null && eventData.reqdfields!) {
-                      if (controller.isEventRegistered.value) {
-                        setSnackBar(
-                          "INFO:",
-                          "You have already registered",
-                          icon: const Icon(
-                            Icons.info,
-                            color: Colors.orange,
-                          ),
-                        );
-                      } else {
-                        if (eventData.live!) {
-                          Get.to(() => RegisterEvent(event: eventData));
-                        } else {
-                          setSnackBar(
-                            "INFO:",
-                            "Event is not live now!",
-                            icon: const Icon(
-                              Icons.warning_amber_rounded,
-                              color: Colors.red,
-                            ),
-                          );
-                        }
-                      }
-                    } else {
-                      if (await canLaunchUrl(
-                          Uri.parse(eventData.reglink.toString()))) {
-                        if (controller.isEventRegistered.value) {
-                          setSnackBar(
-                            "INFO:",
-                            "You have already registered",
-                            icon: const Icon(
-                              Icons.info,
-                              color: Colors.orange,
-                            ),
-                          );
-                        } else {
-                          launchUrl(Uri.parse(eventData.reglink!.toString()));
-                          controller.registerEvent(e: eventData);
-                        }
-                      } else {
-                        setSnackBar(
-                          "ERROR:",
-                          "Invalid URL",
-                          icon: const Icon(
-                            Icons.error,
-                            color: Colors.red,
-                          ),
-                        );
-                      }
-                    }
-                  },
-                  isDisabled: !eventData.live!,
-                );
-              }),
+
             sizeBox(150, 0),
           ],
         );
       }),
-      // bottomNavigationBar: AaruushBottomBar(bottomIndex: BottomIndexData.NONE),
+
+      bottomNavigationBar: Obx(() {
+        if (!fromMyEvents.value) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 18.0),
+            child: TicketButton(
+              text: controller.isEventRegistered.value ? 'Registered' : 'Register now',
+              onTap: () async {
+                if (controller.isEventRegistered.value) {
+                  setSnackBar(
+                    "INFO:",
+                    "You have already registered",
+                    icon: const Icon(
+                      Icons.info,
+                      color: Colors.orange,
+                    ),
+                  );
+                  return;
+                }
+
+                if (eventData.reqdfields ?? false) {
+                  if (eventData.live ?? false) {
+                    Get.to(() => RegisterEvent(event: eventData));
+                  } else {
+                    setSnackBar(
+                      "INFO:",
+                      "Event is not live now!",
+                      icon: const Icon(
+                        Icons.warning_amber_rounded,
+                        color: Colors.red,
+                      ),
+                    );
+                  }
+                } else {
+                  if (await canLaunchUrl(Uri.parse(eventData.reglink.toString()))) {
+                    launchUrl(Uri.parse(eventData.reglink.toString()));
+                    controller.registerEvent(e: eventData);
+                  } else {
+                    setSnackBar(
+                      "ERROR:",
+                      "Invalid URL",
+                      icon: const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+              isDisabled: !(eventData.live ?? false),
+            ),
+          );
+        } else {
+          return const SizedBox();
+        }
+      }),
+
     );
   }
 
-  Widget _iconWithText(String text) {
-    return Row(
-      children: [
-        Text(
-          text,
-          style: Get.theme.kBigTextStyle1.copyWith(fontSize: 11),
-        ),
-      ],
-    );
-  }
+
 }
 
 
@@ -418,20 +351,18 @@ class _tabDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      primary: false,
       child: Html(
         data: text,
-        style: {
-          "body": Style(
-            color: Colors.white,
-            fontSize: FontSize(19.5),
-          ),
-        },
+        style:  {
+          "body":Style(
+          color: Colors.white,textAlign: TextAlign.center,
+          fontSize: FontSize(19.5),
+        ) }
       ),
     );
   }
 }
+
 
 class ImageColoredShadow extends StatelessWidget {
   const ImageColoredShadow({

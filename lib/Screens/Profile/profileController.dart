@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/home_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
@@ -31,6 +32,19 @@ class ProfileController extends GetxController {
     );
 
     if (userRes.statusCode == 200 || userRes.statusCode == 201 || userRes.statusCode == 202) {
+      //update in firebase also
+      var collection = FirebaseFirestore.instance.collection('users');
+      collection
+          .doc(homeController.common.emailAddress.value)
+          .set({
+        "aaruushId": homeController.common.aaruushId.value,
+        "email": homeController.common.emailAddress.value,
+        'name' : 'nameController.text',
+        "phone": phoneController.text
+          })
+          .then((_) => print('Success'))
+          .catchError((error) => print('Failed: $error'));
+
       setSnackBar(
         'SUCCESS:',
         "Profile Updated Successfully",
