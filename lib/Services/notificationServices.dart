@@ -10,6 +10,8 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../Screens/Notification/NotificationScreen.dart';
+
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -199,10 +201,11 @@ class NotificationServices {
       if (kDebugMode) {
         print("eventroute");
       }
-      Get.to(EventsScreen(fromNotificationRoute: true, EventId: eventRoute,));
+      Get.to(EventsScreen(fromNotificationRoute: true, EventId: eventRoute, fromMyEvents: false.obs,));
     }
     else {
       if (kDebugMode) {
+        Get.to(NotificationScreen());
         print('No valid URL or key in the notification.');
         print(message);
       }

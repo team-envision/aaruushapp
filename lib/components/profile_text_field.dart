@@ -32,16 +32,8 @@ Widget profileTextField(
       decoration: InputDecoration(
         fillColor: Colors.black87,
         filled: true,
-        // prefixIcon: Icon(
-        //   icon,
-        //   // color: Get.theme.btnTextCol,
-        // ),
-        // icon: Icon(
-        //   icon,
-        //   color: Get.theme.btnTextCol,
-        // ),
         labelText: label,
-        labelStyle: Get.theme.kSmallTextStyle.copyWith(color: Colors.white),
+        labelStyle: Get.theme.kVerySmallTextStyle.copyWith(color: Colors.white70,fontSize: 14),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18),
             borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),

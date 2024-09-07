@@ -16,15 +16,19 @@ class EventsController extends GetxController {
   var isLoading = false.obs;
   var isEventRegistered = false.obs;
   var eventData = EventListModel().obs;
+  RxList locations =[].obs;
 
   CommonController common = Get.find();
   final registerFormKey = GlobalKey<FormState>();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    getUser(); // Fetch user details when the controller is initialized
+    getUser();
+
+
   }
+
 
   Future<void> getUser() async {
     try {
@@ -37,6 +41,12 @@ class EventsController extends GetxController {
         icon: const Icon(Icons.warning_amber_rounded, color: Colors.red),
       );
     }
+    print("userDetails.values");
+    print(userDetails.keys.toList());
+    userDetails.keys.map((val){print(val);});
+    print('userDetails.value.containsKey("Name")');
+    print(userDetails.value.containsKey("College (NA if not applicable)"));
+
   }
 
   Future<void> registerEvent({required EventListModel e}) async {
@@ -134,6 +144,7 @@ class EventsController extends GetxController {
         List<dynamic> filteredLiveEvents = jsonResponse.where((event) => event['id'] == eventId).toList();
         // templiveEventList.assignAll(filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
 eventData.value=filteredLiveEvents.map((e) => EventListModel.fromMap(e)).first;
+
 
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");

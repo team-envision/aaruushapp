@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                     children: controller.eventList
                         .where((e) => e.live! && (controller.sortName.value == "All" || controller.sortName.value == e.sortCategory))
                         .map((event) {
-                      return eventCard(event, () => Get.to(() => EventsScreen(event: event)),controller);
+                      return eventCard(event, () => Get.to(() => EventsScreen(event: event, fromMyEvents: false.obs,)),controller);
                     }).toList(),
                   )
                 ) :  const Center(
@@ -173,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                   primary: false,
                   child: Row(
                     children: controller.eventList.where((e) => !e.live! &&  e.startdate!=null ? (e.startdate!.contains(DateTime.now().year.toString()) ? true : false) : false ).map((e) {
-                      return eventCard(e, () => Get.to(() => EventsScreen(event: e)),controller);
+                      return eventCard(e, () => Get.to(() => EventsScreen(event: e, fromMyEvents: false.obs,)),controller);
                     }).toList(),
                   ),
                 );

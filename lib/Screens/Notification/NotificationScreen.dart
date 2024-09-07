@@ -42,11 +42,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       body: BgArea(
         children: [
-          SafeArea(
+          SafeArea(minimum: EdgeInsets.only(top: 100),
             child: Text(
               "NOTIFICATIONS",
               style: Get.theme.kSubTitleTextStyle
-                  .copyWith(color: Colors.grey, decoration: TextDecoration.underline),
+                  .copyWith(color: Colors.grey,),
             ),
           ),
           SafeArea(

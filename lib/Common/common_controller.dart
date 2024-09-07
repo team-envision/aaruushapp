@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Model/Events/event_list_model.dart';
-import '../Services/notificationServices.dart';
 
 class CommonController extends GetxController {
   var bottomBarIndex = 0.obs;
@@ -47,9 +46,7 @@ class CommonController extends GetxController {
 
 
 
-  void changeBottomBarIndex(int index) {
-    bottomBarIndex.value = index;
-  }
+
 
   Future<bool> isUserSignedIn() async {
     return FirebaseAuth.instance.currentUser != null;

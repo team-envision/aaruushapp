@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 
 class ApiData {
   // Load environment variables from the .env file
+  // TODO: Remember to import the .env file by calling ApiData.init() in your main.dart or relevant initialization file.
   static Future<void> init() async {
     try {
       await dotenv.load(fileName: "assets/.env");
@@ -28,9 +29,9 @@ class ApiData {
   static set accessToken(String token) {
     final box = GetStorage();
     box.write('accessToken', token);
-    print("token");
-    print(token);
+    if (kDebugMode) {
+      print("token");
+      print(token);
+    }
   }
-
-// TODO: Remember to import the .env file by calling ApiData.init() in your main.dart or relevant initialization file.
 }
