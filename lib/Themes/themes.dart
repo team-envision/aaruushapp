@@ -52,6 +52,13 @@ extension ThemeExtension on ThemeData {
         color: btnTextCol,
         fontSize: 25,
       );
+  TextStyle get kTitleTextStyle1 => GoogleFonts.montserrat(//roboto
+    fontWeight: FontWeight.w600,
+    color: btnTextCol,
+    fontSize: 32,
+  );
+
+
   TextStyle get kSubTitleTextStyle => GoogleFonts.montserrat(
         fontSize: 20,
         fontWeight: FontWeight.w700,
@@ -116,4 +123,5 @@ class Themes {
             statusBarIconBrightness: Brightness.light)),
     scaffoldBackgroundColor: const Color(0xff161616),
   );
+
 }
