@@ -11,11 +11,18 @@ import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/removeBracketsIfExist.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:AARUUSH_CONNECT/components/searchWidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../Utilities/aaruushappbar.dart';
+
+import '../../components/Imageslides.dart';
+import '../../components/carouselSliderAutoplay.dart';
+import '../../components/customSearchfield.dart';
+import '../../components/secondaryButton.dart';
+
 import '../Events/events_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -64,14 +71,8 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     Obx(()=>
-                         Text(
-                           "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}".useCorrectEllipsis(),
-                           overflow: TextOverflow.ellipsis,
-                           maxLines: 1,
-                           style: Get.theme.kSubTitleTextStyle,
-                         )),
-              
+
+
                     IconButton(
                       onPressed: () => {Get.to(() => const ProfileScreen())},
                       icon: Obx(
@@ -87,16 +88,26 @@ class HomeScreen extends StatelessWidget {
                       color: Colors.white,
                       iconSize: 40,
                     ),
+                    Obx(  ()=>
+                        Text(
+                          "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}".useCorrectEllipsis(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: Get.theme.kSmallTextStyle,
+                        )),
                   ],
                 ),
               ),
             ),
-            sizeBox(50, 0),
+            CustomSearchField(hintText: 'Search', prefixIcon: Icons.search,),
+            sizeBox(20, 0),
+            Autoplay(),
+            sizeBox(30, 0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
                 "Categories",
-                style: Get.theme.kTitleTextStyle,
+                style: Get.theme.kTitleTextStyle1,
               ),
             ),
             SingleChildScrollView(
@@ -120,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            sizeBox(50, 0),
+            sizeBox(15, 0),//above All Live event
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
               child: Obx(
@@ -179,7 +190,22 @@ class HomeScreen extends StatelessWidget {
                 );
               },
             ),
-            sizeBox(100, 0),
+            sizeBox(50, 0),
+            Text(
+              "For you",
+              style: Get.theme.kTitleTextStyle1,
+            ),
+            sizeBox(14, 0),
+
+           Row(
+             children: [
+               SecondaryButton(text: 'GET YOUR PASSES',icon: Icons.movie_outlined,),
+               sizeBox(24, 0),
+            SecondaryButton(text: 'Discover CAP'),
+             ],
+           ),
+            sizeBox(144, 0),
+
           ],
         ),
       ),
@@ -270,10 +296,12 @@ class HomeScreen extends StatelessWidget {
                style: Get.theme.kVerySmallTextStyle,
              ),
            ),
+
          ],
        ),
      );
    }
+
 
 
 }

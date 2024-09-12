@@ -16,9 +16,10 @@ import '../Model/Events/event_list_model.dart';
 
 class CommonController extends GetxController {
   var bottomBarIndex = 0.obs;
+  var profileUrl = ''.obs;
   var userName = ''.obs;
   var emailAddress = ''.obs;
-  var profileUrl = ''.obs;
+
   var aaruushId = ''.obs;
   var phoneNumber = ''.obs;
   var RegNo = ''.obs;
@@ -130,9 +131,10 @@ class CommonController extends GetxController {
           debugPrint("unauthorized");
           signOutCurrentUser();
         }
+        profileUrl.value = data['image'] ?? "";
         userName.value = data['name'] ?? "";
         emailAddress.value = data['email'] ?? "";
-        profileUrl.value = data['image'] ?? "";
+
         aaruushId.value = data['aaruushId'] ?? "";
         phoneNumber.value = data['phone'] ?? data["whatsapp"] ?? data["phone number"] ?? data["Whatsapp Number"] ?? data["whatsappnumber"] ?? data["whatsapp number"] ?? "";
         RegNo.value = data['registration number (na if not applicable)'] ?? data['college_id'] ?? data['Registration Number'] ?? "";
