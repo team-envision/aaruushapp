@@ -1,14 +1,19 @@
 import 'dart:convert';
 import 'package:AARUUSH_CONNECT/Screens/TimeLine/timeline_controller.dart';
+import 'package:AARUUSH_CONNECT/Themes/themes.dart';
+import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:AARUUSH_CONNECT/components/dropdown_selector.dart';
+import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../components/aaruushappbar.dart';
+import 'package:hive/hive.dart';
+import '../../Utilities/aaruushappbar.dart';
 
 class TimelineView extends GetView<TimelineController> {
   const TimelineView({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,8 @@ class TimelineView extends GetView<TimelineController> {
       backgroundColor: Colors.black,
       appBar: AaruushAppBar(title: "AARUUSH"),
       body: FutureBuilder(
-        future: DefaultAssetBundle.of(context).loadString("assets/json/timeLine.json"),
+        future: DefaultAssetBundle.of(context)
+            .loadString("assets/json/timeLine.json"),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -26,130 +32,249 @@ class TimelineView extends GetView<TimelineController> {
             );
           } else if (snapshot.hasData) {
             var data = jsonDecode(snapshot.data.toString());
-            return Padding(
-              padding: const EdgeInsets.all(10),
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: makeItem(
-                      image: data[index]["image"],
-                      year: data[index]["year"],
-                      tagline: data[index]["tagline"],
-                      description: data[index]["description"],
-                    ),
-                  );
-                },
-                itemCount: data.length,
-                scrollDirection: Axis.vertical,
-              ),
-            );
+            return BgArea(mainAxisAlignment: MainAxisAlignment.start, children: [
+              SafeArea(
+                bottom: false,
+                minimum: EdgeInsets.only(top: 180),
+                child: SizedBox(
+                  height: 500,
+                  width: Get.width - 40,
+                  child: AppinioSwiper(
+                    backgroundCardCount: 4,
+                    invertAngleOnBottomDrag: true,
+                    backgroundCardOffset: Offset(0, -38),
+                    cardBuilder: (context, index) {
+                      return timeLineCard(
+                          ImageUrl:data[index]["image"], tagLine: data[index]["tagline"]??"", year: data[index]["year"].toString()??"", description: data[index]["description"]??"",);
+                    },
+                    cardCount: data.length,
+                  ),
+                ),
+              )
+            ]);
           } else if (snapshot.hasError) {
             return const Center(
-              child: Text("Something Went Wrong", style: TextStyle(color: Colors.white)),
+              child: Text("Something Went Wrong",
+                  style: TextStyle(color: Colors.white)),
             );
           } else {
             return const Center(
-              child: Text("No Data Available", style: TextStyle(color: Colors.white)),
+              child: Text("No Data Available",
+                  style: TextStyle(color: Colors.white)),
             );
           }
         },
       ),
     );
   }
+}
 
-  Widget makeItem({required String image, required int year, required String tagline, required String description}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          width: 50,
-          height: 200,
-          margin: const EdgeInsets.only(right: 20),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: FittedBox(
-              alignment: Alignment.topCenter,
-              child: Column(
-                children: [
-                  Text(
-                    year.toString(),
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      fontFamily: 'xirod',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: FlipCard(
-            flipOnTouch: true,
-            front: Container(
-              height: 170,
+class timeLineCard extends StatelessWidget {
+  final String ImageUrl;
+  final String tagLine;
+  final String year;
+  final String description;
+
+  const timeLineCard({super.key, required this.ImageUrl,required this.tagLine,required this.year,required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return FlipCard(
+        front: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: Color.fromRGBO(236, 99, 32, 1))),
+          child: Stack(alignment: Alignment.bottomCenter, children: [
+            Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(image,),
-                  fit: BoxFit.cover,
-                ),
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(22),
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(ImageUrl,
+                          maxHeight: double.maxFinite.toInt()),
+                      fit: BoxFit.fitHeight)),
+            ),
+            ListTile(
+              titleTextStyle:Get.theme.kSmallTextStyle.copyWith(fontWeight: FontWeight.bold),
+              style: ListTileStyle.list,iconColor: Colors.white,subtitleTextStyle: Get.theme.kVerySmallTextStyle,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+              leading: Image.asset(
+                "assets/images/aaruush.png",
+                scale: 5,
               ),
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withOpacity(0.2),
-                      Colors.black.withOpacity(0.1),
+              horizontalTitleGap: 0,
+              title: Text("AARUUSH ${year.substring(2)}"),
+              subtitle: FittedBox(child: Text(tagLine)),
+              trailing: Icon(Icons.info),
+            ),
+          ]),
+        ),
+        back: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: Color.fromRGBO(236, 99, 32, 1))),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              SvgPicture.asset(
+                "assets/images/aaruush.svg",
+                colorFilter:
+                    ColorFilter.mode(Colors.black45, BlendMode.luminosity),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    spacing: 20,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Text(
+                          "EVENT DISCRIPTION",
+                          style: Get.theme.kSubTitleTextStyle
+                              .copyWith(fontWeight: FontWeight.w900),
+                        ),
+                      ),
+                      Text(
+                        description,
+                        style: Get.theme.kSmallTextStyle.copyWith(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      height: 32,
-                      width: 45,
-                      child: Image.asset('assets/images/aaruush.png'),
-                    ),
-                    const Spacer(),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 13, bottom: 7),
-                      child: Icon(Icons.info, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            back: Container(
-              height: 170,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.orange,
-                  width: 3.0,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Text(
-                  description,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'xirod',
-                    fontSize: 13,
-                  ),
-                ),
-              ),
-            ),
+              )
+            ],
           ),
-        ),
-      ],
-    );
+        ));
   }
 }
+
+// class TimelineView extends GetView<TimelineController> {
+//   const TimelineView({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       extendBodyBehindAppBar: true,
+//       appBar: AaruushAppBar(title: "AARUUSH"),
+//       body: FutureBuilder(future: DefaultAssetBundle.of(context).loadString("assets/json/timeLine.json"), builder: (context, snapshot) {
+//         if(snapshot.connectionState==ConnectionState.waiting)
+//         return BgArea(mainAxisAlignment: MainAxisAlignment.end, children: [
+//           SafeArea(
+//             bottom: false,
+//             minimum: EdgeInsets.only(top: 180),
+//             child: SizedBox(
+//               height: 500,
+//               width: Get.width - 40,
+//               child: AppinioSwiper(
+//                 backgroundCardCount: 4,
+//                 invertAngleOnBottomDrag: true,
+//                 backgroundCardOffset: Offset(0, -38),
+//                 cardBuilder: (context, index) {
+//                   return timeLineCard(
+//                       ImageUrl:
+//                       "https://aaruush22-bucket.s3.ap-south-1.amazonaws.com/timeline/23.1.webp");
+//                 },
+//                 cardCount: 10,
+//               ),
+//             ),
+//           )
+//         ]);
+//       },)
+//     );
+//   }
+// }
+//
+// class timeLineCard extends StatelessWidget {
+//   final String ImageUrl;
+//
+//   const timeLineCard({super.key, required this.ImageUrl});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return FlipCard(
+//         front: Container(
+//           alignment: Alignment.center,
+//           decoration: BoxDecoration(
+//               borderRadius: BorderRadius.circular(22),
+//               border: Border.all(color: Color.fromRGBO(236, 99, 32, 1))),
+//           child: Stack(alignment: Alignment.bottomCenter, children: [
+//             // CachedNetworkImage(imageUrl: ImageUrl,useOldImageOnUrlChange: true,fit: BoxFit.fill,),
+//             Container(
+//               decoration: BoxDecoration(
+//                   color: Colors.black,
+//                   borderRadius: BorderRadius.circular(22),
+//                   image: DecorationImage(
+//                       image: CachedNetworkImageProvider(ImageUrl,
+//                           maxHeight: double.maxFinite.toInt()),
+//                       fit: BoxFit.cover)),
+//             ),
+//             ListTile(
+//               titleTextStyle: TextStyle(
+//                 fontWeight: FontWeight.bold,
+//               ),
+//               style: ListTileStyle.list,
+//               contentPadding: EdgeInsets.symmetric(horizontal: 10),
+//               leading: Image.asset(
+//                 "assets/images/aaruush.png",
+//                 scale: 5,
+//               ),
+//               horizontalTitleGap: 0,
+//               title: Text("AARUUSH 24"),
+//               subtitle: Text("AAruush tagline"),
+//               trailing: Icon(Icons.info),
+//             )
+//           ]),
+//         ),
+//         back: Container(
+//           alignment: Alignment.center,
+//           decoration: BoxDecoration(
+//               color: Colors.black,
+//               borderRadius: BorderRadius.circular(22),
+//               border: Border.all(color: Color.fromRGBO(236, 99, 32, 1))),
+//           child: Stack(
+//             alignment: Alignment.bottomCenter,
+//             children: [
+//               SvgPicture.asset(
+//                 "assets/images/aaruush.svg",
+//                 colorFilter:
+//                     ColorFilter.mode(Colors.black45, BlendMode.luminosity),
+//               ),
+//               Padding(
+//                 padding: const EdgeInsets.all(25.0),
+//                 child: SingleChildScrollView(
+//                   child: Column(
+//                     mainAxisAlignment: MainAxisAlignment.start,
+//                     spacing: 20,
+//                     children: [
+//                       Padding(
+//                         padding: const EdgeInsets.only(top: 20.0),
+//                         child: Text(
+//                           "EVENT DISCRIPTION",
+//                           style: Get.theme.kSubTitleTextStyle
+//                               .copyWith(fontWeight: FontWeight.w900),
+//                         ),
+//                       ),
+//                       Text(
+//                         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+//                         style: Get.theme.kSmallTextStyle.copyWith(
+//                             fontSize: 18, fontWeight: FontWeight.bold),
+//                         softWrap: true,
+//                         textAlign: TextAlign.center,
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               )
+//             ],
+//           ),
+//         ));
+//   }
+// }

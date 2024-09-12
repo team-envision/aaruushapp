@@ -5,7 +5,7 @@ import 'package:AARUUSH_CONNECT/Screens/Profile/editProfile.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/myEvents.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
-import 'package:AARUUSH_CONNECT/components/aaruushappbar.dart';
+import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

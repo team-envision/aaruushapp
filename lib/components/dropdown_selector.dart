@@ -9,26 +9,31 @@ Widget dropDownSelector(
     bool enabled=true,
     required List<dynamic> list}) {
   return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 5),
-    margin: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20), color: Get.theme.curveBG),
+    margin: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+    decoration: BoxDecoration(border: Border.all(color: Colors.white),
+        borderRadius: BorderRadius.circular(12), color: Color.fromRGBO(23, 20, 20, 1)),
     child: DropdownButton<dynamic>(
-      isExpanded: true,
+      isExpanded: true, padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
       onChanged: enabled?onChanged:null,
-      underline: const SizedBox(),
+      underline: const SizedBox(),iconSize: 40,
       hint: FittedBox(
-        child: Text(
-          value.isEmpty ? hint : "$hint: $value",
-          style: Get.theme.kSmallTextStyle,
-        ),
+        child: RichText(
+            text: TextSpan(text: "$hint:",
+          children: [
+            TextSpan(
+                text: value.isEmpty ? "" : " $value" ,
+                style: TextStyle(color: Colors.white)
+            )],
+          style: Get.theme.kSmallTextStyle.copyWith(color: Colors.white54,fontSize: 16),
+        )),
       ),
+
       items: list.map((value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(
             value,
-            style: Get.theme.kSubTitleTextStyle,
+            style: Get.theme.kSubTitleTextStyle.copyWith(color: Colors.white,fontSize: 18),
           ),
         );
       }).toList(),

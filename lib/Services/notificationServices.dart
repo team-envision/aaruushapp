@@ -201,7 +201,7 @@ class NotificationServices {
       if (kDebugMode) {
         print("eventroute");
       }
-      Get.to(EventsScreen(fromNotificationRoute: true, EventId: eventRoute, fromMyEvents: false.obs,));
+      Get.to(()=>EventsScreen(fromNotificationRoute: true, EventId: eventRoute, fromMyEvents: false.obs,));
     }
     else {
       if (kDebugMode) {

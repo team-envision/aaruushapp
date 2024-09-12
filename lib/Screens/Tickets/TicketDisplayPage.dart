@@ -1,7 +1,7 @@
 
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
-import 'package:AARUUSH_CONNECT/components/aaruushappbar.dart';
+import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:AARUUSH_CONNECT/components/ticketWidget.dart';
 import 'package:AARUUSH_CONNECT/components/white_box.dart';

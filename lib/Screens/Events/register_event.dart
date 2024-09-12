@@ -1,6 +1,7 @@
 import 'package:AARUUSH_CONNECT/Screens/Events/events_controller.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
+import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
 import 'package:AARUUSH_CONNECT/components/dropdown_selector.dart';
@@ -20,32 +21,46 @@ class RegisterEvent extends GetView<EventsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
+
+      appBar: AaruushAppBar(
+        // backgroundColor: Colors.transparent,
+        // foregroundColor: Colors.transparent,
+        // elevation: 0,
+        // centerTitle: true,
+        // leading: IconButton(
+        //   onPressed: () => Get.back(),
+        //   icon: const Icon(Icons.arrow_back_ios),
+        //   color: Colors.white,
+        // ),
+        actions: [
+        IconButton(
           onPressed: () => Get.back(),
-          icon: const Icon(Icons.arrow_back_ios),
-          color: Colors.white,
+          icon:  const Icon(Icons.cancel_outlined,),
+          color: Colors.white,iconSize: 35,padding: EdgeInsets.symmetric(horizontal: 20),
         ),
-        title: Text(
+        ],
+
+        title:
+        // Text(
           "AARUUSH",
-          style: Get.theme.kTitleTextStyle.copyWith(fontFamily: 'Xirod'),
-        ),
+          // style: Get.theme.kTitleTextStyle.copyWith(fontFamily: 'Xirod'),
+        // ),
       ),
-      body: SafeArea(
-        child: BgArea(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CustomBox(
-              margin: const EdgeInsets.all(20),
+      body: BgArea(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 100.0),
+            child: CustomBox(
+              margin: const EdgeInsets.all(20),boxShadowOpacity: 0.4,colourOpacity: 0.3,
               child: Form(
                 key: controller.registerFormKey,
                 child: Column(
                   children: [
-                    sizeBox(50, 0),
+                    sizeBox(30, 0),
+                    Text("REGISTER FOR EVENTS",style: TextStyle(fontFamily: "Xirod"),),
+                    sizeBox(25, 0),
+
                     if (event.dynamicform != null)
                       ...event.dynamicform!.map((e) {
                         if (e.type == "select") {
@@ -91,33 +106,35 @@ class RegisterEvent extends GetView<EventsController> {
                     Obx(
                           () => controller.isLoading.value
                           ? const CircularProgressIndicator()
-                          : primaryButton(
-                        text: "Submit data",
-                        onTap: () {
-                          if (controller.registerFormKey.currentState!.validate() &&
-                              event.dynamicform != null) {
-                            for (var e in event.dynamicform!) {
-                              controller.registerFieldData.value
-                                  .addAllIf(
-                                controller.userDetails.value[e.label] !=
-                                    null,
-                                {e.label!: controller.userDetails.value[e.label]},
-                              );  
+                          : SizedBox(width: 250,
+                            child: primaryButton(
+                                                    text: "Submit data",
+                                                    onTap: () {
+                            if (controller.registerFormKey.currentState!.validate() &&
+                                event.dynamicform != null) {
+                              for (var e in event.dynamicform!) {
+                                controller.registerFieldData.value
+                                    .addAllIf(
+                                  controller.userDetails.value[e.label] !=
+                                      null,
+                                  {e.label!: controller.userDetails.value[e.label]},
+                                );
+                              }
+                              debugPrint(
+                                  "Register data ${controller.registerFieldData.value}");
+                              controller.registerEvent(e: event);
                             }
-                            debugPrint(
-                                "Register data ${controller.registerFieldData.value}");
-                            controller.registerEvent(e: event);
-                          }
-                        },
-                      ),
+                                                    },
+                                                  ),
+                          ),
                     ),
-                    sizeBox(50, 0),
+                    sizeBox(30, 0),
                   ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
