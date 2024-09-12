@@ -1,5 +1,5 @@
 import 'package:AARUUSH_CONNECT/Screens/Profile/profileController.dart';
-import 'package:AARUUSH_CONNECT/components/aaruushappbar.dart';
+import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

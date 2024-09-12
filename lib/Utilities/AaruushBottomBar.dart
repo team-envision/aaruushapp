@@ -22,7 +22,6 @@ class AaruushBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(extendBody: true,
-
       body: _screens[_selectedIndex.value],
       bottomNavigationBar:
           CurvedNavigationBar(

@@ -8,10 +8,12 @@ class BgArea extends StatelessWidget {
     required this.children,
     this.image = "bg.png",
     this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = MainAxisAlignment.start,
   });
   final List<Widget> children;
   final String? image;
   final CrossAxisAlignment? crossAxisAlignment;
+  final MainAxisAlignment? mainAxisAlignment;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,6 +27,7 @@ class BgArea extends StatelessWidget {
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
+          mainAxisAlignment: mainAxisAlignment!,
           crossAxisAlignment: crossAxisAlignment!,
           children: children,
         ),

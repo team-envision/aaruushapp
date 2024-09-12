@@ -14,7 +14,7 @@ Widget profileTextField(
     Function(String)? onChanged,
     required String label}) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+    padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 10.0),
     child: TextFormField(
       scrollPhysics: const BouncingScrollPhysics(),
       keyboardType: keyboard,
@@ -30,22 +30,29 @@ Widget profileTextField(
       onChanged: onChanged,
       style: Get.theme.kVerySmallTextStyle,
       decoration: InputDecoration(
-        fillColor: Colors.black87,
+        fillColor: Color.fromRGBO(23, 20, 20, 1),
         filled: true,
         labelText: label,
         labelStyle: Get.theme.kVerySmallTextStyle.copyWith(color: Colors.white70,fontSize: 14),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Color.fromRGBO(244, 93, 8, 1), width: 2)),
+
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.white60, width: 2)),
+
         disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.white, width: 2)),
+
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.red, width: 2)),
+
         errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: BorderSide(color: Get.theme.colorPrimary, width: 2)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.red, width: 2)),
       ),
     ),
   );

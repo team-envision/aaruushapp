@@ -26,7 +26,6 @@ class EventsController extends GetxController {
     super.onInit();
     getUser();
 
-
   }
 
 
