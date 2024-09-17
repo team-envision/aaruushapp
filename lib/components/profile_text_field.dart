@@ -30,29 +30,29 @@ Widget profileTextField(
       onChanged: onChanged,
       style: Get.theme.kVerySmallTextStyle,
       decoration: InputDecoration(
-        fillColor: Color.fromRGBO(23, 20, 20, 1),
+        fillColor: const Color.fromRGBO(23, 20, 20, 1),
         filled: true,
-        labelText: label,
+        label: FittedBox(child: Text(label)),
         labelStyle: Get.theme.kVerySmallTextStyle.copyWith(color: Colors.white70,fontSize: 14),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Color.fromRGBO(244, 93, 8, 1), width: 2)),
+            borderSide: const BorderSide(color: Color.fromRGBO(244, 93, 8, 1), width: 2)),
 
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.white60, width: 2)),
+            borderSide: const BorderSide(color: Colors.white60, width: 2)),
 
         disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.white, width: 2)),
+            borderSide: const BorderSide(color: Colors.white, width: 2)),
 
         focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.red, width: 2)),
+            borderSide: const BorderSide(color: Colors.red, width: 2)),
 
         errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.red, width: 2)),
+            borderSide: const BorderSide(color: Colors.red, width: 2)),
       ),
     ),
   );

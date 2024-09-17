@@ -93,12 +93,12 @@ class RegisterEvent extends GetView<EventsController> {
                                 : (e.type == "tel" || e.type == "number")
                                 ? TextInputType.phone
                                 : TextInputType.text,
-                            initialValue: e.label == "Name"? controller.common.userName.toString():e.label=="College (NA if not applicable)"?controller.common.college.toString():e.label=="Registration Number (NA if not applicable)"?controller.common.RegNo.toString():e.label=="Phone Number"?controller.common.phoneNumber.toString():e.label=="Email ID"?controller.common.emailAddress.toString():"",
+                            initialValue: e.label!.toLowerCase() == "name"? controller.common.userName.toString():(e.label!.toLowerCase()=="college (na if not applicable)"||e.label!.toLowerCase()=="college name")?controller.common.college.toString():(e.label!.toLowerCase()=="registration number (na if not applicable)"||e.label!.toLowerCase()=="registration number")?controller.common.RegNo.toString():(e.label!.toLowerCase()=="phone number"||e.label!.toLowerCase()=="contact number")?controller.common.phoneNumber.toString():(e.label!.toLowerCase()=="email id"||e.label!.toLowerCase()=="email")?controller.common.emailAddress.toString():"",
                             onChanged: (v) {
                               controller.registerFieldData.value[e.label!] = v;
                               debugPrint("${e.label} $v");
                             },
-                            label: e.placeholder ?? "",
+                            label: e.label ?? e.placeholder ?? "",
                           );
                         }
                       }),

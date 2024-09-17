@@ -105,6 +105,7 @@ class Themes {
   static final light = ThemeData.light().copyWith(
     // backgroundColor: Colors.white,
 
+
     appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Color(0xffffffff),

@@ -134,7 +134,6 @@ class CommonController extends GetxController {
         profileUrl.value = data['image'] ?? "";
         userName.value = data['name'] ?? "";
         emailAddress.value = data['email'] ?? "";
-
         aaruushId.value = data['aaruushId'] ?? "";
         phoneNumber.value = data['phone'] ?? data["whatsapp"] ?? data["phone number"] ?? data["Whatsapp Number"] ?? data["whatsappnumber"] ?? data["whatsapp number"] ?? "";
         RegNo.value = data['registration number (na if not applicable)'] ?? data['college_id'] ?? data['Registration Number'] ?? "";
