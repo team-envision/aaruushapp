@@ -74,6 +74,7 @@ class RegisterController extends GetxController {
           color: Colors.green,
         ),
       );
+      Get.to(()=>AaruushBottomBar());
     } else {
 
       setSnackBar(

@@ -1,22 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
-import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart' as t;
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'Common/default_controller_bindings.dart';
 import 'Data/api_data.dart';
 import 'Screens/aaruush_app.dart';

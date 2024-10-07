@@ -16,7 +16,7 @@ class EventsController extends GetxController {
   var isLoading = false.obs;
   var isEventRegistered = false.obs;
   var eventData = EventListModel().obs;
-  RxList locations =[].obs;
+  RxList locations = [].obs;
 
   CommonController common = Get.find();
   final registerFormKey = GlobalKey<FormState>();
@@ -25,9 +25,7 @@ class EventsController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     getUser();
-
   }
-
 
   Future<void> getUser() async {
     try {
@@ -42,10 +40,11 @@ class EventsController extends GetxController {
     }
     print("userDetails.values");
     print(userDetails.keys.toList());
-    userDetails.keys.map((val){print(val);});
+    userDetails.keys.map((val) {
+      print(val);
+    });
     print('userDetails.value.containsKey("Name")');
     print(userDetails.value.containsKey("College (NA if not applicable)"));
-
   }
 
   Future<void> registerEvent({required EventListModel e}) async {
@@ -61,7 +60,7 @@ class EventsController extends GetxController {
         },
         body: json.encode({
           ...?registerFieldData.value,
-          "aaruushId": userDetails["aaruushId"]??'',
+          "aaruushId": userDetails["aaruushId"] ?? '',
           'email': userDetails['email'] ?? '',
           'events': userDetails['events'] ?? [],
           'event': e.toMap(),
@@ -84,11 +83,14 @@ class EventsController extends GetxController {
           }),
         );
 
-        if (userRes.statusCode == 200 || userRes.statusCode == 201 || userRes.statusCode == 202) {
+        if (userRes.statusCode == 200 ||
+            userRes.statusCode == 201 ||
+            userRes.statusCode == 202) {
           setSnackBar(
             'SUCCESS:',
             'Event registered successfully',
-            icon: const Icon(Icons.check_circle_outline_rounded, color: Colors.green),
+            icon: const Icon(Icons.check_circle_outline_rounded,
+                color: Colors.green),
           );
         } else {
           setSnackBar(
@@ -119,7 +121,8 @@ class EventsController extends GetxController {
   }
 
   void openMapWithLocation(String latitude, String longitude) async {
-    final mapUrl = Uri.parse("https://www.google.com/maps/search/?api=1&query=$latitude,$longitude");
+    final mapUrl = Uri.parse(
+        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude");
 
     if (await canLaunchUrl(mapUrl)) {
       await launchUrl(mapUrl);
@@ -140,11 +143,10 @@ class EventsController extends GetxController {
       if (response.statusCode == 200) {
         String data = utf8.decode(response.bodyBytes);
         List jsonResponse = json.decode(data);
-        List<dynamic> filteredLiveEvents = jsonResponse.where((event) => event['id'] == eventId).toList();
-        // templiveEventList.assignAll(filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
-eventData.value=filteredLiveEvents.map((e) => EventListModel.fromMap(e)).first;
-
-
+        List<dynamic> filteredLiveEvents =
+            jsonResponse.where((event) => event['id'] == eventId).toList();
+        eventData.value =
+            filteredLiveEvents.map((e) => EventListModel.fromMap(e)).first;
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load events');
@@ -155,7 +157,6 @@ eventData.value=filteredLiveEvents.map((e) => EventListModel.fromMap(e)).first;
       isLoading.value = false;
     }
   }
-
 
   @override
   void dispose() {

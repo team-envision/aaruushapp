@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
+import 'package:AARUUSH_CONNECT/Model/Events/gallery.dart';
 import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
 import 'package:AARUUSH_CONNECT/Services/appRating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 
@@ -17,6 +19,10 @@ import 'package:http/http.dart';
 class HomeController extends GetxController {
   var eventList = <EventListModel>[].obs;
   var templiveEventList = <EventListModel>[].obs;
+
+  var galleryList = [].obs;
+  var tempGalleryList = [].obs;
+
   RxList LiveEventsList = [].obs;
   RxList regEvents = [].obs;
   final common = Get.find<CommonController>();
@@ -78,11 +84,12 @@ class HomeController extends GetxController {
         }
       } catch (e) {
         if (kDebugMode) {
-          print("Error occurred while updating new token: $e");
+          printError(info: "Error occurred while updating new token: $e");
         }
       }
     });
     updateProfile();
+    fetchGallery(year: "2023");
   }
 
 
@@ -155,12 +162,49 @@ class HomeController extends GetxController {
         throw Exception('Failed to load events');
       }
     } catch (e) {
-      debugPrint('Error fetching events: $e');
+      printError(info: 'Error fetching events data: $e');
     } finally {
       isLoading.value = false;
       regEvents.value = common.registeredEvents();
     }
   }
+
+
+
+  Future<void> fetchGallery({required String year}) async {
+    isLoading.value = true;
+    try {
+      final response = await http.get(Uri.parse('${ApiData.API}/gallery/edition/$year/proshow'));
+
+      if (response.statusCode == 200) {
+        String data = utf8.decode(response.bodyBytes);
+        List jsonResponse = json.decode(data);
+
+        tempGalleryList.assignAll(
+            jsonResponse.map((e) => Gallery.fromJson(e)).toList()
+        );
+
+        tempGalleryList.forEach((gallery) {
+          if (gallery.image != null) {
+            galleryList.addAll(gallery.image!);
+          }
+        });
+
+
+      } else {
+        printError(info: "Error gallery: ${response.body} ${response.statusCode}");
+        throw Exception('Failed to load gallery');
+      }
+    } catch (e) {
+      printError(info: 'Error fetching gallery: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
+
+
 
   Future<void> fetchEventDataByCategory(String category) async {
     isLoading.value = true;
@@ -183,9 +227,19 @@ class HomeController extends GetxController {
         throw Exception('Failed to load events');
       }
     } catch (e) {
-      debugPrint('Error fetching events by category: $e');
+      printError(info: 'Error fetching events by category: $e');
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> getToURL({required String URL}) async {
+    final mapUrl = Uri.parse(URL);
+
+    if (await canLaunchUrl(mapUrl)) {
+    await launchUrl(mapUrl);
+    } else {
+    debugPrint("Cannot launch map url");
     }
   }
 

@@ -1,4 +1,3 @@
-
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
@@ -30,7 +29,9 @@ class MyEvents extends StatelessWidget {
     }
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(title: "AARUUSH",),
+      appBar: AaruushAppBar(
+        title: "AARUUSH",
+      ),
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -38,81 +39,101 @@ class MyEvents extends StatelessWidget {
               image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
         ),
         child: CustomScrollView(
-          slivers:
-             [
-              SliverToBoxAdapter(
-                child:  SafeArea(
-                  child: Center(
-                    child: Text(
-                      'My Events',
-                      style:  Get.theme.kSmallTextStyle.copyWith(decoration: TextDecoration.underline,fontSize: 28),
-                    ),
+          slivers: [
+            SliverToBoxAdapter(
+              child: SafeArea(
+                child: Center(
+                  child: Text(
+                    'My Events',
+                    style: Get.theme.kSmallTextStyle.copyWith(
+                        decoration: TextDecoration.underline, fontSize: 28),
                   ),
                 ),
               ),
-              SliverToBoxAdapter(child: Padding(
-                padding: EdgeInsets.only(left: Get.width / 25,bottom: 30),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(left: Get.width / 25, bottom: 30),
                 child: Text(
                   'Upcoming Events',
                   style: Get.theme.kSmallTextStyle,
                 ),
-              ),),
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 159 / 200),
-                delegate: SliverChildBuilderDelegate((context, index) {
-                      if (controller.isLoading.value) {
-                        return const Center(child: CircularProgressIndicator(color: Colors.white,));
-                      }
-                      else {
-                        final event = controller.eventList.where((e) => e.live!).toList()[index];
-
-                          return TicketTile(imagePath: event.image!,event: event,title: event.name!,);
-
-                      }
-
-                },
-                   childCount: controller.eventList.where((e) => e.live!).length, ),
               ),
-              SliverToBoxAdapter(
-                child:
-                    Padding(
-                      padding:
-                      EdgeInsets.only(left: Get.width / 25,top: 30,bottom: 30),
-                      child:  Text(
-                        'Events Participated',
-                        style: Get.theme.kSmallTextStyle,
-                      ),
+            ),
+            controller.LiveEventsList.isEmpty
+                ? const SliverToBoxAdapter(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Currently No Live Events",
+                      style: TextStyle(letterSpacing: 4),
                     ),
+                  ),
+                )
+            )
+                : SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 159 / 200),
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        if (controller.isLoading.value) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            color: Get.theme.colorPrimary,
+                          ));
+                        } else {
+                          final event = controller.eventList
+                              .where((e) => e.live!)
+                              .toList()[index];
 
-
-
+                          return TicketTile(
+                            imagePath: event.image!,
+                            event: event,
+                            title: event.name!,
+                          );
+                        }
+                      },
+                      childCount:
+                          controller.eventList.where((e) => e.live!).length,
+                    ),
+                  ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding:
+                    EdgeInsets.only(left: Get.width / 25, top: 30, bottom: 30),
+                child: Text(
+                  'Events Participated',
+                  style: Get.theme.kSmallTextStyle,
+                ),
               ),
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 159 / 200),
-
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  return TicketTile(
-                    imagePath: registeredEvents[index].image!,
-                    title: registeredEvents[index].name!,
-                    event: registeredEvents[index],
-                  );
-                },
-                    childCount: registeredEvents.length),
+            ),
+            SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 159 / 200),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                return TicketTile(
+                  imagePath: registeredEvents[index].image!,
+                  title: registeredEvents[index].name!,
+                  event: registeredEvents[index],
+                );
+              }, childCount: registeredEvents.length),
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 0.2 * Get.height,
               ),
-               SliverToBoxAdapter(child: SizedBox(height: 0.2*Get.height,),)
-            ],
-
-          ),
+            )
+          ],
+        ),
       ),
-
     );
   }
 }
@@ -122,7 +143,8 @@ class TicketTile extends StatelessWidget {
   final String title;
   final EventListModel event;
 
-  const TicketTile({super.key,
+  const TicketTile({
+    super.key,
     required this.imagePath,
     required this.title,
     required this.event,
@@ -154,14 +176,13 @@ class TicketTile extends StatelessWidget {
                         ),
                       )),
                 ),
-                trailing:  Padding(
-                  padding: const EdgeInsets.only(
-                     left:8,right: 8,top:10),
+                trailing: Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8, top: 10),
                   child: IconButton(
                       onPressed: () {
                         Get.to(() => TicketDisplayPage(
-                          event: event,
-                        ));
+                              event: event,
+                            ));
                       },
                       icon: const Icon(Icons.qr_code_scanner_rounded)),
                 ),
@@ -172,9 +193,9 @@ class TicketTile extends StatelessWidget {
               child: GestureDetector(
                 //TODO: make this gesture detector redirect to events page
                 onTap: () => Get.to(() => EventsScreen(
-                  event: event,
-                  fromMyEvents: true.obs,
-                )),
+                      event: event,
+                      fromMyEvents: true.obs,
+                    )),
                 child: Card(
                   child: Container(
                     decoration: BoxDecoration(

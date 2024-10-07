@@ -45,9 +45,7 @@ class _EventsScreenState extends State<EventsScreen> {
 
   Future<void> _initializeEventData() async {
     if (widget.fromNotificationRoute && widget.EventId != null) {
-      print("Fetching event data from notification route...");
       await controller.fetchEventData(widget.EventId!);
-      print("Event data fetched.");
 
       eventData = controller.eventData.value;
 
@@ -57,7 +55,6 @@ class _EventsScreenState extends State<EventsScreen> {
         controller.checkRegistered(controller.eventData.value);
       });
     } else if (!widget.fromNotificationRoute && widget.event != null) {
-      print("Using passed event data...");
       controller.eventData.value = widget.event!;
       controller.getUser().then((_) async {
         controller.checkRegistered(controller.eventData.value);
@@ -96,6 +93,12 @@ class _EventsScreenState extends State<EventsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ImageColoredShadow(link: eventData.image!),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
+                  child: Text(
+                      eventData.name.toString().trim(),
+                      style: Get.theme.kSubTitleTextStyle.copyWith(fontSize: 28)),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
                   child: Wrap(spacing: 10,children: [
