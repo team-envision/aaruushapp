@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-
-AppBar AaruushAppBar({required String title, List<Widget>? actions,double? fontsize}) {
+AppBar AaruushAppBar(
+    {required String title, List<Widget>? actions, double? fontsize}) {
   return AppBar(
     systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent
-    ),
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarContrastEnforced: true,
+        systemNavigationBarDividerColor: Colors.transparent),
     backgroundColor: WidgetStateColor.resolveWith((states) {
       if (states.contains(WidgetState.scrolledUnder)) {
         return Colors.black87;
@@ -17,12 +19,16 @@ AppBar AaruushAppBar({required String title, List<Widget>? actions,double? fonts
       }
     }),
     foregroundColor: Colors.transparent,
+    shadowColor: Colors.transparent, surfaceTintColor: Colors.transparent,
     // flexibleSpace: appBarBlur(),
     elevation: 0,
-    centerTitle: true,leadingWidth: 90,titleSpacing: 1,clipBehavior: Clip.none,
+    centerTitle: true, leadingWidth: 90, titleSpacing: 1,
+    clipBehavior: Clip.none,
     titleTextStyle: TextStyle(fontSize: fontsize),
     leading: Image.asset(
-      'assets/images/aaruush.png',fit: BoxFit.contain,alignment: Alignment.center,
+      'assets/images/aaruush.png',
+      fit: BoxFit.contain,
+      alignment: Alignment.center,
     ),
     actions: actions,
     title: Text(

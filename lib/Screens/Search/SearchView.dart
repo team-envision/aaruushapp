@@ -58,94 +58,96 @@ class _SearchscreenState extends State<Searchscreen> {
       extendBodyBehindAppBar: true,
       appBar: AaruushAppBar(title: "AARUUSH"),
       body: BgArea(
-        children: [
-          SizedBox(height: 100,),
-          Padding(
-            padding: const EdgeInsets.only(left: 25, right: 25),
-            child: SizedBox(
-              height: 50,
-              child: Hero(
-                tag: "SearchTag",
-                child: TextField(style: TextStyle(color: Colors.black),cursorColor: Colors.black45,
-                  controller: _searchController,onTapOutside: (val){FocusManager.instance.primaryFocus?.unfocus();},
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+        child: Column(
+          children: [
+            const SizedBox(height: 100,),
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25),
+              child: SizedBox(
+                height: 50,
+                child: Hero(
+                  tag: "SearchTag",
+                  child: TextField(style: const TextStyle(color: Colors.black),cursorColor: Colors.black45,
+                    controller: _searchController,onTapOutside: (val){FocusManager.instance.primaryFocus?.unfocus();},
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      disabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
 
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: "Search Event Name",
+                      hintStyle: const TextStyle(color: Colors.black45),
                     ),
-                    hintText: "Search Event Name",
-                    hintStyle: TextStyle(color: Colors.black45),
                   ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Obx((){
-            if(searchResults.isEmpty){
-              return SizedBox(height: Get.height,
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(10),
-                  itemCount: eventList.length,shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    var event = eventList[index];
-                    return eventCard(
-                      event,
-                          () => Get.to(() => EventsScreen(
-                        event: event,
-                        fromMyEvents: false.obs,
-                      )),
-                      homeController,
-                    );
-                  },
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+            const SizedBox(height: 20),
+            Obx((){
+              if(searchResults.isEmpty){
+                return SizedBox(height: Get.height,
+                  child: GridView.builder(
+                    padding: const EdgeInsets.all(10),
+                    itemCount: eventList.length,shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var event = eventList[index];
+                      return eventCard(
+                        event,
+                            () => Get.to(() => EventsScreen(
+                          event: event,
+                          fromMyEvents: false.obs,
+                        )),
+                        homeController,
+                      );
+                    },
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
                   ),
-                ),
-              );
-            }
+                );
+              }
 
-           else{
-              return  SizedBox(height: Get.height,
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(10),
-                  itemCount: searchResults.length,shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    var event = searchResults[index];
-                    return eventCard(
-                      event,
-                          () => Get.to(() => EventsScreen(
-                        event: event,
-                        fromMyEvents: false.obs,
-                      )),
-                      homeController,
-                    );
-                  },
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+              else{
+                return  SizedBox(height: Get.height,
+                  child: GridView.builder(
+                    padding: const EdgeInsets.all(10),
+                    itemCount: searchResults.length,shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var event = searchResults[index];
+                      return eventCard(
+                        event,
+                            () => Get.to(() => EventsScreen(
+                          event: event,
+                          fromMyEvents: false.obs,
+                        )),
+                        homeController,
+                      );
+                    },
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
                   ),
-                ),
-              );
-            }
-          })
-        ],
+                );
+              }
+            })
+          ],
+        ),
       ),
     );
   }

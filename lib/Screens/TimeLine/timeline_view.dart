@@ -9,12 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../Utilities/aaruushappbar.dart';
-
+TimelineController controller = Get.put(TimelineController());
 class TimelineView extends GetView<TimelineController> {
-  const TimelineView({super.key});
+   TimelineView({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -30,7 +31,7 @@ class TimelineView extends GetView<TimelineController> {
             );
           } else if (snapshot.hasData) {
             var data = jsonDecode(snapshot.data.toString());
-            return BgArea(mainAxisAlignment: MainAxisAlignment.start, children: [
+            return BgArea( child:
               SafeArea(
                 bottom: false,
                 minimum: EdgeInsets.only(top: 180),
@@ -39,6 +40,9 @@ class TimelineView extends GetView<TimelineController> {
                   width: Get.width - 40,
                   child: AppinioSwiper(
                     backgroundCardCount: 4,
+                    allowUnSwipe: true,
+                    controller: controller.swiperController,
+                    swipeOptions: SwipeOptions.only(right: true),allowUnlimitedUnSwipe: true,
                     invertAngleOnBottomDrag: true,
                     backgroundCardOffset: Offset(0, -38),loop: true,
                     cardBuilder: (context, index) {
@@ -50,7 +54,7 @@ class TimelineView extends GetView<TimelineController> {
                   ),
                 ),
               )
-            ]);
+            );
           } else if (snapshot.hasError) {
             return const Center(
               child: Text("Something Went Wrong",
@@ -78,79 +82,91 @@ class timeLineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlipCard(
-        front: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: Color.fromRGBO(236, 99, 32, 1))),
-          child: Stack(alignment: Alignment.bottomCenter, children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(22),
-                  image: DecorationImage(alignment: year=="2007"?Alignment.centerRight:Alignment.center,
-                      image: CachedNetworkImageProvider(ImageUrl,
-                          maxHeight: double.maxFinite.toInt()),
-                      fit: BoxFit.cover)),
-            ),
-            ListTile(
-              titleTextStyle:Get.theme.kSmallTextStyle.copyWith(fontWeight: FontWeight.bold),
-              style: ListTileStyle.list,iconColor: Colors.white,subtitleTextStyle: Get.theme.kVerySmallTextStyle,
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              leading: Image.asset(
-                "assets/images/aaruush.png",
-                scale: 5,
+    return GestureDetector(
+        onHorizontalDragEnd: (dragEndDetails) {
+      if (dragEndDetails.primaryVelocity!.isLowerThan(0) ) {
+        controller.swiperController.unswipe();
+      } else if (dragEndDetails.primaryVelocity!.isGreaterThan(0) ) {
+        controller.swiperController.swipeRight();
+      }},
+      child: FlipCard(
+        side: CardSide.FRONT,
+          controller: controller.flipCardController,
+          front: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: Color.fromRGBO(236, 99, 32, 1))),
+            child: Stack(alignment: Alignment.bottomCenter, children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(22),
+                    image: DecorationImage(alignment: year=="2007"?Alignment.centerRight:Alignment.center,
+                        image: CachedNetworkImageProvider(ImageUrl,
+                            maxHeight: double.maxFinite.toInt()),
+                        fit: BoxFit.cover)),
               ),
-              horizontalTitleGap: 0,
-              title: Text("AARUUSH ${year.substring(2)}"),
-              subtitle: FittedBox(child: Text(tagLine)),
-              trailing: Icon(Icons.info),
-            ),
-          ]),
-        ),
-        back: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: Color.fromRGBO(236, 99, 32, 1))),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              SvgPicture.asset(
-                "assets/images/aaruush.svg",
-                colorFilter:
-                    ColorFilter.mode(Colors.black45, BlendMode.luminosity),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    spacing: 20,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: Text(
-                          "EVENT DISCRIPTION",
-                          style: Get.theme.kSubTitleTextStyle
-                              .copyWith(fontWeight: FontWeight.w900),
-                        ),
-                      ),
-                      Text(
-                        description,
-                        style: Get.theme.kSmallTextStyle.copyWith(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+              ListTile(
+                titleTextStyle:Get.theme.kSmallTextStyle.copyWith(fontWeight: FontWeight.bold),
+                style: ListTileStyle.list,iconColor: Colors.white,subtitleTextStyle: Get.theme.kVerySmallTextStyle,
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                leading: Image.asset(
+                  "assets/images/aaruush.png",
+                  scale: 5,
                 ),
-              )
-            ],
+                horizontalTitleGap: 0,
+                title: Text("AARUUSH ${year.substring(2)}"),
+                subtitle: FittedBox(child: Text(tagLine)),
+                trailing: Icon(Icons.info),
+              ),
+            ]),
           ),
-        ));
+          back: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: Color.fromRGBO(236, 99, 32, 1))),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                SvgPicture.asset(
+                  "assets/images/aaruush.svg",
+                  colorFilter:
+                      ColorFilter.mode(Colors.black45, BlendMode.luminosity),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      // spacing: 20,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            "EVENT DISCRIPTION",
+                            style: Get.theme.kSubTitleTextStyle
+                                .copyWith(fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                        Text(
+                          description,
+                          style: Get.theme.kSmallTextStyle.copyWith(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+
+      ),
+    );
   }
 }

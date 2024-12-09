@@ -111,6 +111,8 @@ class NotificationServices {
       importance: Importance.max,
       enableLights: true,
       priority: Priority.max,
+      category: AndroidNotificationCategory.promo,
+      fullScreenIntent: true,
       playSound: true,
       groupAlertBehavior: GroupAlertBehavior.all,
       ticker: 'ticker',
@@ -121,6 +123,7 @@ class NotificationServices {
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
+      interruptionLevel: InterruptionLevel.active
     );
 
     NotificationDetails notificationDetails = NotificationDetails(

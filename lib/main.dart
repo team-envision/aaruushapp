@@ -78,7 +78,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     'title': message.notification?.title,
     'body': message.notification?.body,
     'linkAndroid': message.notification?.android!.imageUrl,
-    // 'linkApple': message.notification?.apple!.imageUrl,
+    'linkApple': message.notification?.apple!.imageUrl,
     'data': message.data,
     'receivedAt': DateTime.now(),
   });

@@ -2,73 +2,103 @@ import 'package:AARUUSH_CONNECT/Certificates/CertificateController.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
-import 'package:any_link_preview/any_link_preview.dart';
+import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class Certificateview extends StatelessWidget{
+class Certificateview extends StatelessWidget {
   Certificateview({super.key});
-final controller = Get.put(Certificatecontroller());
+  final controller = Get.put(Certificatecontroller());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(title: "AARUUSH",actions: [IconButton.outlined(padding: EdgeInsets.zero,
-        onPressed: () => {Navigator.pop(context)},
-        icon: const Icon(Icons.close_rounded),
-        color: Colors.white,
-        iconSize: 25,
-      ),]),
-      body:   BgArea(
-          children: [
-        SafeArea(
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children:
-            [
-              SizedBox(width: 70,),
-              Text("Certificates",style: Get.theme.kSubTitleTextStyle,),
-
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SvgPicture.asset("assets/images/icons/BadgesIcon.svg",height: 35,width: 35,),
-              )
-            ],),
+      appBar: AaruushAppBar(
+          title: "Certificates", actions: [
+        IconButton.outlined(
+          padding: EdgeInsets.zero,
+          onPressed: () => {Navigator.pop(context)},
+          icon: const Icon(Icons.close_rounded),
+          color: Colors.white,
+          iconSize: 25,
         ),
-
-            SizedBox(height: Get.height,
-              child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1), itemBuilder: (context, index) =>
-
-                  AnyLinkPreview(
-                    link: "https://vardaan.app/",
-                    displayDirection: UIDirection.uiDirectionHorizontal,
-                    showMultimedia: false,
-                    bodyMaxLines: 5,
-                    bodyTextOverflow: TextOverflow.ellipsis,
-                    titleStyle: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                    bodyStyle: TextStyle(color: Colors.grey, fontSize: 12),
-                    errorBody: 'Show my custom error body',
-                    errorTitle: 'Show my custom error title',
-                    errorWidget: Container(
-                      color: Colors.grey[300],
-                      child: Text('Oops!'),
-                    ),
-                    errorImage: "https://google.com/",
-                    cache: Duration(days: 7),
-                    backgroundColor: Colors.grey[300],
-                    borderRadius: 12,
-                    removeElevation: false,
-                    boxShadow: [BoxShadow(blurRadius: 3, color: Colors.grey)],
-                    onTap: (){}, // This disables tap event
-                  )
-                ,),
-            )
       ]),
+      body: BgArea(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: AppBar().preferredSize.height+20),
+              Obx(
+                    () => controller.isLoading.value?CircularProgressIndicator(color: Get.theme.colorPrimary,):
+                    controller.certificates.isEmpty? const Text(
+                      "No Certificates",
+                      style: TextStyle(letterSpacing: 4),
+                    ):Expanded(
+                      child: LiveList.options(padding: const EdgeInsets.symmetric(vertical: 12),
+                        itemBuilder: (BuildContext context, int index, Animation<double> animation) {
+                          String name = controller.certificates.keys.elementAt(index);
+                          String pdfUrl = controller.certificates.values.elementAt(index);
+                          return Card(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),margin: const EdgeInsets.all(12),clipBehavior: Clip.antiAlias
+                            ,
+                            child: Stack(alignment: Alignment.bottomCenter,
+                              children: [
+                                SizedBox(
+                                  height: 150,
+                                  child: SfPdfViewerTheme(data: SfPdfViewerThemeData(backgroundColor: Colors.transparent,progressBarColor: Get.theme.colorPrimary),
+                                      child: SfPdfViewer.network(pdfUrl,)),
+                                ),
+                                Container(color: Colors.black54,
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Expanded(
+                                        flex:20,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 8.0),
+                                          child: Text(
+                                            name,
+                                            style: Get.textTheme.headlineSmall!.copyWith(color: Colors.white,fontSize: 20),
+                                            overflow: TextOverflow.ellipsis,softWrap: true,
+                                          ),
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      IconButton(
+                                        onPressed: () => controller.openPreviewDialog(Get.context!,pdfUrl),
+                                        icon: const Icon(Icons.open_in_new_outlined),color: Colors.white,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      IconButton(
+                                        onPressed: () => controller.downloadPDF(pdfUrl),
+                                        icon: const Icon(Icons.file_download_outlined),color: Colors.white,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+
+                        },
+                        itemCount: controller.certificates.length, options: const LiveOptions(
+
+                          delay: Duration(seconds: 1),
+
+                          showItemInterval: Duration(milliseconds: 500),
+
+                          showItemDuration: Duration(seconds: 1),
+
+                          visibleFraction: 0.05,
+
+                          reAnimateOnVisibility: false,
+                        ),
+
+                      ),
+                    ),
+              )
+            ],
+          )),
     );
   }
 }

@@ -8,13 +8,10 @@ import 'package:AARUUSH_CONNECT/Services/appRating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-
-
-
 
 class HomeController extends GetxController {
   var eventList = <EventListModel>[].obs;
@@ -38,11 +35,11 @@ class HomeController extends GetxController {
     "events",
   ];
 
-
-
   @override
   Future<void> onInit() async {
     super.onInit();
+    print("GetStorage().read('accessToken')");
+    print(GetStorage().read('accessToken'));
     common.isEventRegistered;
     common.fetchAndLoadDetails();
     fetchEventData();
@@ -57,30 +54,20 @@ class HomeController extends GetxController {
         print(newToken);
       }
       try {
-
         String? email = common.getCurrentUser().email;
 
-        DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(email);
+        DocumentReference userDoc =
+            FirebaseFirestore.instance.collection('users').doc(email);
 
-        DocumentSnapshot userSnapshot = await userDoc.get();
-        String? currentToken = userSnapshot.get("fcmToken");
-        if (kDebugMode) {
-          print("saved token ${currentToken!}");
-        }
-
-        if (currentToken != newToken) {
           await userDoc.update({'fcmToken': newToken});
           if (kDebugMode) {
             print('Token updated in Firestore');
           }
-        } else {
-          if (kDebugMode) {
-            print('Token is the same. No update required.');
-          }
-        }
+
       } on FirebaseException catch (e) {
         if (kDebugMode) {
-          print("Firebase Exception occurred while updating new token: ${e.message}");
+          print(
+              "Firebase Exception occurred while updating new token: ${e.message}");
         }
       } catch (e) {
         if (kDebugMode) {
@@ -92,16 +79,15 @@ class HomeController extends GetxController {
     fetchGallery(year: "2023");
   }
 
-
   @override
-  onReady(){
+  onReady() {
     final AppRating = appRating();
     AppRating.rateApp(Get.context!);
   }
-  onDispose(){
-  super.dispose();
-}
 
+  onDispose() {
+    super.dispose();
+  }
 
   Future<void> updateProfile() async {
     final attributes = common.getCurrentUser();
@@ -119,30 +105,43 @@ class HomeController extends GetxController {
       collection
           .doc(attributes.email)
           .update({
-        "aaruushId": data['aaruushId'] ?? "",
-        "email": data['email'] ?? "",
-        "name" : data['name'] ?? "",
-        "college" : data['college'] ?? data['college (na if not applicable)'] ?? data['college_name'] ?? "",
-        "registerNumber" : data['registration number (na if not applicable)'] ?? data['college_id'] ?? data['Registration Number'] ?? "",
-        "phone": data['phone'] ?? data["whatsapp"] ?? data["phone number"] ?? data["Whatsapp Number"] ?? data["whatsappnumber"] ?? data["whatsapp number"] ?? ""
-      })
-          .then((_) => debugPrint('from HomeController: Success in updating info from aws to firebase'))
-          .catchError((error) { if (kDebugMode) {
-        print('from HomeController: error in updating info from aws to firebase');
-            print('Failed: $error');
-          }});
+            "aaruushId": data['aaruushId'] ?? "",
+            "email": data['email'] ?? "",
+            "name": data['name'] ?? "",
+            "college": data['college'] ??
+                data['college (na if not applicable)'] ??
+                data['college_name'] ??
+                "",
+            "registerNumber":
+                data['registration number (na if not applicable)'] ??
+                    data['college_id'] ??
+                    data['Registration Number'] ??
+                    "",
+            "phone": data['phone'] ??
+                data["whatsapp"] ??
+                data["phone number"] ??
+                data["Whatsapp Number"] ??
+                data["whatsappnumber"] ??
+                data["whatsapp number"] ??
+                ""
+          })
+          .then((_) => debugPrint(
+              'from HomeController: Success in updating info from aws to firebase'))
+          .catchError((error) {
+            if (kDebugMode) {
+              print(
+                  'from HomeController: error in updating info from aws to firebase');
+              print('Failed: $error');
+            }
+          });
     } else {
       if (kDebugMode) {
-        print('from HomeController: error in updating info from aws to firebase');
+        print(
+            'from HomeController: error in updating info from aws to firebase');
         print("ERROR : ${response.body}");
       }
-
     }
-
-
-    }
-
-
+  }
 
   Future<void> fetchEventData() async {
     isLoading.value = true;
@@ -151,12 +150,14 @@ class HomeController extends GetxController {
       if (response.statusCode == 200) {
         String data = utf8.decode(response.bodyBytes);
         List jsonResponse = json.decode(data);
-        List<dynamic> filteredLiveEvents = jsonResponse.where((event) => event['live'] == true).toList();
-        eventList.assignAll(jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
-        templiveEventList.assignAll(filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
+        List<dynamic> filteredLiveEvents =
+            jsonResponse.where((event) => event['live'] == true).toList();
+        eventList.assignAll(
+            jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
+        templiveEventList.assignAll(
+            filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
 
-         LiveEventsList.value = templiveEventList.map((e) => e.id).toList();
-
+        LiveEventsList.value = templiveEventList.map((e) => e.id).toList();
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load events');
@@ -169,30 +170,27 @@ class HomeController extends GetxController {
     }
   }
 
-
-
   Future<void> fetchGallery({required String year}) async {
     isLoading.value = true;
     try {
-      final response = await http.get(Uri.parse('${ApiData.API}/gallery/edition/$year/proshow'));
+      final response = await http
+          .get(Uri.parse('${ApiData.API}/gallery/edition/$year/proshow'));
 
       if (response.statusCode == 200) {
         String data = utf8.decode(response.bodyBytes);
         List jsonResponse = json.decode(data);
 
-        tempGalleryList.assignAll(
-            jsonResponse.map((e) => Gallery.fromJson(e)).toList()
-        );
+        tempGalleryList
+            .assignAll(jsonResponse.map((e) => Gallery.fromJson(e)).toList());
 
         tempGalleryList.forEach((gallery) {
           if (gallery.image != null) {
             galleryList.addAll(gallery.image!);
           }
         });
-
-
       } else {
-        printError(info: "Error gallery: ${response.body} ${response.statusCode}");
+        printError(
+            info: "Error gallery: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load gallery');
       }
     } catch (e) {
@@ -201,10 +199,6 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
-
-
-
-
 
   Future<void> fetchEventDataByCategory(String category) async {
     isLoading.value = true;
@@ -216,12 +210,11 @@ class HomeController extends GetxController {
         List<dynamic> jsonResponse = json.decode(data);
 
         var filteredEvents = jsonResponse.where((event) {
-          return event['sortCategory'] == category ;
+          return event['sortCategory'] == category;
         }).toList();
 
-
-        eventList.assignAll(filteredEvents.map((e) => EventListModel.fromMap(e)).toList());
-
+        eventList.assignAll(
+            filteredEvents.map((e) => EventListModel.fromMap(e)).toList());
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load events');
@@ -237,9 +230,9 @@ class HomeController extends GetxController {
     final mapUrl = Uri.parse(URL);
 
     if (await canLaunchUrl(mapUrl)) {
-    await launchUrl(mapUrl);
+      await launchUrl(mapUrl);
     } else {
-    debugPrint("Cannot launch map url");
+      debugPrint("Cannot launch map url");
     }
   }
 
@@ -251,6 +244,4 @@ class HomeController extends GetxController {
       fetchEventDataByCategory(name);
     }
   }
-
 }
-

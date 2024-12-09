@@ -9,6 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import '../../Common/common_controller.dart';
@@ -30,10 +31,11 @@ class RegisterController extends GetxController {
   Future<void> onInit() async {
     // TODO: implement onInit
     super.onInit();
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final String? googleUserEmail =  await GetStorage().read('userEmail');
+    final String? googleUserName =  await GetStorage().read('userName');
 
-    EmailTextEditingController.text = googleUser!.email;
-    NameTextEditingController.text =  toRemoveTextInBracketsIfExists(googleUser.displayName!).toString();
+    EmailTextEditingController.text = googleUserEmail ?? "";
+    NameTextEditingController.text =  toRemoveTextInBracketsIfExists(googleUserName ?? "");
     PhNoTextEditingController.text = common.phoneNumber.value;
     RegNoTextEditingController.text = common.RegNo.value;
     CollgeTextEditingController.text = common.college.value;
@@ -91,18 +93,13 @@ class RegisterController extends GetxController {
     }
 
 
-    homeController.common.fetchAndLoadDetails();
+    await homeController.common.fetchAndLoadDetails();
   }
 
 
 
-  Future<void> saveUserToFirestore({
-    required String name,
-    required String college,
-    required String registerNumber,
-    required String phoneNumber,
-    required String email,
-  }) async {
+  Future<void> saveUserToFirestore() async {
+
     if (kDebugMode) {
       print(FirebaseAuth.instance.currentUser!.getIdToken());
     }
@@ -112,6 +109,11 @@ class RegisterController extends GetxController {
 
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
+    String name = NameTextEditingController.text;
+    String college= CollgeTextEditingController.text;
+    String registerNumber= RegNoTextEditingController.text;
+    String phoneNumber= PhNoTextEditingController.text;
+    String email= EmailTextEditingController.text;
 
     Map<String, dynamic> userData = {
       'name': name,
@@ -125,7 +127,7 @@ class RegisterController extends GetxController {
     };
 
 
-     Future<bool> isAvailable = common.isUserAvailable(email);
+     Future<bool> isAvailable = common.isUserAvailableInFirebase(email);
      if(!await isAvailable){
        kDebugMode ? print('User data saved successfully!'):null;
        try{
@@ -141,14 +143,12 @@ class RegisterController extends GetxController {
 
      }
 
-
-
-
-
   }
+
+
+
   @override
   void dispose() {
-    // Dispose any resources here if necessary
     super.dispose();
     NameTextEditingController.dispose();
     CollgeTextEditingController.dispose();
@@ -160,7 +160,6 @@ class RegisterController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    // Dispose any resources here if necessary
   }
 
 

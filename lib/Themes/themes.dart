@@ -47,17 +47,18 @@ extension ThemeExtension on ThemeData {
   // Color get materialColor9 => const Color(0xfff694c1);
   // Color get materialColorDark9 => const Color(0xff8c0342);
 
-  TextStyle get kTitleTextStyle => GoogleFonts.montserrat(//roboto
+  TextStyle get kTitleTextStyle => GoogleFonts.montserrat(
+        //roboto
         fontWeight: FontWeight.w500,
         color: btnTextCol,
         fontSize: 25,
       );
-  TextStyle get kTitleTextStyle1 => GoogleFonts.montserrat(//roboto
-    fontWeight: FontWeight.w600,
-    color: btnTextCol,
-    fontSize: 32,
-  );
-
+  TextStyle get kTitleTextStyle1 => GoogleFonts.montserrat(
+        //roboto
+        fontWeight: FontWeight.w600,
+        color: btnTextCol,
+        fontSize: 32,
+      );
 
   TextStyle get kSubTitleTextStyle => GoogleFonts.montserrat(
         fontSize: 20,
@@ -65,24 +66,23 @@ extension ThemeExtension on ThemeData {
         color: btnTextCol,
       );
   TextStyle get kSubTitleTextStyle2 => GoogleFonts.montserrat(
-    fontSize: 30,
-    fontWeight: FontWeight.w500,
-    color: btnTextCol,
-  );
+        fontSize: 30,
+        fontWeight: FontWeight.w500,
+        color: btnTextCol,
+      );
   TextStyle get kSmallTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w500,
         fontSize: 18,
         color: btnTextCol,
       );
   TextStyle get kSmallmidTextStyle => GoogleFonts.montserrat(
-    fontWeight: FontWeight.w700,
-    fontSize: 16,
-    color: btnTextCol,
-  );
+        fontWeight: FontWeight.w700,
+        fontSize: 16,
+        color: btnTextCol,
+      );
   TextStyle get kVerySmallTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w500,
         color: btnTextCol,
-
       );
   TextStyle get kBigTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w800,
@@ -90,10 +90,10 @@ extension ThemeExtension on ThemeData {
         fontSize: 40,
       );
   TextStyle get kBigTextStyle1 => GoogleFonts.montserrat(
-    fontWeight: FontWeight.w600,
-    color: btnTextCol,
-    fontSize: 80,
-  );
+        fontWeight: FontWeight.w600,
+        color: btnTextCol,
+        fontSize: 80,
+      );
   TextStyle get kVeryBigTextStyle => GoogleFonts.montserrat(
         fontWeight: FontWeight.w800,
         color: btnTextCol,
@@ -104,8 +104,9 @@ extension ThemeExtension on ThemeData {
 class Themes {
   static final light = ThemeData.light().copyWith(
     // backgroundColor: Colors.white,
-
-
+    dialogBackgroundColor: Colors.transparent,
+    dialogTheme:
+        const DialogTheme(backgroundColor: Colors.transparent, elevation: 0),
     appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Color(0xffffffff),
@@ -124,5 +125,4 @@ class Themes {
             statusBarIconBrightness: Brightness.light)),
     scaffoldBackgroundColor: const Color(0xff161616),
   );
-
 }

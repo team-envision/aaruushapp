@@ -1,6 +1,8 @@
 import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+
 
 
 class AaruushAppScreen extends GetView<CommonController> {
@@ -14,7 +16,7 @@ class AaruushAppScreen extends GetView<CommonController> {
         if (snapshot.hasData) {
           return snapshot.data!;
         } else {
-          return  const Scaffold(
+          return   const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

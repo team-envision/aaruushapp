@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Screens/Auth/auth_screen.dart';
+import 'package:AARUUSH_CONNECT/Screens/Auth/registerView.dart';
 import 'package:AARUUSH_CONNECT/Screens/OnBoard/on_boarding_screen.dart';
 import 'package:AARUUSH_CONNECT/Utilities/AaruushBottomBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -56,9 +57,18 @@ class CommonController extends GetxController {
   Future<Widget> getLandingPage() async {
 
     final isSignedIn = await isUserSignedIn();
-    if (isSignedIn) {
+    final String? googleUser =  await GetStorage().read('userEmail');
+    print(googleUser);
+    final isUserAvailableinFirebase = await isUserAvailableInFirebase(googleUser ?? "tester@gmail.com");
+    print("isUserAvailableinFirebase");
+    print(isUserAvailableinFirebase);
+    print(googleUser);
+    if (isSignedIn && isUserAvailableinFirebase) {
       debugPrint("User signed in");
       return  AaruushBottomBar();
+    }else if(isSignedIn && !isUserAvailableinFirebase) {
+      debugPrint("User not registered in firebase");
+      return  registerView();
     } else {
       debugPrint("User not signed in");
       return const OnBoardingScreen();
@@ -71,7 +81,7 @@ class CommonController extends GetxController {
     return user!;
   }
 
-  Future<bool> isUserAvailable(String email) async {
+  Future<bool> isUserAvailableInFirebase(String email) async {
     try {
       CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -106,8 +116,12 @@ class CommonController extends GetxController {
     try {
       final GoogleSignInAccount? googleUser = GoogleSignIn().currentUser;
       await FirebaseAuth.instance.signOut();
+      GoogleSignIn().disconnect();
       googleUser?.clearAuthCache();
       GetStorage().erase();
+
+
+
     } on FirebaseAuthException catch (e) {
       debugPrint("Errr $e");
     }

@@ -17,7 +17,7 @@ class AaruushBottomBar extends StatelessWidget {
 
   final RxInt _selectedIndex = 0.obs;
 
-  final RxList<Widget> _screens = [const HomeScreen(), MyEvents(),TimelineView(), const ProfileScreen()].obs;
+  final RxList<Widget> _screens = [const HomeScreen(), MyEvents(fromProfile: false,),TimelineView(), const ProfileScreen()].obs;
 
   @override
   Widget build(BuildContext context) {

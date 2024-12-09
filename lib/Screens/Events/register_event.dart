@@ -47,9 +47,8 @@ class RegisterEvent extends GetView<EventsController> {
         // ),
       ),
       body: BgArea(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
+        child:  Center(
+          child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 100.0),
             child: CustomBox(
               margin: const EdgeInsets.all(20),boxShadowOpacity: 0.4,colourOpacity: 0.3,
@@ -107,9 +106,9 @@ class RegisterEvent extends GetView<EventsController> {
                           () => controller.isLoading.value
                           ? const CircularProgressIndicator()
                           : SizedBox(width: 250,
-                            child: primaryButton(
-                                                    text: "Submit data",
-                                                    onTap: () {
+                        child: primaryButton(
+                          text: "Submit data",
+                          onTap: () {
                             if (controller.registerFormKey.currentState!.validate() &&
                                 event.dynamicform != null) {
                               for (var e in event.dynamicform!) {
@@ -124,9 +123,9 @@ class RegisterEvent extends GetView<EventsController> {
                                   "Register data ${controller.registerFieldData.value}");
                               controller.registerEvent(e: event);
                             }
-                                                    },
-                                                  ),
-                          ),
+                          },
+                        ),
+                      ),
                     ),
                     sizeBox(30, 0),
                   ],
@@ -134,7 +133,7 @@ class RegisterEvent extends GetView<EventsController> {
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

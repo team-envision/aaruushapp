@@ -2,7 +2,6 @@ import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cupertino_icons/cupertino_icons.dart'; // Import Cupertino icons
 
 class TicketButton extends StatelessWidget {
   TicketButton({

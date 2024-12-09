@@ -1,3 +1,4 @@
+
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
@@ -9,8 +10,10 @@ import '../Events/events_screen.dart';
 import '../Home/home_controller.dart';
 
 class MyEvents extends StatelessWidget {
-  MyEvents({super.key, this.eventList});
+  MyEvents({super.key, this.eventList,required this.fromProfile});
   List<EventListModel>? eventList;
+
+  bool fromProfile;
   @override
   Widget build(BuildContext context) {
     HomeController controller = Get.find();
@@ -29,9 +32,23 @@ class MyEvents extends StatelessWidget {
     }
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(
-        title: "AARUUSH",
-      ),
+      appBar:fromProfile
+          ? AaruushAppBar(title: "AARUUSH", actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton.outlined(
+                  padding: EdgeInsets.zero,
+                  alignment: Alignment.center,
+                  onPressed: () => {Navigator.pop(context)},
+                  icon: const Icon(Icons.close_rounded),
+                  color: Colors.white,
+                  iconSize: 25,
+                ),
+              )
+            ])
+          : AaruushAppBar(
+              title: "AARUUSH",
+            ),
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -51,27 +68,18 @@ class MyEvents extends StatelessWidget {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(left: Get.width / 25, bottom: 30),
-                child: Text(
-                  'Upcoming Events',
-                  style: Get.theme.kSmallTextStyle,
-                ),
-              ),
-            ),
-            controller.LiveEventsList.isEmpty
+            registeredEvents.isEmpty
                 ? const SliverToBoxAdapter(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Currently No Live Events",
-                      style: TextStyle(letterSpacing: 4),
+                    child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(18.0),
+                      child: Text(
+                        "You Haven't registered For Any Event",
+                        style: TextStyle(letterSpacing: 4),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                )
-            )
+                  ))
                 : SliverGrid(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -79,53 +87,14 @@ class MyEvents extends StatelessWidget {
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
                             childAspectRatio: 159 / 200),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (controller.isLoading.value) {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            color: Get.theme.colorPrimary,
-                          ));
-                        } else {
-                          final event = controller.eventList
-                              .where((e) => e.live!)
-                              .toList()[index];
-
-                          return TicketTile(
-                            imagePath: event.image!,
-                            event: event,
-                            title: event.name!,
-                          );
-                        }
-                      },
-                      childCount:
-                          controller.eventList.where((e) => e.live!).length,
-                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      return TicketTile(
+                        imagePath: registeredEvents[index].image!,
+                        title: registeredEvents[index].name!,
+                        event: registeredEvents[index],
+                      );
+                    }, childCount: registeredEvents.length),
                   ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding:
-                    EdgeInsets.only(left: Get.width / 25, top: 30, bottom: 30),
-                child: Text(
-                  'Events Participated',
-                  style: Get.theme.kSmallTextStyle,
-                ),
-              ),
-            ),
-            SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 159 / 200),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return TicketTile(
-                  imagePath: registeredEvents[index].image!,
-                  title: registeredEvents[index].name!,
-                  event: registeredEvents[index],
-                );
-              }, childCount: registeredEvents.length),
-            ),
             SliverToBoxAdapter(
               child: SizedBox(
                 height: 0.2 * Get.height,
