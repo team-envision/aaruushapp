@@ -1,19 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-
 import '../Common/common_controller.dart';
 import '../Data/api_data.dart';
 

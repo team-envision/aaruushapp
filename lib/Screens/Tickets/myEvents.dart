@@ -1,38 +1,56 @@
-
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
+import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Events/events_screen.dart';
 import '../Home/home_controller.dart';
 
-class MyEvents extends StatelessWidget {
-  MyEvents({super.key, this.eventList,required this.fromProfile});
-  List<EventListModel>? eventList;
+var registeredEvents;
 
+class MyEvents extends StatefulWidget {
+  List<EventListModel>? eventList;
   bool fromProfile;
+  MyEvents({super.key, this.eventList, required this.fromProfile});
+
+
+  @override
+  State<MyEvents> createState() => _MyEventsState();
+}
+
+class _MyEventsState extends State<MyEvents> {
+  final scrollController = ScrollController();
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    scrollController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     HomeController controller = Get.find();
-    eventList == null
-        ? eventList = controller.eventList
-        : eventList = eventList;
+    widget.eventList == null
+        ? widget.eventList = controller.eventList
+        : widget.eventList = widget.eventList;
     controller.common.fetchAndLoadDetails();
     final eventIds = controller.common.registeredEvents();
-    var registeredEvents = <EventListModel>[];
+    registeredEvents = <EventListModel>[];
     for (var i = 0; i < eventIds.length; i++) {
-      for (var j = 0; j < eventList!.length; j++) {
-        if (eventIds[i] == eventList![j].id) {
-          registeredEvents.add(eventList![j]);
+      for (var j = 0; j < widget.eventList!.length; j++) {
+        if (eventIds[i] == widget.eventList![j].id) {
+          registeredEvents.add(widget.eventList![j]);
         }
       }
     }
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar:fromProfile
+      appBar: widget.fromProfile
           ? AaruushAppBar(title: "AARUUSH", actions: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -49,55 +67,55 @@ class MyEvents extends StatelessWidget {
           : AaruushAppBar(
               title: "AARUUSH",
             ),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
-          image: DecorationImage(
-              image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
-        ),
+      body: BgArea(
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: SafeArea(
-                child: Center(
-                  child: Text(
-                    'My Events',
-                    style: Get.theme.kSmallTextStyle.copyWith(
-                        decoration: TextDecoration.underline, fontSize: 28),
-                  ),
+                child: SizedBox(
+              height: AppBar().preferredSize.height + 30,
+            )),
+            SliverToBoxAdapter(
+              child: Center(
+                child: Text(
+                  'My Events',
+                  style: Get.theme.kSmallTextStyle.copyWith(
+                      decoration: TextDecoration.underline, fontSize: 28),
                 ),
               ),
             ),
             registeredEvents.isEmpty
-                ? const SliverToBoxAdapter(
+                ? SliverToBoxAdapter(
                     child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(18.0),
+                      padding: const EdgeInsets.all(18.0),
                       child: Text(
                         "You Haven't registered For Any Event",
-                        style: TextStyle(letterSpacing: 4),
+                        style: Get.textTheme.labelMedium!
+                            .copyWith(letterSpacing: 4),
                         textAlign: TextAlign.center,
                       ),
                     ),
                   ))
-                : SliverGrid(
+                : LiveSliverGrid.options(
+                    controller: scrollController,
+                    options: const LiveOptions(
+                      showItemInterval: Duration(milliseconds: 100),
+                      showItemDuration: Duration(milliseconds: 300),
+                      visibleFraction: 0.05,
+                      reAnimateOnVisibility: false,
+                    ),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
                             childAspectRatio: 159 / 200),
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      return TicketTile(
-                        imagePath: registeredEvents[index].image!,
-                        title: registeredEvents[index].name!,
-                        event: registeredEvents[index],
-                      );
-                    }, childCount: registeredEvents.length),
+                    itemBuilder: _buildAnimatedCard,
+                    itemCount: registeredEvents.length,
                   ),
             SliverToBoxAdapter(
               child: SizedBox(
-                height: 0.2 * Get.height,
+                height: 0.1 * Get.height,
               ),
             )
           ],
@@ -105,6 +123,27 @@ class MyEvents extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildAnimatedCard(
+    BuildContext context, int index, Animation<double> animation) {
+  return FadeTransition(
+      opacity: Tween<double>(
+        begin: 0,
+        end: 1,
+      ).animate(animation),
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: Offset(0, -0.1),
+          end: Offset.zero,
+        ).animate(animation),
+
+        child: TicketTile(
+          imagePath: registeredEvents[index].image!,
+          title: registeredEvents[index].name!,
+          event: registeredEvents[index],
+        ),
+      ));
 }
 
 class TicketTile extends StatelessWidget {
