@@ -87,182 +87,184 @@ class _EventsScreenState extends State<EventsScreen> {
         return BgArea(
           image: 'bg.png',
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              sizeBox(100, 0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ImageColoredShadow(link: eventData.image!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
-                    child: Text(
-                        eventData.name.toString().trim(),
-                        style: Get.theme.kSubTitleTextStyle.copyWith(fontSize: 28)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
-                    child: Wrap(spacing: 10,children: [
-                      const Icon(Icons.date_range,size: 25,),
-                      Text(
-                          eventData.date,
-                          style: Get.theme.kVerySmallTextStyle
-                              .copyWith(
-                              fontSize: 18,
-                              color: const Color(0xFFEF6522))),
-                    ],),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
-                    child: Wrap(spacing: 10,children: [
-                      const Icon(Icons.access_time_outlined,size: 25,),
-                      Text(
-                          eventData.time,
-                          style: Get.theme.kVerySmallTextStyle.copyWith(
-                              fontSize: 18, color: const Color(0xFFEF6522))),
-                    ],),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
-                    child: Wrap(spacing: 10,children: [
-                      eventData.mode=="offline"?SizedBox(height:21,width:21,child: Image.asset("assets/images/icons/offline.png",scale: 3.9,color: Colors.white,)):Image.asset("assets/images/icons/online.png",scale: 3.9,color: Colors.white),
-                      Text(
-                          eventData.mode.toString().capitalizeFirst!,
-                          style: Get.theme.kVerySmallTextStyle.copyWith(
-                              fontSize: 18, color: const Color(0xFFEF6522))),
-                    ],),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
-                    child: Wrap(spacing: 10,children: [
-                      const Icon(Icons.location_on,size: 25,),
-                      FittedBox(
-                        child: Text(
-                            eventData.location,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                sizeBox(100, 0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ImageColoredShadow(link: eventData.image!),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
+                      child: Text(
+                          eventData.name.toString().trim(),
+                          style: Get.theme.kSubTitleTextStyle.copyWith(fontSize: 28)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
+                      child: Wrap(spacing: 10,children: [
+                        const Icon(Icons.date_range,size: 25,),
+                        Text(
+                            eventData.date,
+                            style: Get.theme.kVerySmallTextStyle
+                                .copyWith(
+                                fontSize: 18,
+                                color: const Color(0xFFEF6522))),
+                      ],),
+                    ),
+            
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
+                      child: Wrap(spacing: 10,children: [
+                        const Icon(Icons.access_time_outlined,size: 25,),
+                        Text(
+                            eventData.time,
                             style: Get.theme.kVerySmallTextStyle.copyWith(
                                 fontSize: 18, color: const Color(0xFFEF6522))),
-                      ),
-                    ],),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 25),
-                child: Text(
-                  eventData.oneliner ?? "Nil",
-                  style: Get.theme.kVerySmallTextStyle,
-                ),
-              ),
-
-              if (eventData.timeline != null)
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Html(
-                    data: eventData.timeline ?? "",
-                    style: {
-                      "body": Style(
-                        color: Colors.white,
-                        fontSize: FontSize(14),
-                      ),
-                    },
-                  ),
-                ),
-              DefaultTabController(
-                length: 3,
-                child: Column(
-                  children: [
-                    TabBar(
-                      labelColor: Colors.white,
-                      indicatorPadding: const EdgeInsets.all(12),
-                      padding: const EdgeInsets.all(12),
-                      labelPadding: const EdgeInsets.all(12),
-                      unselectedLabelColor: Colors.white60,
-                      labelStyle: Get.theme.kVerySmallTextStyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      physics: const BouncingScrollPhysics(),
-                      indicatorColor: Colors.transparent,
-                      tabs: [
-                        Container(
-                            width: 250,
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(29, 29, 29, 1),
-                              borderRadius: BorderRadius.circular(13),
-                            ),
-                            child: const Tab(
-                              text: 'About',
-                            )),
-                        Container(
-                            width: 250,
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(29, 29, 29, 1),
-                              borderRadius: BorderRadius.circular(13),
-                            ),
-                            child: const Tab(
-                              text: 'Structure',
-                            )),
-                        Container(
-                            width: 250,
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(29, 29, 29, 1),
-                              borderRadius: BorderRadius.circular(13),
-                            ),
-                            child: const Tab(
-                              text: 'Contact',
-                            )),
-                      ],
+                      ],),
                     ),
-                    Container(
-                      width: Get.width,
-                      height: Get.height * 0.34,
-                      padding: const EdgeInsets.all(20),
-                      margin: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(29, 29, 29, 1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: TabBarView(
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          _tabDataWidget(text: eventData.about ?? "Nil"),
-                          _tabDataWidget(text: eventData.structure ?? "Nil"),
-                          _tabDataWidget(text: eventData.contact ?? "Nil"),
-                        ],
-                      ),
+            
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
+                      child: Wrap(spacing: 10,children: [
+                        eventData.mode=="offline"?SizedBox(height:21,width:21,child: Image.asset("assets/images/icons/offline.png",scale: 3.9,color: Colors.white,)):Image.asset("assets/images/icons/online.png",scale: 3.9,color: Colors.white),
+                        Text(
+                            eventData.mode.toString().capitalizeFirst!,
+                            style: Get.theme.kVerySmallTextStyle.copyWith(
+                                fontSize: 18, color: const Color(0xFFEF6522))),
+                      ],),
                     ),
-                    Text((eventData.mode == "online"  || eventData.locationLng==null || eventData.locationLat==null) ? '' : 'LOCATION',
-                        style: Get.theme.kVerySmallTextStyle.copyWith(
-                          fontSize: 20,
-                          color: Colors.grey,
-                        )),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(21),
-                        child: eventData.mode!.toLowerCase() == "online" || eventData.locationLng==null || eventData.locationLat==null
-                            ? const SizedBox(
-                          height: 10,
-                        )
-                            : Container(
-                            height: 200,
-                            width: Get.width * 0.9,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(210)),
-                            child: Mapscreen(
-                                Lattitude: eventData.locationLat,
-                                Longitude: eventData.locationLng,
-                                location: eventData.location)))
+            
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0,vertical: 5),
+                      child: Wrap(spacing: 10,children: [
+                        const Icon(Icons.location_on,size: 25,),
+                        FittedBox(
+                          child: Text(
+                              eventData.location,
+                              style: Get.theme.kVerySmallTextStyle.copyWith(
+                                  fontSize: 18, color: const Color(0xFFEF6522))),
+                        ),
+                      ],),
+                    )
                   ],
                 ),
-              ),
-              sizeBox(150, 0),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 25),
+                  child: Text(
+                    eventData.oneliner ?? "Nil",
+                    style: Get.theme.kVerySmallTextStyle,
+                  ),
+                ),
+            
+                if (eventData.timeline != null)
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Html(
+                      data: eventData.timeline ?? "",
+                      style: {
+                        "body": Style(
+                          color: Colors.white,
+                          fontSize: FontSize(14),
+                        ),
+                      },
+                    ),
+                  ),
+                DefaultTabController(
+                  length: 3,
+                  child: Column(
+                    children: [
+                      TabBar(
+                        labelColor: Colors.white,
+                        indicatorPadding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(12),
+                        labelPadding: const EdgeInsets.all(12),
+                        unselectedLabelColor: Colors.white60,
+                        labelStyle: Get.theme.kVerySmallTextStyle.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        physics: const BouncingScrollPhysics(),
+                        indicatorColor: Colors.transparent,
+                        tabs: [
+                          Container(
+                              width: 250,
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(29, 29, 29, 1),
+                                borderRadius: BorderRadius.circular(13),
+                              ),
+                              child: const Tab(
+                                text: 'About',
+                              )),
+                          Container(
+                              width: 250,
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(29, 29, 29, 1),
+                                borderRadius: BorderRadius.circular(13),
+                              ),
+                              child: const Tab(
+                                text: 'Structure',
+                              )),
+                          Container(
+                              width: 250,
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(29, 29, 29, 1),
+                                borderRadius: BorderRadius.circular(13),
+                              ),
+                              child: const Tab(
+                                text: 'Contact',
+                              )),
+                        ],
+                      ),
+                      Container(
+                        width: Get.width,
+                        height: Get.height * 0.34,
+                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(29, 29, 29, 1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: TabBarView(
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            _tabDataWidget(text: eventData.about ?? "Nil"),
+                            _tabDataWidget(text: eventData.structure ?? "Nil"),
+                            _tabDataWidget(text: eventData.contact ?? "Nil"),
+                          ],
+                        ),
+                      ),
+                      Text((eventData.mode == "online"  || eventData.locationLng==null || eventData.locationLat==null) ? '' : 'LOCATION',
+                          style: Get.theme.kVerySmallTextStyle.copyWith(
+                            fontSize: 20,
+                            color: Colors.grey,
+                          )),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(21),
+                          child: eventData.mode!.toLowerCase() == "online" || eventData.locationLng==null || eventData.locationLat==null
+                              ? const SizedBox(
+                            height: 10,
+                          )
+                              : Container(
+                              height: 200,
+                              width: Get.width * 0.9,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(210)),
+                              child: Mapscreen(
+                                  Lattitude: eventData.locationLat,
+                                  Longitude: eventData.locationLng,
+                                  location: eventData.location)))
+                    ],
+                  ),
+                ),
+                sizeBox(150, 0),
+              ],
+            ),
           ),
         );
       }),

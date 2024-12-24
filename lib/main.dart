@@ -30,7 +30,7 @@ Future<void> main() async {
     await GetStorage.init();
     await ApiData.init();
     final directory = await getApplicationDocumentsDirectory();
-    Hive.init(directory.path);
+    Hive.init(directory.path);  
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     SystemChrome.setSystemUIOverlayStyle(
