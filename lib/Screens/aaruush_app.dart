@@ -1,7 +1,6 @@
 import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 
 

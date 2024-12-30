@@ -16,12 +16,19 @@ class Certificateview extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AaruushAppBar(title: "Certificates", actions: [
-        IconButton.outlined(
-          padding: EdgeInsets.zero,
-          onPressed: () => {Navigator.pop(context)},
-          icon: const Icon(Icons.close_rounded),
-          color: Colors.white,
-          iconSize: 25,
+        Padding(
+          padding: const EdgeInsets.only(right: 15),
+          child: Container(
+            height: 35,
+            width: 35,
+            child: IconButton.outlined(
+              padding: EdgeInsets.zero,
+              onPressed: () => {Navigator.pop(context)},
+              icon: Icon(Icons.close_rounded),
+              color: Colors.white,
+              iconSize: 20,
+            ),
+          ),
         ),
       ]),
       body: BgArea(
@@ -29,7 +36,7 @@ class Certificateview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: AppBar().preferredSize.height + 20),
+          SizedBox(height: MediaQuery.of(context).size.height / 9),
           Obx(
             () => controller.isLoading.value
                 ? CircularProgressIndicator(
@@ -42,7 +49,7 @@ class Certificateview extends StatelessWidget {
                       )
                     : Expanded(
                         child: LiveList.options(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: EdgeInsets.zero,
                           itemBuilder: buildCertificateCard,
                           itemCount: controller.certificates.length,
                           options: const LiveOptions(

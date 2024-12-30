@@ -26,22 +26,25 @@ aaruushId:${controller.common.aaruushId.value},eventId:${event.id}''';
       extendBodyBehindAppBar: true,
       appBar: AaruushAppBar(title: "Aaruush", actions: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton.outlined(
-            padding: EdgeInsets.zero,
-            alignment: Alignment.center,
-            onPressed: () => {Navigator.pop(context)},
-            icon: const Icon(Icons.close_rounded),
-            color: Colors.white,
-            iconSize: 25,
+          padding: const EdgeInsets.only(right: 15),
+          child: SizedBox(
+            height: 35,
+            width: 35,
+            child: IconButton.outlined(
+              padding: EdgeInsets.zero,
+              onPressed: () => {Navigator.pop(context)},
+              icon: const Icon(Icons.close_rounded),
+              color: Colors.white,
+              iconSize: 20,
+            ),
           ),
-        )
+        ),
       ]),
-      body: BgArea(child: Column(
-        children: [
-          sizeBox(20, 0),
-          SafeArea(
-            child: Center(
+      body: BgArea(child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height / 8),
+            Center(
               child: SizedBox(
                 height: Get.height * 0.8,
                 width: Get.width * 0.8,
@@ -203,9 +206,9 @@ aaruushId:${controller.common.aaruushId.value},eventId:${event.id}''';
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       )),
     );
   }

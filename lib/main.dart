@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,12 +17,15 @@ import 'Screens/aaruush_app.dart';
 import 'Themes/theme_service.dart';
 import 'Themes/themes.dart';
 import 'firebase_options.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom]);
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -30,7 +34,7 @@ Future<void> main() async {
     await GetStorage.init();
     await ApiData.init();
     final directory = await getApplicationDocumentsDirectory();
-    Hive.init(directory.path);  
+    Hive.init(directory.path);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     SystemChrome.setSystemUIOverlayStyle(
@@ -39,8 +43,17 @@ Future<void> main() async {
       ),
     );
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
     runApp(AaruushApp());
+
+    // runApp(  DevicePreview(
+    //   enabled: !kReleaseMode,
+    //   builder: (context) => AaruushApp(), // Wrap your app
+    // ),
+    // );
+
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
+  FlutterNativeSplash.remove();
 }
 
 class AaruushApp extends StatelessWidget {
@@ -50,8 +63,11 @@ class AaruushApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      defaultTransition: t.Transition.rightToLeft,
-      transitionDuration: const Duration(milliseconds: 300),
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      defaultTransition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 400),
       initialBinding: DefaultController(),
       debugShowCheckedModeBanner: false,
       theme: Themes.light,
@@ -83,21 +99,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     'receivedAt': DateTime.now(),
   });
 
-
-
-
   if (message.data['url'] != null) {
     // if (kDebugMode) {
     //   print(message);
-      // final prefs = await SharedPreferences.getInstance();
-      // String url = message.data['url'].toString();
-      // await prefs.setString('KEY_LAUNCH_URL', url);
+    // final prefs = await SharedPreferences.getInstance();
+    // String url = message.data['url'].toString();
+    // await prefs.setString('KEY_LAUNCH_URL', url);
     // }
     // else{
     //
     // }
-  }
-  else{
+  } else {
     if (kDebugMode) {
       print("message is null");
     }
@@ -105,5 +117,4 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       print(message);
     }
   }
-
 }

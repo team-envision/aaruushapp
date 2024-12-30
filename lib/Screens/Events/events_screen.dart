@@ -332,9 +332,9 @@ class _EventsScreenState extends State<EventsScreen> {
 
 class _tabDataWidget extends StatelessWidget {
   const _tabDataWidget({
-    Key? key,
+    super.key,
     required this.text,
-  }) : super(key: key);
+  });
 
   final String text;
 
@@ -354,9 +354,9 @@ class _tabDataWidget extends StatelessWidget {
 
 class ImageColoredShadow extends StatelessWidget {
   const ImageColoredShadow({
-    Key? key,
+    super.key,
     required this.link,
-  }) : super(key: key);
+  });
 
   final String link;
 
@@ -373,14 +373,14 @@ class ImageColoredShadow extends StatelessWidget {
           child: ClipRRect(
               child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: new Container(
+                  child: Container(
                     width: width + blurRadius,
                     height: height + blurRadius,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
-                        image: new DecorationImage(
+                        image: DecorationImage(
                             fit: BoxFit.contain,
-                            image: new NetworkImage(imageUrl))),
+                            image: NetworkImage(imageUrl))),
                   )))),
       Positioned.fill(
           child: BackdropFilter(
@@ -389,12 +389,12 @@ class ImageColoredShadow extends StatelessWidget {
       Positioned.fill(
         bottom: 20,
         child: Center(
-          child: new Container(
+          child: Container(
               width: width - 20,
               height: height,
-              decoration: new BoxDecoration(
+              decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  image: new DecorationImage(
+                  image: DecorationImage(
                       fit: BoxFit.contain,
                       image: CachedNetworkImageProvider(imageUrl)))),
         ),

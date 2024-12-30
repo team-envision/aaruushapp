@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:AARUUSH_CONNECT/Screens/Notification/NotificationController.dart';
-import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:auto_animated/auto_animated.dart';
@@ -25,26 +24,32 @@ class NotificationScreen extends GetView<NotificationController> {
       appBar: AaruushAppBar(
         title: "NOTIFICATIONS",
         actions: [
-          IconButton.outlined(
-            padding: EdgeInsets.zero,
-            onPressed: () => {Navigator.pop(context)},
-            icon: const Icon(Icons.close_rounded),
-            color: Colors.white,
-            iconSize: 25,
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: SizedBox(
+              height: 35,
+              width: 35,
+              child: IconButton.outlined(
+                padding: EdgeInsets.zero,
+                onPressed: () => {Navigator.pop(context)},
+                icon: const Icon(Icons.close_rounded),
+                color: Colors.white,
+                iconSize: 20,
+              ),
+            ),
           ),
         ],
       ),
       body: BgArea(
         child: Column(
           children: [
-            SizedBox(height: AppBar().preferredSize.height + 30),
+            SizedBox(height: MediaQuery.of(context).size.height / 8),
             Expanded(
               child: FutureBuilder<dynamic>(
                 future: controller.loadNotifications(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
-                      print(snapshot.error);
                       return const Center(
                           child: Text("No notifications available"));
                     } else if (snapshot.data == null ||
@@ -105,7 +110,7 @@ Widget notificationCard(
       // And slide transition
       child: SlideTransition(
           position: Tween<Offset>(
-            begin: Offset(0, -0.1),
+            begin: const Offset(0, -0.1),
             end: Offset.zero,
           ).animate(animation),
           // Paste you Widget
@@ -142,46 +147,51 @@ Widget notificationCard(
             // And slide transition
             child: SlideTransition(
               position: Tween<Offset>(
-                begin: Offset(0, -0.1),
+                begin: const Offset(0, -0.1),
                 end: Offset.zero,
               ).animate(animation),
               // Paste you Widget
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                child: Card(
-                  child: ListTile(
-                    minVerticalPadding: 5,
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 18, vertical: 12),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: FittedBox(
-                            child: Text(
-                              notification['title'] ?? '',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 15, right: 15, bottom: 5),
+                  child: Card(
+                    child: ListTile(
+                      minVerticalPadding: 5,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 12),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: FittedBox(
+                              child: Text(
+                                notification['title'] ?? '',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            timeago.format(receivedAt, locale: "en_short"),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              timeago.format(receivedAt, locale: "en_short"),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      subtitle: Text(notification['body'] ?? ''),
                     ),
-                    subtitle: Text(notification['body'] ?? ''),
                   ),
                 ),
               ),

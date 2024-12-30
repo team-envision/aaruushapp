@@ -21,7 +21,7 @@ version: 2.0.3+6
 
 
 environment:
-  sdk: ">=2.17.1 <3.0.0"
+  sdk: ">=3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -72,35 +72,25 @@ dependencies:
   lottie: ^3.1.3
   permission_handler: ^11.3.1
   open_file: ^3.5.10
-
-
-
-
+  device_preview: ^1.2.0
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/splash_logo.png"
+  image_path: "assets/images/splash_logo_final.png"
   remove_alpha_ios: true
   adaptive_icon_background: "#000000"
-#  flutter pub run flutter_launcher_icons:main
-flutter_native_splash:
-  color: "#000000"
-  #background_image: "assets/background.png"
-  image: "assets/images/splash_logo.png"
-  branding: assets/images/splash_logo.png
-  android_12:
-    image: assets/images/splash_logo.png
-    icon_background_color: "#000000"
+##  flutter pub run flutter_launcher_icons:main
 
-  #background_image_dark: "assets/dark-background.png"
-  #image_dark: assets/splash-invert.png
+flutter_native_splash:
   android: true
   ios: true
-  #web: false
-  android_gravity: center
-  ios_content_mode: centerfllll
-  fullscreen: true
+  color: "#000000"
+  image: "assets/images/splash_logo_final.png"
+
+  android_12:
+    color: "#000000"
+    image: "assets/images/splash_logo_final.png"
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

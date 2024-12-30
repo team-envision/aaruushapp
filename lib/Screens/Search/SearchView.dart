@@ -17,6 +17,7 @@ class Searchscreen extends StatefulWidget {
 final HomeController homeController = Get.find();
 RxList searchResults = [].obs;
 RxList eventList = [].obs;
+
 class _SearchscreenState extends State<Searchscreen> {
   final TextEditingController _searchController = TextEditingController();
 
@@ -43,24 +44,18 @@ class _SearchscreenState extends State<Searchscreen> {
     final query = _searchController.text.toLowerCase();
     searchResults.value = homeController.eventList
         .where((event) =>
-    event.name!.toLowerCase().contains(query) &&
-        event.startdate != null &&
-        event.startdate!.contains(DateTime
-            .now()
-            .year
-            .toString()))
+            event.name!.toLowerCase().contains(query) &&
+            event.startdate != null &&
+            event.startdate!.contains(DateTime.now().year.toString()))
         .toList();
   }
 
   void _initialList() {
     eventList.value = homeController.eventList
         .where((event) =>
-    event.live! &&
-        event.startdate != null &&
-        event.startdate!.contains(DateTime
-            .now()
-            .year
-            .toString()))
+            event.live! &&
+            event.startdate != null &&
+            event.startdate!.contains(DateTime.now().year.toString()))
         .toList();
   }
 
@@ -68,23 +63,34 @@ class _SearchscreenState extends State<Searchscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(title: "AARUUSH",actions: [
-        IconButton.outlined(
-          padding: EdgeInsets.zero,
-          onPressed: () => {Navigator.pop(context)},
-          icon: const Icon(Icons.close_rounded),
-          color: Colors.white,
-          iconSize: 25,
-        ),
-      ],),
+      appBar: AaruushAppBar(
+        title: "AARUUSH",
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: SizedBox(
+              height: 35,
+              width: 35,
+              child: IconButton.outlined(
+                padding: EdgeInsets.zero,
+                onPressed: () => {Navigator.pop(context)},
+                icon: const Icon(Icons.close_rounded),
+                color: Colors.white,
+                iconSize: 20,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: BgArea(
-        child: Column(mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: AppBar().preferredSize.height + 30,),
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
-              child: SizedBox(
-                height: 50,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height / 8),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.07,
                 child: Hero(
                   tag: "SearchTag",
                   child: TextField(
@@ -95,19 +101,19 @@ class _SearchscreenState extends State<Searchscreen> {
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
                     decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(left: 18),
                       filled: true,
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       disabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(30),
                       ),
-
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide.none,
                       ),
                       hintText: "Search Event Name",
@@ -116,72 +122,67 @@ class _SearchscreenState extends State<Searchscreen> {
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Obx(() {
-              if (searchResults.isEmpty) {
-                return Expanded(
-                  child: CustomScrollView(
-                    slivers: [LiveSliverGrid.options(
-                      options: const LiveOptions(
-
-                        showItemInterval: Duration(milliseconds: 100),
-
-                        showItemDuration: Duration(milliseconds: 300),
-
-                        visibleFraction: 0.05,
-
-                        reAnimateOnVisibility: false,),
-                      itemCount: eventList.length,
-                      itemBuilder: _buildAnimatedCard,
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
+              const SizedBox(height: 10),
+              Obx(() {
+                if (searchResults.isEmpty) {
+                  return Expanded(
+                    child: CustomScrollView(
+                      slivers: [
+                        LiveSliverGrid.options(
+                          options: const LiveOptions(
+                            showItemInterval: Duration(milliseconds: 100),
+                            showItemDuration: Duration(milliseconds: 300),
+                            visibleFraction: 0.05,
+                            reAnimateOnVisibility: false,
+                          ),
+                          itemCount: eventList.length,
+                          itemBuilder: _buildAnimatedCard,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 15,
+                          ),
+                          controller: _scrollController1,
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return Expanded(
+                      child: CustomScrollView(
+                    slivers: [
+                      LiveSliverGrid.options(
+                        itemCount: searchResults.length,
+                        itemBuilder: _buildSearchedAnimatedCard,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: 15,
+                        ),
+                        controller: _scrollController2,
+                        options: const LiveOptions(
+                          showItemInterval: Duration(milliseconds: 100),
+                          showItemDuration: Duration(milliseconds: 300),
+                          visibleFraction: 0.05,
+                          reAnimateOnVisibility: false,
+                        ),
                       ),
-                      controller: _scrollController1,
-                    ),],
-                  ),
-                );
-              }
-
-              else {
-                return Expanded(
-                  child: CustomScrollView(
-                    slivers: [LiveSliverGrid.options(
-                      itemCount: searchResults.length,
-                      itemBuilder: _buildSearchedAnimatedCard,
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ), controller: _scrollController2, options: const LiveOptions(
-
-                      showItemInterval: Duration(milliseconds: 100),
-
-                      showItemDuration: Duration(milliseconds: 300),
-
-                      visibleFraction: 0.05,
-
-                      reAnimateOnVisibility: false,),
-                    ),],
-                  )
-                );
-              }
-            })
-          ],
+                    ],
+                  ));
+                }
+              })
+            ],
+          ),
         ),
       ),
     );
   }
-
 }
 
-
-Widget _buildAnimatedCard(BuildContext context, int index,
-    Animation<double> animation) {
+Widget _buildAnimatedCard(
+    BuildContext context, int index, Animation<double> animation) {
   var event = eventList[index];
   return FadeTransition(
       opacity: Tween<double>(
@@ -191,27 +192,22 @@ Widget _buildAnimatedCard(BuildContext context, int index,
       // And slide transition
       child: SlideTransition(
           position: Tween<Offset>(
-            begin: Offset(0, -0.1),
+            begin: const Offset(0, -0.1),
             end: Offset.zero,
           ).animate(animation),
           // Paste you Widget
-          child:
-          eventCard(
+          child: eventCard(
             event,
-                () =>
-                Get.to(() =>
-                    EventsScreen(
-                      event: event,
-                      fromMyEvents: false.obs,
-                    )),
+            () => Get.to(() => EventsScreen(
+                  event: event,
+                  fromMyEvents: false.obs,
+                )),
             homeController,
-          ))
-  );
+          )));
 }
 
-
-Widget _buildSearchedAnimatedCard(BuildContext context, int index,
-    Animation<double> animation) {
+Widget _buildSearchedAnimatedCard(
+    BuildContext context, int index, Animation<double> animation) {
   var event = searchResults[index];
   return FadeTransition(
       opacity: Tween<double>(
@@ -221,19 +217,16 @@ Widget _buildSearchedAnimatedCard(BuildContext context, int index,
       // And slide transition
       child: SlideTransition(
           position: Tween<Offset>(
-            begin: Offset(0, -0.1),
+            begin: const Offset(0, -0.1),
             end: Offset.zero,
           ).animate(animation),
           // Paste you Widget
           child: eventCard(
             event,
-                () =>
-                Get.to(() =>
-                    EventsScreen(
-                      event: event,
-                      fromMyEvents: false.obs,
-                    )),
+            () => Get.to(() => EventsScreen(
+                  event: event,
+                  fromMyEvents: false.obs,
+                )),
             homeController,
-          )
-      ));
+          )));
 }

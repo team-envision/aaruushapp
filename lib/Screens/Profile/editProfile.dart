@@ -1,5 +1,6 @@
 import 'package:AARUUSH_CONNECT/Screens/Profile/profileController.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
+import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,63 +21,82 @@ class EditProfile extends StatelessWidget {
       appBar: AaruushAppBar(
         title: "Edit Profile",
         actions: [
-          IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(Icons.close_rounded),
-            color: Colors.white,
-            iconSize: 25,
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: SizedBox(
+              height: 35,
+              width: 35,
+              child: IconButton.outlined(
+                padding: EdgeInsets.zero,
+                onPressed: () => {Navigator.pop(context)},
+                icon: const Icon(Icons.close_rounded),
+                color: Colors.white,
+                iconSize: 20,
+              ),
+            ),
           ),
         ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Form(
-          key: controller.formkey,
+        child: BgArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: 50.0,left: 10,right: 10),
-            child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                 Obx(
-                        () => CircleAvatar(
-                      radius: 60,
-                      backgroundImage: homeController.common.profileUrl.value != null
-                          ? NetworkImage(homeController.common.profileUrl.value)
-                          : const AssetImage('assets/images/profile.png') as ImageProvider,
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+            child: Form(
+              key: controller.formkey,
+              child: Column(
+                children: [
+                   Obx(
+                          () => CircleAvatar(
+                        radius: 70,
+                        backgroundImage: homeController.common.profileUrl.value != null
+                            ? NetworkImage(homeController.common.profileUrl.value)
+                            : const AssetImage('assets/images/profile.png') as ImageProvider,
+                      ),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: CustomTextField(
+                      label: 'Name',
+                      type: TextInputType.text,
+                      controller: controller.nameController,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: CustomTextField(
+                      controller: controller.phoneController,
+                      label: 'Phone',
+                      type: TextInputType.phone,
                     ),
                   ),
 
-
-
-                CustomTextField(
-                  label: 'Name',
-                  type: TextInputType.text,
-                  controller: controller.nameController,
-                ),
-
-                CustomTextField(
-                  controller: controller.phoneController,
-                  label: 'Phone',
-                  type: TextInputType.phone,
-                ),
-
-                CustomTextField(
-                  controller: controller.emailController,
-                  label: 'Email',
-                  type: TextInputType.emailAddress,
-                  enabled: false,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: primaryButton(
-                    text: "Save",
-                    onTap: () {
-                      if (controller.formkey.currentState!.validate()) {
-                        controller.updateProfile();
-                      }
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: CustomTextField(
+                      controller: controller.emailController,
+                      label: 'Email',
+                      type: TextInputType.emailAddress,
+                      enabled: false,
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: primaryButton(
+                        text: "Save",
+                        onTap: () {
+                          if (controller.formkey.currentState!.validate()) {
+                            controller.updateProfile();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

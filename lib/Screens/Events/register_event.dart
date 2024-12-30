@@ -1,5 +1,4 @@
 import 'package:AARUUSH_CONNECT/Screens/Events/events_controller.dart';
-import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';

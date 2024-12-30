@@ -14,7 +14,6 @@ import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../Utilities/aaruushappbar.dart';
 import '../../components/carouselSliderAutoplay.dart';
@@ -40,11 +39,11 @@ class HomeScreen extends StatelessWidget {
           : UpgradeDialogStyle.cupertino,
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        extendBody: true,
+        // extendBody: true,
         appBar: AaruushAppBar(
           actions: [
             IconButton(
-              onPressed: () => {Get.to(() =>  NotificationScreen())},
+              onPressed: () => {Get.to(() => NotificationScreen())},
               icon: const Icon(Icons.notifications),
               color: Colors.white,
               iconSize: 25,
@@ -59,62 +58,69 @@ class HomeScreen extends StatelessWidget {
           title: "AARUUSH",
         ),
         body: BgArea(
-
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                sizeBox(100, 0),
+                SizedBox(height: MediaQuery.of(context).size.height/8),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
                     children: [
+                      sizeBox(0, 15),
                       IconButton(
+                        padding: EdgeInsets.zero,
                         onPressed: () => {Get.to(() => const ProfileScreen())},
                         icon: Obx(
-                              () => controller.common.profileUrl.value.isNotEmpty
+                          () => controller.common.profileUrl.value.isNotEmpty
                               ? CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                controller.common.profileUrl.value),
-                          )
+                                  radius: 22,
+                                  backgroundImage: NetworkImage(
+                                      controller.common.profileUrl.value),
+                                )
                               : Image.asset(
-                            'assets/images/profile.png',
-                            height: 30,
-                          ),
+                                  'assets/images/profile.png',
+                                  height: 30,
+                                ),
                         ),
                         color: Colors.white,
                         iconSize: 40,
                       ),
+                      sizeBox(0, 9),
                       Obx(() => FittedBox(
-                        child: Text(
-                          "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}"
-                              .useCorrectEllipsis(),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style:
-                          Get.theme.kSmallTextStyle.copyWith(fontSize: 18),
-                        ),
-                      )),
+                            child: Text(
+                              "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}"
+                                  .useCorrectEllipsis(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: Get.theme.kTitleTextStyle.copyWith(
+                                  fontSize: 19, fontWeight: FontWeight.w700),
+                            ),
+                          )),
                       const Spacer(),
                       IconButton(
                           onPressed: () {
                             Get.to(() => Certificateview());
                           },
-                          icon: Image.asset("assets/images/icons/certificates.png"))
+                          icon: Image.asset(
+                              "assets/images/icons/certificates.png", color: Colors.white,))
                     ],
                   ),
                 ),
-                searchTextField(context: context),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: searchTextField(context: context),
+                ),
                 sizeBox(20, 0),
                 Autoplay(),
-                sizeBox(30, 0),
+                sizeBox(20, 0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     "Categories",
-                    style: Get.theme.kTitleTextStyle1,
+                    style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
                   ),
                 ),
                 SingleChildScrollView(
@@ -132,7 +138,7 @@ class HomeScreen extends StatelessWidget {
                         if (e != "events") {
                           return categoryButton(
                             icon:
-                            "${ApiData.CDN_URL}/icons/categories/${e.toLowerCase().split(' ').join('-')}.png",
+                                "${ApiData.CDN_URL}/icons/categories/${e.toLowerCase().split(' ').join('-')}.png",
                             name: e
                                 .toLowerCase()
                                 .split('-')
@@ -155,110 +161,119 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                sizeBox(15, 0),
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 20, top: 40),
                   child: Obx(
-                        () => Text(
+                    () => Text(
                       "${controller.sortName.value.toLowerCase().split('-').join(' ').toCapitalized()} Live Events",
-                      style: Get.theme.kTitleTextStyle,
+                      style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
                     ),
                   ),
                 ),
                 Obx(
-                      () {
+                  () {
                     if (controller.isLoading.value) {
                       return const Center(
                           child: CircularProgressIndicator(
-                            color: Color.fromRGBO(239, 101, 34, 1),
-                          ));
+                              color: Color.fromRGBO(236, 99, 32, 1)));
                     }
-            
+
                     return controller.LiveEventsList.isNotEmpty
                         ? SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        primary: false,
-                        child: Row(
-                          children: controller.eventList
-                              .where((e) =>
-                          e.live! &&
-                              (controller.sortName.value == "All" ||
-                                  controller.sortName.value ==
-                                      e.sortCategory))
-                              .map((event) {
-                            return eventCard(
-                                event,
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            primary: false,
+                            child: Row(
+                              children: controller.eventList
+                                  .where((e) =>
+                                      e.live! &&
+                                      (controller.sortName.value == "All" ||
+                                          controller.sortName.value ==
+                                              e.sortCategory))
+                                  .map((event) {
+                                return eventCard(
+                                    event,
                                     () => Get.to(() => EventsScreen(
-                                  event: event,
-                                  fromMyEvents: false.obs,
-                                )),
-                                controller);
-                          }).toList(),
-                        ))
+                                          event: event,
+                                          fromMyEvents: false.obs,
+                                        )),
+                                    controller);
+                              }).toList(),
+                            ))
                         : const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          "Currently No Live Events",
-                          style: TextStyle(letterSpacing: 4),
-                        ),
-                      ),
-                    );
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                "Currently No Live Events",
+                                style: TextStyle(letterSpacing: 4),
+                              ),
+                            ),
+                          );
                   },
                 ),
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 20, top: 40),
                   child: Text(
                     "Past Events",
-                    style: Get.theme.kTitleTextStyle,
+                    style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
                   ),
                 ),
                 Obx(
-                      () {
+                  () {
                     if (controller.isLoading.value) {
                       return const Center(
                           child: CircularProgressIndicator(
-                            color: Color.fromRGBO(239, 101, 34, 1),
-                          ));
+                              color: Color.fromRGBO(236, 99, 32, 1)));
                     }
                     return SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       primary: false,
-                      child: Row(
-                        children: controller.eventList
-                            .where((e) => !e.live! && e.startdate != null
-                            ? (e.startdate!
-                            .contains(DateTime.now().year.toString())
-                            ? true
-                            : false)
-                            : false)
-                            .map((e) {
-                          return eventCard(
-                              e,
-                                  () => Get.to(() => EventsScreen(
-                                event: e,
-                                fromMyEvents: false.obs,
-                              )),
-                              controller);
-                        }).toList(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 8),
+                        child: Row(
+                          children: controller.eventList
+                              .where((e) => !e.live! && e.startdate != null
+                              ? (e.startdate!.contains(
+                              DateTime.now().year.toString())
+                              ? true
+                              : false)
+                              : false)
+                              .map((e) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: eventCard(
+                                  e,
+                                      () => Get.to(() => EventsScreen(
+                                    event: e,
+                                    fromMyEvents: false.obs,
+                                  )),
+                                  controller),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     );
                   },
                 ),
-                sizeBox(50, 0),
-                Text(
-                  "For you",
-                  style: Get.theme.kTitleTextStyle1,
+                // sizeBox(50, 0),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 20, top: 40),
+                  child: Text(
+                    "For you",
+                    style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
+                  ),
                 ),
-                sizeBox(14, 0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
                       onTap: () {
                         controller.getToURL(URL: "https://cap.aaruush.org/");
                       },
@@ -267,32 +282,35 @@ class HomeScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(18),
                           color: Get.theme.colorPrimary,
                         ),
-                        padding: const EdgeInsets.all(10),
-                        height: 120,
+                        padding: const EdgeInsets.all(12),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "Discover\nCAP Portal",
                               style: Get.theme.kSmallTextStyle.copyWith(
-                                  fontWeight: FontWeight.bold, color: Colors.white),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Perks:\nLOR & Certificates",
-                                  style: Get.theme.kVerySmallTextStyle
-                                      .copyWith(color: Colors.white),
-                                ),
-                                const Icon(Icons.arrow_forward),
-                              ],
+                            const SizedBox(height: 10),
+                            Text(
+                              "Perks:\nLOR & Certificates",
+                              style: Get.theme.kVerySmallTextStyle.copyWith(
+                                color: Colors.white,
+                                  fontSize: 13
+
+                              ),
                             )
                           ],
                         ),
                       ),
                     ),
-                    GestureDetector(
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: GestureDetector(
                       onTap: () {
                         controller.getToURL(URL: "https://www.aaruush.org/about");
                       },
@@ -301,33 +319,34 @@ class HomeScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(18),
                           color: Get.theme.colorPrimary,
                         ),
-                        padding: const EdgeInsets.all(10),
-                        height: 120,
+                        padding: const EdgeInsets.all(12),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "Explore\nAARUUSH",
                               style: Get.theme.kSmallTextStyle.copyWith(
-                                  fontWeight: FontWeight.w900, color: Colors.white),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  "...rising in the spirit\nof the innovation",
-                                  style: Get.theme.kVerySmallTextStyle
-                                      .copyWith(color: Colors.white),
-                                ),
-                                const Icon(Icons.arrow_forward),
-                              ],
-                            )
+                            const SizedBox(height: 10),
+                            Text(
+                              "...rising in the spirit\nof the innovation",
+                              style: Get.theme.kVerySmallTextStyle.copyWith(
+                                color: Colors.white,
+                                fontSize: 13
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
+            ),
                 sizeBox(144, 0),
               ],
             ),
@@ -356,7 +375,6 @@ class HomeScreen extends StatelessWidget {
                       imageUrl: icon,
                       height: 30,
                       errorWidget: (context, url, error) {
-                        print(error);
                         return Icon(
                           iconData ?? Icons.category_rounded,
                           color: const Color.fromRGBO(239, 101, 34, 1),
