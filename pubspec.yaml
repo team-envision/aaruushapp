@@ -77,7 +77,7 @@ dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/splash_logo_final.png"
+  image_path: "assets/images/app_icon.png"
   remove_alpha_ios: true
   adaptive_icon_background: "#000000"
 ##  flutter pub run flutter_launcher_icons:main

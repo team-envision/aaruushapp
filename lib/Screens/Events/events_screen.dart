@@ -332,7 +332,7 @@ class _EventsScreenState extends State<EventsScreen> {
 
 class _tabDataWidget extends StatelessWidget {
   const _tabDataWidget({
-    super.key,
+    super. key,
     required this.text,
   });
 
