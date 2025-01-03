@@ -14,12 +14,13 @@ import '../Screens/Notification/NotificationScreen.dart';
 
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-  void initLocalNotifications(BuildContext context,
-      RemoteMessage message) async {
-    var androidInitializationSettings = const AndroidInitializationSettings(
-        '@mipmap/ic_launcher');
+  void initLocalNotifications(
+      BuildContext context, RemoteMessage message) async {
+    var androidInitializationSettings =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializationSettings = const DarwinInitializationSettings();
     var initializationSetting = InitializationSettings(
       android: androidInitializationSettings,
@@ -85,8 +86,8 @@ class NotificationServices {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       debugPrint("User granted permission");
-    } else
-    if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       debugPrint("User granted provisional permission");
     } else {
       debugPrint("User declined permission");
@@ -104,7 +105,8 @@ class NotificationServices {
       ledColor: Colors.red,
     );
 
-    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+    AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
       channel.id,
       channel.name,
       channelDescription: 'channel description',
@@ -119,12 +121,12 @@ class NotificationServices {
       sound: channel.sound,
     );
 
-    const DarwinNotificationDetails darwinNotificationDetails = DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-      interruptionLevel: InterruptionLevel.active
-    );
+    const DarwinNotificationDetails darwinNotificationDetails =
+        DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+            interruptionLevel: InterruptionLevel.active);
 
     NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
@@ -146,8 +148,8 @@ class NotificationServices {
 
   Future<void> setupInteractMessage(BuildContext context) async {
     // When app is terminated
-    RemoteMessage? initialMessage = await FirebaseMessaging.instance
-        .getInitialMessage();
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       handleMessage(context, initialMessage);
       _saveNotification(initialMessage);
@@ -165,9 +167,6 @@ class NotificationServices {
     });
   }
 
-
-
-
   Future<void> _saveNotification(RemoteMessage message) async {
     print("Notification saved");
     final directory = await getApplicationDocumentsDirectory();
@@ -184,12 +183,10 @@ class NotificationServices {
       'data': message.data,
       'receivedAt': DateTime.now(),
     });
-
   }
 
-
-  Future<void> handleMessage(BuildContext context,
-      RemoteMessage message) async {
+  Future<void> handleMessage(
+      BuildContext context, RemoteMessage message) async {
     _saveNotification(message);
     String? url = message.data['url'];
     String? eventRoute = message.data['event'];
@@ -199,14 +196,16 @@ class NotificationServices {
         print("handleMessage1$url");
       }
       await launchUrl(Uri.parse(url));
-    }
-    else if (eventRoute != null && eventRoute.isNotEmpty) {
+    } else if (eventRoute != null && eventRoute.isNotEmpty) {
       if (kDebugMode) {
         print("eventroute");
       }
-      Get.to(()=>EventsScreen(fromNotificationRoute: true, EventId: eventRoute, fromMyEvents: false.obs,));
-    }
-    else {
+      Get.to(() => EventsScreen(
+            fromNotificationRoute: true,
+            EventId: eventRoute,
+            fromMyEvents: false.obs,
+          ));
+    } else {
       if (kDebugMode) {
         Get.to(NotificationScreen());
         print('No valid URL or key in the notification.');
@@ -214,9 +213,6 @@ class NotificationServices {
       }
     }
   }
-
-
-
 
   // void get_launch_url() async {
   //   print("get_launch_url");
@@ -247,19 +243,15 @@ class NotificationServices {
   //   }
   // }
 
-
   Future<void> forgroundMessage() async {
     print("forgroundMessage");
     // get_launch_url();
     final message = await FirebaseMessaging.instance.getInitialMessage();
-    if(message != null){ await _saveNotification(message!);}
+    if (message != null) {
+      await _saveNotification(message!);
+    }
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
-        alert: true, badge: true, sound: true);
+            alert: true, badge: true, sound: true);
   }
 }
-
-
-
-
-
