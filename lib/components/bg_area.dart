@@ -5,33 +5,23 @@ import 'package:get/get.dart';
 class BgArea extends StatelessWidget {
   const BgArea({
     super.key,
-    required this.children,
+    required this.child,
     this.image = "bg.png",
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.mainAxisAlignment = MainAxisAlignment.start,
   });
-  final List<Widget> children;
+  final Widget child;
   final String? image;
-  final CrossAxisAlignment? crossAxisAlignment;
-  final MainAxisAlignment? mainAxisAlignment;
   @override
   Widget build(BuildContext context) {
     return Container(
       height: Get.height,
       width: Get.width,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Colors.transparent,
         image: DecorationImage(
             image: AssetImage('assets/images/$image'), fit: BoxFit.cover),
       ),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: mainAxisAlignment!,
-          crossAxisAlignment: crossAxisAlignment!,
-          children: children,
-        ),
-      ),
+      child: child,
     );
   }
 }

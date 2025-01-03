@@ -2,6 +2,7 @@
 import 'package:AARUUSH_CONNECT/Screens/Home/home_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/profilepage.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/myEvents.dart';
+import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,7 @@ class AaruushBottomBar extends StatelessWidget {
 
   final RxInt _selectedIndex = 0.obs;
 
-  final RxList<Widget> _screens = [const HomeScreen(), MyEvents(),TimelineView(), const ProfileScreen()].obs;
+  final RxList<Widget> _screens = [const HomeScreen(), MyEvents(fromProfile: false,),TimelineView(), const ProfileScreen()].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +26,9 @@ class AaruushBottomBar extends StatelessWidget {
       body: _screens[_selectedIndex.value],
       bottomNavigationBar:
           CurvedNavigationBar(
-        color: const Color.fromRGBO(239, 101, 34, 1),
+        color: Get.theme.colorPrimary,
         backgroundColor: Colors.transparent,
-        buttonBackgroundColor: const Color.fromRGBO(239, 101, 34, 1),
+        buttonBackgroundColor: Get.theme.colorPrimary,
         height: 60,
         animationCurve: Curves.linear,
         animationDuration: const Duration(milliseconds: 350),

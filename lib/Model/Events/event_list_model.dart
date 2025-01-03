@@ -10,6 +10,7 @@ import 'dynamicform.dart';
 
 class EventListModel {
   String? headerImage;
+  String? edition;
   String? location;
   String? mode;
   String? pricepool;
@@ -53,6 +54,7 @@ class EventListModel {
     this.dynamicform,
     this.name,
     this.live,
+    this.edition,
     this.payment_type,
     this.date,
     this.reqdfields,
@@ -71,6 +73,7 @@ class EventListModel {
   });
 
   EventListModel copyWith({
+    String? edition,
     String? headerImage,
     String? location,
     String? mode,
@@ -102,6 +105,7 @@ class EventListModel {
     String? contact,
   }) {
     return EventListModel(
+      edition: edition ?? this.edition,
       headerImage: headerImage ?? this.headerImage,
       location: location ?? this.location,
       mode: mode ?? this.mode,
@@ -139,6 +143,7 @@ class EventListModel {
       'headerImage': headerImage,
       'location': location,
       'mode': mode,
+      'edition': edition,
       'pricepool': pricepool,
       'timestamp': timestamp,
       'oneliner': oneliner,
@@ -170,21 +175,38 @@ class EventListModel {
 
   factory EventListModel.fromMap(Map<String, dynamic> map) {
     return EventListModel(
-      headerImage: map['headerImage'] != null ? map['headerImage'] as String : null,
+      edition: map['edition'] != null ? map['edition'] as String : null,
+      headerImage:
+          map['headerImage'] != null ? map['headerImage'] as String : null,
       location: map['location'] != null ? map['location'] as String : null,
       mode: map['mode'] != null ? map['mode'] as String : null,
       pricepool: map['pricepool'] != null ? map['pricepool'] as String : null,
       timestamp: map['timestamp'] != null ? map['timestamp'] as int : null,
       oneliner: map['oneliner'] != null ? map['oneliner'] as String : null,
       startdate: map['startdate'] != null ? map['startdate'] as String : null,
-      locationLng: map['locationLng'] != null ? map['locationLng'] as String : null,
-      locationLat: map['locationLat'] != null ? map['locationLat'] as String : null,
-      sponsors: map['sponsors'] != null ? List<Sponsor>.from((map['sponsors'] as List<dynamic>).map<Sponsor?>((x) => Sponsor.fromMap(x as Map<String,dynamic>),),) : null,
+      locationLng:
+          map['locationLng'] != null ? map['locationLng'] as String : null,
+      locationLat:
+          map['locationLat'] != null ? map['locationLat'] as String : null,
+      sponsors: map['sponsors'] != null
+          ? List<Sponsor>.from(
+              (map['sponsors'] as List<dynamic>).map<Sponsor?>(
+                (x) => Sponsor.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
       time: map['time'] != null ? map['time'] as String : null,
-      dynamicform: map['dynamicform'] != null ? List<Dynamicform>.from((map['dynamicform'] as List<dynamic>).map<Dynamicform?>((x) => Dynamicform.fromMap(x as Map<String,dynamic>),),) : null,
+      dynamicform: map['dynamicform'] != null
+          ? List<Dynamicform>.from(
+              (map['dynamicform'] as List<dynamic>).map<Dynamicform?>(
+                (x) => Dynamicform.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
       name: map['name'] != null ? map['name'] as String : null,
       live: map['live'] != null ? map['live'] as bool : null,
-      payment_type: map['payment_type'] != null ? map['payment_type'] as String : null,
+      payment_type:
+          map['payment_type'] != null ? map['payment_type'] as String : null,
       date: map['date'] != null ? map['date'] as String : null,
       reqdfields: map['reqdfields'] != null ? map['reqdfields'] as bool : null,
       reglink: map['reglink'] != null ? map['reglink'] as String : null,
@@ -195,9 +217,12 @@ class EventListModel {
       sk: map['sk'] != null ? map['sk'] as String : null,
       pk: map['pk'] != null ? map['pk'] as String : null,
       id: map['id'] != null ? map['id'] as String : null,
-      sortCategory: map['sortCategory'] != null ? map['sortCategory'] as String : null,
+      sortCategory:
+          map['sortCategory'] != null ? map['sortCategory'] as String : null,
       timeline: map['timeline'] != null ? map['timeline'] as String : null,
-      gallery: map['gallery'] != null ? List<dynamic>.from((map['gallery'] as List<dynamic>)) : null,
+      gallery: map['gallery'] != null
+          ? List<dynamic>.from((map['gallery'] as List<dynamic>))
+          : null,
       contact: map['contact'] != null ? map['contact'] as String : null,
     );
   }
@@ -209,75 +234,76 @@ class EventListModel {
 
   @override
   String toString() {
-    return 'EventListModel(headerImage: $headerImage, location: $location, mode: $mode, pricepool: $pricepool, timestamp: $timestamp, oneliner: $oneliner, startdate: $startdate, locationLng: $locationLng, locationLat: $locationLat, sponsors: $sponsors, time: $time, dynamicform: $dynamicform, name: $name, live: $live, payment_type: $payment_type, date: $date, reqdfields: $reqdfields, reglink: $reglink, structure: $structure, image: $image, about: $about, category: $category, sk: $sk, pk: $pk, id: $id, sortCategory: $sortCategory, timeline: $timeline, gallery: $gallery, contact: $contact)';
+    return 'EventListModel(headerImage: $headerImage, edition: $edition ,location: $location, mode: $mode, pricepool: $pricepool, timestamp: $timestamp, oneliner: $oneliner, startdate: $startdate, locationLng: $locationLng, locationLat: $locationLat, sponsors: $sponsors, time: $time, dynamicform: $dynamicform, name: $name, live: $live, payment_type: $payment_type, date: $date, reqdfields: $reqdfields, reglink: $reglink, structure: $structure, image: $image, about: $about, category: $category, sk: $sk, pk: $pk, id: $id, sortCategory: $sortCategory, timeline: $timeline, gallery: $gallery, contact: $contact)';
   }
 
   @override
   bool operator ==(covariant EventListModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.headerImage == headerImage &&
-      other.location == location &&
-      other.mode == mode &&
-      other.pricepool == pricepool &&
-      other.timestamp == timestamp &&
-      other.oneliner == oneliner &&
-      other.startdate == startdate &&
-      other.locationLng == locationLng &&
-      other.locationLat == locationLat &&
-      listEquals(other.sponsors, sponsors) &&
-      other.time == time &&
-      listEquals(other.dynamicform, dynamicform) &&
-      other.name == name &&
-      other.live == live &&
-      other.payment_type == payment_type &&
-      other.date == date &&
-      other.reqdfields == reqdfields &&
-      other.reglink == reglink &&
-      other.structure == structure &&
-      other.image == image &&
-      other.about == about &&
-      other.category == category &&
-      other.sk == sk &&
-      other.pk == pk &&
-      other.id == id &&
-      other.sortCategory == sortCategory &&
-      other.timeline == timeline &&
-      listEquals(other.gallery, gallery) &&
-      other.contact == contact;
+
+    return other.edition == edition &&
+        other.headerImage == headerImage &&
+        other.location == location &&
+        other.mode == mode &&
+        other.pricepool == pricepool &&
+        other.timestamp == timestamp &&
+        other.oneliner == oneliner &&
+        other.startdate == startdate &&
+        other.locationLng == locationLng &&
+        other.locationLat == locationLat &&
+        listEquals(other.sponsors, sponsors) &&
+        other.time == time &&
+        listEquals(other.dynamicform, dynamicform) &&
+        other.name == name &&
+        other.live == live &&
+        other.payment_type == payment_type &&
+        other.date == date &&
+        other.reqdfields == reqdfields &&
+        other.reglink == reglink &&
+        other.structure == structure &&
+        other.image == image &&
+        other.about == about &&
+        other.category == category &&
+        other.sk == sk &&
+        other.pk == pk &&
+        other.id == id &&
+        other.sortCategory == sortCategory &&
+        other.timeline == timeline &&
+        listEquals(other.gallery, gallery) &&
+        other.contact == contact;
   }
 
   @override
   int get hashCode {
     return headerImage.hashCode ^
-      location.hashCode ^
-      mode.hashCode ^
-      pricepool.hashCode ^
-      timestamp.hashCode ^
-      oneliner.hashCode ^
-      startdate.hashCode ^
-      locationLng.hashCode ^
-      locationLat.hashCode ^
-      sponsors.hashCode ^
-      time.hashCode ^
-      dynamicform.hashCode ^
-      name.hashCode ^
-      live.hashCode ^
-      payment_type.hashCode ^
-      date.hashCode ^
-      reqdfields.hashCode ^
-      reglink.hashCode ^
-      structure.hashCode ^
-      image.hashCode ^
-      about.hashCode ^
-      category.hashCode ^
-      sk.hashCode ^
-      pk.hashCode ^
-      id.hashCode ^
-      sortCategory.hashCode ^
-      timeline.hashCode ^
-      gallery.hashCode ^
-      contact.hashCode;
+        edition.hashCode ^
+        location.hashCode ^
+        mode.hashCode ^
+        pricepool.hashCode ^
+        timestamp.hashCode ^
+        oneliner.hashCode ^
+        startdate.hashCode ^
+        locationLng.hashCode ^
+        locationLat.hashCode ^
+        sponsors.hashCode ^
+        time.hashCode ^
+        dynamicform.hashCode ^
+        name.hashCode ^
+        live.hashCode ^
+        payment_type.hashCode ^
+        date.hashCode ^
+        reqdfields.hashCode ^
+        reglink.hashCode ^
+        structure.hashCode ^
+        image.hashCode ^
+        about.hashCode ^
+        category.hashCode ^
+        sk.hashCode ^
+        pk.hashCode ^
+        id.hashCode ^
+        sortCategory.hashCode ^
+        timeline.hashCode ^
+        gallery.hashCode ^
+        contact.hashCode;
   }
 }

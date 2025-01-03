@@ -17,7 +17,6 @@ user.json
 .idea/
 *.jks
 
-
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
@@ -46,11 +45,9 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-
 # Firebase configuration files
 lib/firebase_options.dart
 firebase.json
-
 
 # Android Studio will place build artifacts here
 /android/app/debug
@@ -78,3 +75,6 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# FVM Version Cache
+.fvm/

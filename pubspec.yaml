@@ -15,10 +15,13 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.2+4
+
+#//TODO:increase point version also to enable upgrader
+version: 2.0.3+6
+
 
 environment:
-  sdk: ">=2.17.1 <3.0.0"
+  sdk: ">=3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,14 +32,10 @@ environment:
 dependencies:
 
   http: ^1.2.2
-  location: ^7.0.0
   cached_network_image: ^3.2.3
   flip_card: ^0.7.0
-  change_app_package_name: ^1.1.0
   cloud_firestore: ^5.2.1
-  cupertino_icons: ^1.0.2
   curved_navigation_bar: ^1.0.6
-  device_preview: ^1.2.0
   firebase_analytics: ^11.1.0
   firebase_auth: ^5.1.1
   firebase_core: ^3.1.1
@@ -66,38 +65,33 @@ dependencies:
   flutter_map: ^5.0.0
   latlong2: ^0.9.0
   appinio_swiper: ^2.1.1
-  smooth_page_indicator: ^1.2.0+3
   carousel_slider: ^5.0.0
-  dio: ^5.7.0
-  any_link_preview: ^3.0.2
-
-
-
+  syncfusion_flutter_pdfviewer: ^27.2.5
+  auto_animated: ^3.2.0
+  syncfusion_flutter_core: ^27.2.5
+  lottie: ^3.1.3
+  permission_handler: ^11.3.1
+  open_file: ^3.5.10
+  device_preview: ^1.2.0
+  animations: ^2.0.11
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/splash_logo.png"
+  image_path: "assets/images/app_icon.png"
   remove_alpha_ios: true
   adaptive_icon_background: "#000000"
-#  flutter pub run flutter_launcher_icons:main
-flutter_native_splash:
-  color: "#000000"
-  #background_image: "assets/background.png"
-  image: "assets/images/splash_logo.png"
-  branding: assets/images/splash_logo.png
-  android_12:
-    image: assets/images/splash_logo.png
-    icon_background_color: "#000000"
+##  flutter pub run flutter_launcher_icons:main
 
-  #background_image_dark: "assets/dark-background.png"
-  #image_dark: assets/splash-invert.png
+flutter_native_splash:
   android: true
   ios: true
-  #web: false
-  android_gravity: center
-  ios_content_mode: centerfllll
-  fullscreen: true
+  color: "#000000"
+  image: "assets/images/splash_logo_final.png"
+
+  android_12:
+    color: "#000000"
+    image: "assets/images/splash_logo_final.png"
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
@@ -123,6 +117,6 @@ flutter:
     - assets/AppBarIcons/
     - assets/images/
     - assets/images/icons/
-    - assets/json/timeLine.json
+    - assets/json/
     - assets/profilePageIcon/
 

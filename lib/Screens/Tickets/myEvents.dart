@@ -1,218 +1,458 @@
+// import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
+// import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
+// import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
+// import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+// import 'package:auto_animated/auto_animated.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import '../Events/events_screen.dart';
+// import '../Home/home_controller.dart';
+//
+// var registeredEvents;
+//
+// class MyEvents extends StatefulWidget {
+//   List<EventListModel>? eventList;
+//   bool fromProfile;
+//   MyEvents({super.key, this.eventList, required this.fromProfile});
+//
+//   @override
+//   State<MyEvents> createState() => _MyEventsState();
+// }
+//
+// class _MyEventsState extends State<MyEvents> {
+//   final scrollController = ScrollController();
+//
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     scrollController.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     HomeController controller = Get.find();
+//     widget.eventList ??= controller.eventList;
+//     controller.common.fetchAndLoadDetails();
+//     final eventIds = controller.common.registeredEvents();
+//     registeredEvents = <EventListModel>[];
+//     for (var eventId in eventIds) {
+//       for (var event in widget.eventList!) {
+//         if (eventId == event.id) {
+//           registeredEvents.add(event);
+//         }
+//       }
+//     }
+//
+//     final screenWidth = MediaQuery.of(context).size.width;
+//     final screenHeight = MediaQuery.of(context).size.height;
+//
+//     return Scaffold(
+//       extendBodyBehindAppBar: true,
+//       appBar: widget.fromProfile
+//           ? AaruushAppBar(title: "Aaruush", actions: [
+//               Padding(
+//                 padding: EdgeInsets.all(screenWidth * 0.02),
+//                 child: IconButton.outlined(
+//                   padding: EdgeInsets.zero,
+//                   alignment: Alignment.center,
+//                   onPressed: () => Navigator.pop(context),
+//                   icon: const Icon(Icons.close_rounded),
+//                   color: Colors.white,
+//                   iconSize: screenWidth * 0.06,
+//                 ),
+//               )
+//             ])
+//           : AaruushAppBar(title: "My Events"),
+//       body: BgArea(
+//         child: Padding(
+//           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+//           child: CustomScrollView(
+//             slivers: [
+//               SliverToBoxAdapter(
+//                 child: registeredEvents.isEmpty ?null :SizedBox(height: MediaQuery.of(context).size.height / 8),
+//               ),
+//               registeredEvents.isEmpty
+//                   ? SliverToBoxAdapter(
+//                       child: SizedBox(
+//                         height: Get.height,
+//                         width: Get.width,
+//                         child: Center(
+//                           child: Text(
+//                             "You Haven't registered For Any Event",
+//                             style: Get.textTheme.labelMedium!
+//                                 .copyWith(letterSpacing: 4),
+//                             textAlign: TextAlign.center,
+//                           ),
+//                         ),
+//                       ),
+//                     )
+//                   : LiveSliverGrid.options(
+//                       controller: scrollController,
+//                       options: const LiveOptions(
+//                         showItemInterval: Duration(milliseconds: 100),
+//                         showItemDuration: Duration(milliseconds: 300),
+//                         visibleFraction: 0.05,
+//                         reAnimateOnVisibility: false,
+//                       ),
+//                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                         crossAxisCount: screenWidth > 600 ? 3 : 2,
+//                         mainAxisSpacing: screenHeight * 0.02,
+//                         crossAxisSpacing: screenWidth * 0.03,
+//                         childAspectRatio: 159 / 200,
+//                       ),
+//                       itemBuilder: _buildAnimatedCard,
+//                       itemCount: registeredEvents.length,
+//                     ),
+//               SliverToBoxAdapter(
+//                 child: SizedBox(height: screenHeight * 0.1),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// Widget _buildAnimatedCard(
+//     BuildContext context, int index, Animation<double> animation) {
+//   final screenWidth = MediaQuery.of(context).size.width;
+//
+//   return FadeTransition(
+//     opacity: Tween<double>(
+//       begin: 0,
+//       end: 1,
+//     ).animate(animation),
+//     child: SlideTransition(
+//       position: Tween<Offset>(
+//         begin: const Offset(0, -0.1),
+//         end: Offset.zero,
+//       ).animate(animation),
+//       child: TicketTile(
+//         imagePath: registeredEvents[index].image!,
+//         title: registeredEvents[index].name!,
+//         event: registeredEvents[index],
+//         width: screenWidth / 2.5,
+//       ),
+//     ),
+//   );
+// }
+//
+// class TicketTile extends StatelessWidget {
+//   final String imagePath;
+//   final String title;
+//   final EventListModel event;
+//   final double width;
+//
+//   const TicketTile({
+//     super.key,
+//     required this.imagePath,
+//     required this.title,
+//     required this.event,
+//     required this.width,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final screenHeight = MediaQuery.of(context).size.height;
+//
+//     return ClipRRect(
+//       borderRadius: BorderRadius.circular(12),
+//       child: Container(
+//         color: const Color(0xFFA39E9E).withOpacity(0.11),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,
+//           children: [
+//             Padding(
+//               padding: EdgeInsets.only(
+//                 top: width * 0.07,
+//                 left: width * 0.07,
+//                 right: width * 0.07,
+//               ),
+//               child: GestureDetector(
+//                 onTap: () => Get.to(() => EventsScreen(
+//                       event: event,
+//                       fromMyEvents: true.obs,
+//                     )),
+//                 child: Container(
+//                   height: screenHeight / 5.3,
+//                   decoration: BoxDecoration(
+//                     color: const Color(0xFFA39E9E).withOpacity(0.11),
+//                     borderRadius: BorderRadius.circular(12),
+//                     border: Border.all(
+//                       color: Colors.white,
+//                       width: 0,
+//                       strokeAlign: BorderSide.strokeAlignOutside,
+//                     ),
+//                     image: DecorationImage(
+//                       image: CachedNetworkImageProvider(imagePath),
+//                       fit: BoxFit.fill,
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             Padding(
+//               padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+//               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Padding(
+//                     padding: const EdgeInsets.only(left: 5.0),
+//                     child: SizedBox(
+//                       width: width * 0.6513,
+//                       child: Text(
+//                         title,
+//                         overflow: TextOverflow.ellipsis,
+//                         style: const TextStyle(
+//                           color: Color(0xFFEF6522),
+//                           fontSize: 14,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   IconButton(
+//                     iconSize: 20,
+//                     onPressed: () {
+//                       Get.to(() => TicketDisplayPage(event: event));
+//                     },
+//                     icon: const Icon(Icons.qr_code_scanner_rounded, size: 20),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
-import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
+import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:animations/animations.dart';
 import '../Events/events_screen.dart';
 import '../Home/home_controller.dart';
 
-class MyEvents extends StatelessWidget {
-  MyEvents({super.key, this.eventList});
+var registeredEvents;
+
+class MyEvents extends StatefulWidget {
   List<EventListModel>? eventList;
+  bool fromProfile;
+  MyEvents({super.key, this.eventList, required this.fromProfile});
+
+  @override
+  State<MyEvents> createState() => _MyEventsState();
+}
+
+class _MyEventsState extends State<MyEvents> {
+  final scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     HomeController controller = Get.find();
-    eventList == null
-        ? eventList = controller.eventList
-        : eventList = eventList;
+    widget.eventList ??= controller.eventList;
     controller.common.fetchAndLoadDetails();
     final eventIds = controller.common.registeredEvents();
-    var registeredEvents = <EventListModel>[];
-    for (var i = 0; i < eventIds.length; i++) {
-      for (var j = 0; j < eventList!.length; j++) {
-        if (eventIds[i] == eventList![j].id) {
-          registeredEvents.add(eventList![j]);
+    registeredEvents = <EventListModel>[];
+    for (var eventId in eventIds) {
+      for (var event in widget.eventList!) {
+        if (eventId == event.id) {
+          registeredEvents.add(event);
         }
       }
     }
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(
-        title: "AARUUSH",
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
-          image: DecorationImage(
-              image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
-        ),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: SafeArea(
-                child: Center(
-                  child: Text(
-                    'My Events',
-                    style: Get.theme.kSmallTextStyle.copyWith(
-                        decoration: TextDecoration.underline, fontSize: 28),
-                  ),
+      appBar: widget.fromProfile
+          ? AaruushAppBar(title: "Aaruush", actions: [
+              Padding(
+                padding: EdgeInsets.all(screenWidth * 0.02),
+                child: IconButton.outlined(
+                  padding: EdgeInsets.zero,
+                  alignment: Alignment.center,
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close_rounded),
+                  color: Colors.white,
+                  iconSize: screenWidth * 0.06,
                 ),
+              )
+            ])
+          : AaruushAppBar(title: "My Events"),
+      body: BgArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: registeredEvents.isEmpty
+                    ? null
+                    : SizedBox(height: MediaQuery.of(context).size.height / 8),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(left: Get.width / 25, bottom: 30),
-                child: Text(
-                  'Upcoming Events',
-                  style: Get.theme.kSmallTextStyle,
-                ),
-              ),
-            ),
-            controller.LiveEventsList.isEmpty
-                ? const SliverToBoxAdapter(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Currently No Live Events",
-                      style: TextStyle(letterSpacing: 4),
+              registeredEvents.isEmpty
+                  ? SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: Get.height,
+                        width: Get.width,
+                        child: Center(
+                          child: Text(
+                            "You Haven't registered For Any Event",
+                            style: Get.textTheme.labelMedium!
+                                .copyWith(letterSpacing: 4),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    )
+                  : LiveSliverGrid.options(
+                      controller: scrollController,
+                      options: const LiveOptions(
+                        showItemInterval: Duration(milliseconds: 100),
+                        showItemDuration: Duration(milliseconds: 300),
+                        visibleFraction: 0.05,
+                        reAnimateOnVisibility: false,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: screenWidth > 600 ? 3 : 2,
+                        mainAxisSpacing: screenHeight * 0.02,
+                        crossAxisSpacing: screenWidth * 0.03,
+                        childAspectRatio: 159 / 200,
+                      ),
+                      itemBuilder: _buildAnimatedCard,
+                      itemCount: registeredEvents.length,
                     ),
-                  ),
-                )
-            )
-                : SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 159 / 200),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (controller.isLoading.value) {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            color: Get.theme.colorPrimary,
-                          ));
-                        } else {
-                          final event = controller.eventList
-                              .where((e) => e.live!)
-                              .toList()[index];
-
-                          return TicketTile(
-                            imagePath: event.image!,
-                            event: event,
-                            title: event.name!,
-                          );
-                        }
-                      },
-                      childCount:
-                          controller.eventList.where((e) => e.live!).length,
-                    ),
-                  ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding:
-                    EdgeInsets.only(left: Get.width / 25, top: 30, bottom: 30),
-                child: Text(
-                  'Events Participated',
-                  style: Get.theme.kSmallTextStyle,
-                ),
+              SliverToBoxAdapter(
+                child: SizedBox(height: screenHeight * 0.1),
               ),
-            ),
-            SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 159 / 200),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return TicketTile(
-                  imagePath: registeredEvents[index].image!,
-                  title: registeredEvents[index].name!,
-                  event: registeredEvents[index],
-                );
-              }, childCount: registeredEvents.length),
-            ),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 0.2 * Get.height,
-              ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
+Widget _buildAnimatedCard(
+    BuildContext context, int index, Animation<double> animation) {
+  final screenWidth = MediaQuery.of(context).size.width;
+
+  return FadeTransition(
+    opacity: Tween<double>(begin: 0, end: 1).animate(animation),
+    child: SlideTransition(
+      position: Tween<Offset>(begin: const Offset(0, -0.1), end: Offset.zero)
+          .animate(animation),
+      child: OpenContainer(middleColor: Colors.transparent,openColor: Colors.transparent,
+        closedColor: Colors.transparent,
+        closedShape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        closedBuilder: (BuildContext _, VoidCallback openContainer) {
+          return TicketTile(
+            imagePath: registeredEvents[index].image!,
+            title: registeredEvents[index].name!,
+            event: registeredEvents[index],
+            width: screenWidth / 2.5,
+          );
+        },
+        openBuilder: (BuildContext _, VoidCallback __) {
+          return EventsScreen(
+            event: registeredEvents[index],
+            fromMyEvents: true.obs,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
+      ),
+    ),
+  );
+}
+
 class TicketTile extends StatelessWidget {
   final String imagePath;
   final String title;
   final EventListModel event;
+  final double width;
 
-  const TicketTile({
-    super.key,
-    required this.imagePath,
-    required this.title,
-    required this.event,
-  });
+  const TicketTile(
+      {super.key,
+      required this.imagePath,
+      required this.title,
+      required this.event,
+      required this.width});
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return ClipRRect(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          color: const Color(0xFFA39E9E).withOpacity(0.11),
-          child: GridTile(
-            footer: SizedBox(
-              height: 48,
-              child: GridTileBar(
-                leading: Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 40,
-                      left: MediaQuery.of(context).size.width / 35),
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 4.97,
-                      child: Text(
-                        title,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Color(0xFFEF6522),
-                          fontSize: 14,
-                        ),
-                      )),
-                ),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8, top: 10),
-                  child: IconButton(
-                      onPressed: () {
-                        Get.to(() => TicketDisplayPage(
-                              event: event,
-                            ));
-                      },
-                      icon: const Icon(Icons.qr_code_scanner_rounded)),
-                ),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 15, 10, 40),
-              child: GestureDetector(
-                //TODO: make this gesture detector redirect to events page
-                onTap: () => Get.to(() => EventsScreen(
-                      event: event,
-                      fromMyEvents: true.obs,
-                    )),
-                child: Card(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: const Color(0xFFA39E9E).withOpacity(0.11),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                            color: Colors.white,
-                            width: 1,
-                            strokeAlign: BorderSide.strokeAlignOutside),
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(imagePath),
-                            fit: BoxFit.fill)),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        color: const Color(0xFFA39E9E).withOpacity(0.11),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: width * 0.07, left: width * 0.07, right: width * 0.07),
+              child: Container(
+                height: screenHeight / 5.3,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFA39E9E).withOpacity(0.11),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white, width: 0),
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(imagePath),
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
             ),
-          ),
-        ));
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: SizedBox(
+                      width: width * 0.6513,
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Color(0xFFEF6522), fontSize: 14),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    iconSize: 20,
+                    onPressed: () {
+                      Get.to(() => TicketDisplayPage(event: event));
+                    },
+                    icon: const Icon(Icons.qr_code_scanner_rounded, size: 20),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

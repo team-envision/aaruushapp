@@ -11,6 +11,7 @@ import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/removeBracketsIfExist.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ import '../../components/carouselSliderAutoplay.dart';
 import '../../components/eventCard.dart';
 import '../../components/searchTextField.dart';
 import '../Events/events_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -38,244 +40,385 @@ class HomeScreen extends StatelessWidget {
           : UpgradeDialogStyle.cupertino,
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        extendBody: true,
+        // extendBody: true,
         appBar: AaruushAppBar(
           actions: [
-            IconButton(
-              onPressed: () => {Get.to(() => const NotificationScreen())},
-              icon: const Icon(Icons.notifications),
-              color: Colors.white,
-              iconSize: 25,
+            OpenContainer(
+              middleColor: Colors.transparent,
+              openColor: Colors.transparent,
+              closedColor: Colors.transparent,
+              transitionType: ContainerTransitionType.fadeThrough,
+              transitionDuration: const Duration(milliseconds: 400),
+              closedBuilder: (context, action) {
+                return GestureDetector(
+                  onTap: () => action(),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ),
+                );
+              },
+              openBuilder: (context, action) => NotificationScreen(),
             ),
-            IconButton(
-              onPressed: () => {Get.to(() => const AboutPage())},
-              icon: const Icon(Icons.info_outlined),
-              color: Colors.white,
-              iconSize: 25,
-            ),
-          ],
+
+            OpenContainer(
+              middleColor: Colors.transparent,
+              openColor: Colors.transparent,
+              closedColor: Colors.transparent,
+              transitionType: ContainerTransitionType.fadeThrough,
+              transitionDuration: const Duration(milliseconds: 400),
+              closedBuilder: (context, action) {
+                return GestureDetector(
+                  onTap: () => action(),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(
+                      Icons.info_outlined,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ),
+                );
+              },
+              openBuilder: (context, action) => const AboutPage(),
+            ),          ],
           title: "AARUUSH",
         ),
         body: BgArea(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            sizeBox(100, 0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,mainAxisSize: MainAxisSize.max,
-                children: [
-                  IconButton(
-                    onPressed: () => {Get.to(() => const ProfileScreen())},
-                    icon: Obx(
-                      () => controller.common.profileUrl.value.isNotEmpty
-                          ? CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  controller.common.profileUrl.value),
-                            ) 
-                          : Image.asset(
-                              'assets/images/profile.png',
-                              height: 30,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height / 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () => {Get.to(() => const ProfileScreen())},
+                        icon: Obx(
+                          () => controller.common.profileUrl.value.isNotEmpty
+                              ? CircleAvatar(
+                                  radius: 22,
+                                  backgroundImage: NetworkImage(
+                                      controller.common.profileUrl.value),
+                                )
+                              : Image.asset(
+                                  'assets/images/profile.png',
+                                  height: 30,
+                                ),
+                        ),
+                        color: Colors.white,
+                        iconSize: 40,
+                      ),
+                      sizeBox(0, 9),
+                      Obx(() => FittedBox(
+                            child: Text(
+                              "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}"
+                                  .useCorrectEllipsis(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: Get.theme.kTitleTextStyle.copyWith(
+                                  fontSize: 19, fontWeight: FontWeight.w700),
                             ),
-                    ),
-                    color: Colors.white,
-                    iconSize: 40,
-                  ),
-                  Obx(() => FittedBox(
-                    child: Text(
-                          "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}"
-                              .useCorrectEllipsis(),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style:
-                              Get.theme.kSmallTextStyle.copyWith(fontSize: 18),
+                          )),
+                      const Spacer(),
+                      OpenContainer(
+                        middleColor: Colors.transparent,
+                        openColor: Colors.transparent,
+                        closedColor: Colors.transparent,
+                        transitionType: ContainerTransitionType.fadeThrough,
+                        transitionDuration: const Duration(milliseconds: 400),
+                        closedBuilder: (context, action) => Image.asset(
+                          "assets/images/icons/certificates.png",
+                          color: Colors.white,
                         ),
-                  )),
-                 //  Spacer(),
-
-                  // IconButton(onPressed: (){Get.to(()=>Certificateview());}, icon: Image.asset("assets/images/icons/certificates.png"))
-                ],
-              ),
-            ),
-            searchTextField(context: context),
-            sizeBox(20, 0),
-            Autoplay(),
-            sizeBox(30, 0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                "Categories",
-                style: Get.theme.kTitleTextStyle1,
-              ),
-            ),
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              primary: false,
-              child: Row(
-                children: [
-                  categoryButton(
-                    iconData: Icons.all_inclusive_rounded,
-                    name: "All",
-                    onTap: () => controller.setSortCategory("All"),
+                        openBuilder: (context, action) => Certificateview(),
+                      ),                    ],
                   ),
-                  ...controller.catList.map((e) {
-                    return categoryButton(
-                      icon:
-                          "${ApiData.CDN_URL}/icons/categories/${e.toLowerCase().split(' ').join('-')}.png",
-                      name:
-                          e.toLowerCase().split('-').join(' ').toCapitalized(),
-                      onTap: () => controller.setSortCategory(e),
-                    );
-                  }),
-                ],
-              ),
-            ),
-            sizeBox(15, 0), //above All Live event
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-              child: Obx(
-                () => Text(
-                  "${controller.sortName.value.toLowerCase().split('-').join(' ').toCapitalized()} Live Events",
-                  style: Get.theme.kTitleTextStyle,
                 ),
-              ),
-            ),
-            Obx(
-              () {
-                if (controller.isLoading.value) {
-                  return  const Center(child: CircularProgressIndicator(color: Color.fromRGBO(239, 101, 34, 1),));
-                }
-
-                return controller.LiveEventsList.isNotEmpty
-                    ? SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        primary: false,
-                        child: Row(
-                          children: controller.eventList
-                              .where((e) =>
-                                  e.live! &&
-                                  (controller.sortName.value == "All" ||
-                                      controller.sortName.value ==
-                                          e.sortCategory))
-                              .map((event) {
-                            return eventCard(
-                                event,
-                                () => Get.to(() => EventsScreen(
-                                      event: event,
-                                      fromMyEvents: false.obs,
-                                    )),
-                                controller);
-                          }).toList(),
-                        ))
-                    : const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Currently No Live Events",
-                            style: TextStyle(letterSpacing: 4),
-                          ),
-                        ),
-                      );
-              },
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-              child: Text(
-                "Past Events",
-                style: Get.theme.kTitleTextStyle,
-              ),
-            ),
-            Obx(
-              () {
-                if (controller.isLoading.value) {
-                  return  const Center(child: CircularProgressIndicator(color:Color.fromRGBO(239, 101, 34, 1),));
-                }
-                return SingleChildScrollView(
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: searchTextField(context: context),
+                ),
+                sizeBox(20, 0),
+                Autoplay(),
+                sizeBox(20, 0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "Categories",
+                    style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
+                  ),
+                ),
+                SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   primary: false,
                   child: Row(
-                    children: controller.eventList
-                        .where((e) => !e.live! && e.startdate != null
-                            ? (e.startdate!
-                                    .contains(DateTime.now().year.toString())
-                                ? true
-                                : false)
-                            : false)
-                        .map((e) {
-                      return eventCard(
-                          e,
-                          () => Get.to(() => EventsScreen(
-                                event: e,
-                                fromMyEvents: false.obs,
-                              )),
-                          controller);
-                    }).toList(),
+                    children: [
+                      categoryButton(
+                        iconData: Icons.all_inclusive_rounded,
+                        name: "All",
+                        onTap: () => controller.setSortCategory("All"),
+                      ),
+                      ...controller.catList.map((e) {
+                        if (e != "events") {
+                          return categoryButton(
+                            icon:
+                                "${ApiData.CDN_URL}/icons/categories/${e.toLowerCase().split(' ').join('-')}.png",
+                            name: e
+                                .toLowerCase()
+                                .split('-')
+                                .join(' ')
+                                .toCapitalized(),
+                            onTap: () => controller.setSortCategory(e),
+                          );
+                        } else {
+                          return categoryButton(
+                            iconData: Icons.category_rounded,
+                            name: e
+                                .toLowerCase()
+                                .split('-')
+                                .join(' ')
+                                .toCapitalized(),
+                            onTap: () => controller.setSortCategory(e),
+                          );
+                        }
+                      }),
+                    ],
                   ),
-                );
-              },
-            ),
-            sizeBox(50, 0),
-            Text(
-              "For you",
-              style: Get.theme.kTitleTextStyle1,
-            ),
-            sizeBox(14, 0),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween   ,
-              children: [
-
-                GestureDetector(onTap:() {controller.getToURL(URL: "https://cap.aaruush.org/");},
-                  child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(18), color: Get.theme.colorPrimary,),padding: EdgeInsets.all(10),
-                    height: 120,
-                    child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround,crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Discover\nCAP Portal",style: Get.theme.kSmallTextStyle.copyWith(fontWeight: FontWeight.bold,color: Colors.white),),
-                        Row(
-                          children: [
-                            Text("Perks:\nLOR & Certificates",style: Get.theme.kVerySmallTextStyle.copyWith(color: Colors.white),),
-                            const Icon(Icons.arrow_forward),
-                          ],
-                        )
-
-                      ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 20, top: 40),
+                  child: Obx(
+                    () => Text(
+                      "${controller.sortName.value.toLowerCase().split('-').join(' ').toCapitalized()} Live Events",
+                      style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
                     ),
                   ),
                 ),
+                Obx(
+                  () {
+                    if (controller.isLoading.value) {
+                      return Center(
+                        child: Container(
+                            color: Colors.black,
+                            child:
+                            Image.asset('assets/images/spinner.gif', scale: 4)),
+                      );
+                    }
 
-
-                GestureDetector(onTap:() {controller.getToURL(URL: "https://www.aaruush.org/about");},
-                  child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(18), color: Get.theme.colorPrimary,),padding: EdgeInsets.all(10),
-                    height: 120,
-                    child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround,crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Explore\nAARUUSH",style:
-                        Get.theme.kSmallTextStyle.copyWith(fontWeight: FontWeight.w900,color: Colors.white),
+                    return controller.LiveEventsList.isNotEmpty
+                        ? SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            primary: false,
+                            child: Row(
+                              children: controller.eventList
+                                  .where((e) =>
+                                      e.live! &&
+                                      (controller.sortName.value == "All" ||
+                                          controller.sortName.value ==
+                                              e.sortCategory))
+                                  .map((event) {
+                                return OpenContainer(
+                                  middleColor: Colors.transparent,
+                                  openColor: Colors.transparent,
+                                  closedColor: Colors.transparent,
+                                  transitionType:
+                                      ContainerTransitionType.fadeThrough,
+                                  closedShape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  transitionDuration:
+                                      const Duration(milliseconds: 400),
+                                  closedBuilder: (context, action) => eventCard(
+                                    event,
+                                    () => Get.to(() => EventsScreen(
+                                          event: event,
+                                          fromMyEvents: false.obs,
+                                        )),
+                                    controller,
+                                  ),
+                                  openBuilder: (context, action) =>
+                                      EventsScreen(
+                                    event: event,
+                                    fromMyEvents: false.obs,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          )
+                        : const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                "Currently No Live Events",
+                                style: TextStyle(letterSpacing: 4),
+                              ),
+                            ),
+                          );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 20, top: 40),
+                  child: Text(
+                    "Past Events",
+                    style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
+                  ),
+                ),
+                Obx(
+                  () {
+                    if (controller.isLoading.value) {
+                      return Center(
+                        child: Container(
+                            color: Colors.black,
+                            child:
+                            Image.asset('assets/images/spinner.gif', scale: 4)),
+                      )
+                      ;
+                    }
+                    return SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      primary: false,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 8),
+                        child: Row(
+                          children: controller.eventList
+                              .where((e) =>
+                                  !e.live! &&
+                                  e.startdate != null &&
+                                  e.edition == 'a24')
+                              .map((e) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: OpenContainer(
+                                middleColor: Colors.transparent,
+                                openColor: Colors.transparent,
+                                closedColor: Colors.transparent,
+                                closedShape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                transitionDuration:
+                                    const Duration(milliseconds: 400),
+                                transitionType:
+                                    ContainerTransitionType.fadeThrough,
+                                openBuilder: (context, _) => EventsScreen(
+                                  event: e,
+                                  fromMyEvents: false.obs,
+                                ),
+                                closedBuilder: (context, openContainer) =>
+                                    eventCard(
+                                  e,
+                                  openContainer,
+                                  controller,
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        Row(
-                          children: [
-                            Text("...rising in the spirit\nof the innovation",style: Get.theme.kVerySmallTextStyle.copyWith(color: Colors.white),),
-                            const Icon(Icons.arrow_forward),
-                          ],
-                        )
-
-                      ],
-                    ),
+                      ),
+                    );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 20, top: 40),
+                  child: Text(
+                    "For you",
+                    style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
                   ),
                 ),
-
-
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.getToURL(
+                                URL: "https://cap.aaruush.org/");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                              color: Get.theme.colorPrimary,
+                            ),
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Discover\nCAP Portal",
+                                  style: Get.theme.kSmallTextStyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "Perks:\nLOR & Certificates",
+                                  style: Get.theme.kVerySmallTextStyle.copyWith(
+                                      color: Colors.white, fontSize: 13),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.getToURL(
+                                URL: "https://www.aaruush.org/about");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                              color: Get.theme.colorPrimary,
+                            ),
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Explore\nAARUUSH",
+                                  style: Get.theme.kSmallTextStyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "...rising in the spirit\nof the innovation",
+                                  style: Get.theme.kVerySmallTextStyle.copyWith(
+                                      color: Colors.white, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                sizeBox(144, 0),
               ],
             ),
-            sizeBox(144, 0),
-          ],
+          ),
         ),
       ),
     );
