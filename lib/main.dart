@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart' as t;
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Common/default_controller_bindings.dart';

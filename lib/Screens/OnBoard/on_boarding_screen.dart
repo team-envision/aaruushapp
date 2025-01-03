@@ -49,7 +49,8 @@ class OnBoardingScreen extends StatelessWidget {
                             Flexible(
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: innerConstraints.maxWidth * 0.1),
+                                    horizontal:
+                                        innerConstraints.maxWidth * 0.1),
                                 child: Text(
                                   "WELCOME",
                                   style: Get.theme.kSmallmidTextStyle.copyWith(
@@ -63,7 +64,8 @@ class OnBoardingScreen extends StatelessWidget {
                             Flexible(
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: innerConstraints.maxWidth * 0.1),
+                                    horizontal:
+                                        innerConstraints.maxWidth * 0.1),
                                 child: Text(
                                   "Embracing Change, Pioneering Excellence",
                                   style: Get.theme.kSmallTextStyle.copyWith(
@@ -81,7 +83,7 @@ class OnBoardingScreen extends StatelessWidget {
                                 child: primaryButton(
                                   text: 'Get Started',
                                   onTap: () => {
-                                    Get.off(() => const AuthScreen()),
+                                    Get.off(() => const AuthScreen(),transition: Transition.fadeIn),
                                   },
                                 ),
                               ),

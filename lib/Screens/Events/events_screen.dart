@@ -79,8 +79,13 @@ class _EventsScreenState extends State<EventsScreen> {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: Container(
+                height: Get.height,
+                width: Get.width,
+                color: Colors.black,
+                child:
+                Image.asset('assets/images/spinner.gif', scale: 4)),
           );
         }
 

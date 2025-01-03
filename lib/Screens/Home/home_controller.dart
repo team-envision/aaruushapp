@@ -237,8 +237,7 @@ class HomeController extends GetxController {
   }
 
   void setSortCategory(String name) {
-    sortName.value = name;
-    if (name == "All") {
+    sortName.value = name;    if (name == "All") {
       fetchEventData();
     } else {
       fetchEventDataByCategory(name);

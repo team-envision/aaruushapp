@@ -39,9 +39,9 @@ class Certificateview extends StatelessWidget {
           SizedBox(height: MediaQuery.of(context).size.height / 9),
           Obx(
             () => controller.isLoading.value
-                ? CircularProgressIndicator(
-                    color: Get.theme.colorPrimary,
-                  )
+                ? Center(
+              child: Image.asset('assets/images/spinner.gif', scale: 4,),
+            )
                 : controller.certificates.isEmpty
                     ? const Text(
                         "No Certificates",

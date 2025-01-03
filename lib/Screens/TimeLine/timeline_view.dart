@@ -27,16 +27,20 @@ class TimelineView extends GetView<TimelineController> {
             .loadString("assets/json/timeLine.json"),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(
-                  color: Color.fromRGBO(244, 93, 8, 1)),
+            return  Center(
+              child: Container(
+                  height: Get.height,
+                  width: Get.width,
+                  color: Colors.black,
+                  child:
+                  Image.asset('assets/images/spinner.gif', scale: 4))
             );
           } else if (snapshot.hasData) {
             var data = jsonDecode(snapshot.data.toString());
             return BgArea(
                 child: SingleChildScrollView(
-                  child: Column(
-                                children: [
+              child: Column(
+                children: [
                   SizedBox(height: MediaQuery.of(context).size.height / 15),
                   SizedBox(
                     height: Get.height * 0.6,
@@ -66,9 +70,9 @@ class TimelineView extends GetView<TimelineController> {
                       ),
                     ),
                   ),
-                                ],
-                              ),
-                ));
+                ],
+              ),
+            ));
           } else if (snapshot.hasError) {
             return const Center(
               child: Text("Something Went Wrong",
@@ -143,7 +147,8 @@ class timeLineCard extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 8),
                   child: Image.asset(
                     "assets/images/aaruush.png",
-                  scale: 6,),
+                    scale: 6,
+                  ),
                 ),
                 horizontalTitleGap: 0,
                 title: Padding(
@@ -176,8 +181,8 @@ class timeLineCard extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 "assets/images/aaruush.svg",
-                colorFilter:
-                    const ColorFilter.mode(Colors.black45, BlendMode.luminosity),
+                colorFilter: const ColorFilter.mode(
+                    Colors.black45, BlendMode.luminosity),
               ),
               Padding(
                 padding: const EdgeInsets.all(25.0),

@@ -11,6 +11,7 @@ import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/removeBracketsIfExist.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,19 +43,49 @@ class HomeScreen extends StatelessWidget {
         // extendBody: true,
         appBar: AaruushAppBar(
           actions: [
-            IconButton(
-              onPressed: () => {Get.to(() => NotificationScreen())},
-              icon: const Icon(Icons.notifications),
-              color: Colors.white,
-              iconSize: 25,
+            OpenContainer(
+              middleColor: Colors.transparent,
+              openColor: Colors.transparent,
+              closedColor: Colors.transparent,
+              transitionType: ContainerTransitionType.fadeThrough,
+              transitionDuration: const Duration(milliseconds: 400),
+              closedBuilder: (context, action) {
+                return GestureDetector(
+                  onTap: () => action(),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ),
+                );
+              },
+              openBuilder: (context, action) => NotificationScreen(),
             ),
-            IconButton(
-              onPressed: () => {Get.to(() => const AboutPage())},
-              icon: const Icon(Icons.info_outlined),
-              color: Colors.white,
-              iconSize: 25,
-            ),
-          ],
+
+            OpenContainer(
+              middleColor: Colors.transparent,
+              openColor: Colors.transparent,
+              closedColor: Colors.transparent,
+              transitionType: ContainerTransitionType.fadeThrough,
+              transitionDuration: const Duration(milliseconds: 400),
+              closedBuilder: (context, action) {
+                return GestureDetector(
+                  onTap: () => action(),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(
+                      Icons.info_outlined,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ),
+                );
+              },
+              openBuilder: (context, action) => const AboutPage(),
+            ),          ],
           title: "AARUUSH",
         ),
         body: BgArea(
@@ -62,14 +93,13 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height/8),
+                SizedBox(height: MediaQuery.of(context).size.height / 8),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      sizeBox(0, 15),
                       IconButton(
                         padding: EdgeInsets.zero,
                         onPressed: () => {Get.to(() => const ProfileScreen())},
@@ -100,13 +130,18 @@ class HomeScreen extends StatelessWidget {
                             ),
                           )),
                       const Spacer(),
-                      IconButton(
-                          onPressed: () {
-                            Get.to(() => Certificateview());
-                          },
-                          icon: Image.asset(
-                              "assets/images/icons/certificates.png", color: Colors.white,))
-                    ],
+                      OpenContainer(
+                        middleColor: Colors.transparent,
+                        openColor: Colors.transparent,
+                        closedColor: Colors.transparent,
+                        transitionType: ContainerTransitionType.fadeThrough,
+                        transitionDuration: const Duration(milliseconds: 400),
+                        closedBuilder: (context, action) => Image.asset(
+                          "assets/images/icons/certificates.png",
+                          color: Colors.white,
+                        ),
+                        openBuilder: (context, action) => Certificateview(),
+                      ),                    ],
                   ),
                 ),
                 Padding(
@@ -174,9 +209,12 @@ class HomeScreen extends StatelessWidget {
                 Obx(
                   () {
                     if (controller.isLoading.value) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: Color.fromRGBO(236, 99, 32, 1)));
+                      return Center(
+                        child: Container(
+                            color: Colors.black,
+                            child:
+                            Image.asset('assets/images/spinner.gif', scale: 4)),
+                      );
                     }
 
                     return controller.LiveEventsList.isNotEmpty
@@ -192,15 +230,33 @@ class HomeScreen extends StatelessWidget {
                                           controller.sortName.value ==
                                               e.sortCategory))
                                   .map((event) {
-                                return eventCard(
+                                return OpenContainer(
+                                  middleColor: Colors.transparent,
+                                  openColor: Colors.transparent,
+                                  closedColor: Colors.transparent,
+                                  transitionType:
+                                      ContainerTransitionType.fadeThrough,
+                                  closedShape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  transitionDuration:
+                                      const Duration(milliseconds: 400),
+                                  closedBuilder: (context, action) => eventCard(
                                     event,
                                     () => Get.to(() => EventsScreen(
                                           event: event,
                                           fromMyEvents: false.obs,
                                         )),
-                                    controller);
+                                    controller,
+                                  ),
+                                  openBuilder: (context, action) =>
+                                      EventsScreen(
+                                    event: event,
+                                    fromMyEvents: false.obs,
+                                  ),
+                                );
                               }).toList(),
-                            ))
+                            ),
+                          )
                         : const Center(
                             child: Padding(
                               padding: EdgeInsets.all(20),
@@ -223,9 +279,13 @@ class HomeScreen extends StatelessWidget {
                 Obx(
                   () {
                     if (controller.isLoading.value) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: Color.fromRGBO(236, 99, 32, 1)));
+                      return Center(
+                        child: Container(
+                            color: Colors.black,
+                            child:
+                            Image.asset('assets/images/spinner.gif', scale: 4)),
+                      )
+                      ;
                     }
                     return SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
@@ -235,22 +295,34 @@ class HomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 20, right: 8),
                         child: Row(
                           children: controller.eventList
-                              .where((e) => !e.live! && e.startdate != null
-                              ? (e.startdate!.contains(
-                              DateTime.now().year.toString())
-                              ? true
-                              : false)
-                              : false)
+                              .where((e) =>
+                                  !e.live! &&
+                                  e.startdate != null &&
+                                  e.edition == 'a24')
                               .map((e) {
                             return Padding(
                               padding: const EdgeInsets.only(right: 12),
-                              child: eventCard(
+                              child: OpenContainer(
+                                middleColor: Colors.transparent,
+                                openColor: Colors.transparent,
+                                closedColor: Colors.transparent,
+                                closedShape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                transitionDuration:
+                                    const Duration(milliseconds: 400),
+                                transitionType:
+                                    ContainerTransitionType.fadeThrough,
+                                openBuilder: (context, _) => EventsScreen(
+                                  event: e,
+                                  fromMyEvents: false.obs,
+                                ),
+                                closedBuilder: (context, openContainer) =>
+                                    eventCard(
                                   e,
-                                      () => Get.to(() => EventsScreen(
-                                    event: e,
-                                    fromMyEvents: false.obs,
-                                  )),
-                                  controller),
+                                  openContainer,
+                                  controller,
+                                ),
+                              ),
                             );
                           }).toList(),
                         ),
@@ -258,7 +330,6 @@ class HomeScreen extends StatelessWidget {
                     );
                   },
                 ),
-                // sizeBox(50, 0),
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, bottom: 20, top: 40),
@@ -267,86 +338,83 @@ class HomeScreen extends StatelessWidget {
                     style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
                   ),
                 ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.getToURL(URL: "https://cap.aaruush.org/");
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          color: Get.theme.colorPrimary,
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Discover\nCAP Portal",
-                              style: Get.theme.kSmallTextStyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.getToURL(
+                                URL: "https://cap.aaruush.org/");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                              color: Get.theme.colorPrimary,
                             ),
-                            const SizedBox(height: 10),
-                            Text(
-                              "Perks:\nLOR & Certificates",
-                              style: Get.theme.kVerySmallTextStyle.copyWith(
-                                color: Colors.white,
-                                  fontSize: 13
-
-                              ),
-                            )
-                          ],
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Discover\nCAP Portal",
+                                  style: Get.theme.kSmallTextStyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "Perks:\nLOR & Certificates",
+                                  style: Get.theme.kVerySmallTextStyle.copyWith(
+                                      color: Colors.white, fontSize: 13),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.getToURL(URL: "https://www.aaruush.org/about");
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          color: Get.theme.colorPrimary,
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Explore\nAARUUSH",
-                              style: Get.theme.kSmallTextStyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.getToURL(
+                                URL: "https://www.aaruush.org/about");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                              color: Get.theme.colorPrimary,
                             ),
-                            const SizedBox(height: 10),
-                            Text(
-                              "...rising in the spirit\nof the innovation",
-                              style: Get.theme.kVerySmallTextStyle.copyWith(
-                                color: Colors.white,
-                                fontSize: 13
-                              ),
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Explore\nAARUUSH",
+                                  style: Get.theme.kSmallTextStyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "...rising in the spirit\nof the innovation",
+                                  style: Get.theme.kVerySmallTextStyle.copyWith(
+                                      color: Colors.white, fontSize: 13),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
                 sizeBox(144, 0),
               ],
             ),

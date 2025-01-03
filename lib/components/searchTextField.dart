@@ -8,7 +8,7 @@ Widget searchTextField({TextEditingController? controller, dynamic onChanged,req
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 12),
     child: SizedBox(height: 55,
-      child: TextField(
+      child: TextField(readOnly: true,
         controller: controller,
         onChanged: onChanged,
         decoration: InputDecoration(

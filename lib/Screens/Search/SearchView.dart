@@ -46,16 +46,14 @@ class _SearchscreenState extends State<Searchscreen> {
         .where((event) =>
             event.name!.toLowerCase().contains(query) &&
             event.startdate != null &&
-            event.startdate!.contains(DateTime.now().year.toString()))
+            event.edition == 'a24')
         .toList();
   }
 
   void _initialList() {
     eventList.value = homeController.eventList
         .where((event) =>
-            event.live! &&
-            event.startdate != null &&
-            event.startdate!.contains(DateTime.now().year.toString()))
+            event.live! && event.startdate != null && event.edition == 'a24')
         .toList();
   }
 

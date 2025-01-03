@@ -25,7 +25,9 @@ class Autoplay extends StatelessWidget {
         itemCount: imageList.length,
         options: CarouselOptions(
           height: 225.0,
-          autoPlay: true,animateToClosest: true,initialPage: 3,
+          autoPlay: true,
+          animateToClosest: true,
+          initialPage: 3,
           autoPlayInterval: const Duration(seconds: 2),
           autoPlayAnimationDuration: const Duration(milliseconds: 800),
           autoPlayCurve: Curves.fastOutSlowIn,
@@ -49,8 +51,13 @@ class Autoplay extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: imageUrl,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(color: Color.fromARGB(255, 214, 129, 1),),
+                placeholder: (context, url) => Center(
+                  child: Container(
+                      height: Get.height,
+                      width: Get.width,
+                      color: Colors.black,
+                      child:
+                          Image.asset('assets/images/spinner.gif', scale: 4)),
                 ),
                 errorWidget: (context, url, error) => const Center(
                   child: Icon(Icons.error, color: Colors.red),

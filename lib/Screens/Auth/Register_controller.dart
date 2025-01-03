@@ -27,12 +27,15 @@ class RegisterController extends GetxController {
   TextEditingController EmailTextEditingController = TextEditingController();
   final common = Get.put(CommonController());
   final homeController = Get.put(HomeController());
- @override
+  String? googleUserEmail;
+  String? googleUserName;
+
+  @override
   Future<void> onInit() async {
     // TODO: implement onInit
     super.onInit();
-    final String? googleUserEmail =  await GetStorage().read('userEmail');
-    final String? googleUserName =  await GetStorage().read('userName');
+    googleUserEmail =  GetStorage().read('userEmail');
+    googleUserName =  GetStorage().read('userName');
 
     EmailTextEditingController.text = googleUserEmail ?? "";
     NameTextEditingController.text =  toRemoveTextInBracketsIfExists(googleUserName ?? "");
@@ -47,7 +50,7 @@ class RegisterController extends GetxController {
 
 
   Future<void> updateProfile() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
     final userRes = await put(
       Uri.parse('${ApiData.API}/users'),
       headers: {
@@ -58,7 +61,7 @@ class RegisterController extends GetxController {
 
       body: json.encode(<String, dynamic>{
 
-        "email": googleUser!.email,
+        "email": googleUserEmail,
         "aaruushId": homeController.common.aaruushId.value,
         "name": NameTextEditingController.text.toString(),
         "phone": PhNoTextEditingController.text.toString(),

@@ -4,6 +4,7 @@ import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +24,8 @@ class ProfileScreen extends StatelessWidget {
         title: "Profile",
       ),
       body: BgArea(
-        child: SingleChildScrollView(padding: EdgeInsets.zero,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.zero,
           child: Column(
             children: [
               Column(
@@ -129,26 +131,46 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: ProfileButtons(
-                          buttonName: 'Aaruush',
-                          leadingIcon: Icons.info_outline_rounded,
-                          trailingIcon: Icons.arrow_forward_ios_outlined,
-                          onPressedFunc: () {
-                            Get.to(() => const AboutPage());
+                        child: OpenContainer(
+                          middleColor: Colors.transparent,
+                          openColor: Colors.transparent,
+                          closedColor: Colors.transparent,
+                          transitionType: ContainerTransitionType.fadeThrough,
+                          transitionDuration: const Duration(milliseconds: 400),
+                          closedBuilder: (context, action) {
+                            return ProfileButtons(
+                              buttonName: 'Aaruush',
+                              leadingIcon: Icons.info_outline_rounded,
+                              trailingIcon: Icons.arrow_forward_ios_outlined,
+                              onPressedFunc: action,
+                              color: Colors.white,
+                            );
                           },
-                          color: Colors.white,
+                          openBuilder: (context, action) => const AboutPage(),
                         ),
                       ),
                       const SizedBox(height: 15),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: ProfileButtons(
-                          buttonName: "Log out",
-        
-                          onPressedFunc: () =>
-                              controller.common.signOutCurrentUser(),
-                          leadingIcon: Icons.logout,
-                          color: Get.theme.colorPrimary,
+                        child: OpenContainer(
+                          middleColor: Colors.transparent,
+                          openColor: Colors.transparent,
+                          closedColor: Colors.transparent,
+                          transitionType: ContainerTransitionType.fadeThrough,
+                          transitionDuration:
+                              const Duration(milliseconds: 1000),
+                          closedBuilder: (context, action) {
+                            return ProfileButtons(
+                              buttonName: "Log out",
+                              onPressedFunc: () {
+                                action();
+                                controller.common.signOutCurrentUser();
+                              },
+                              leadingIcon: Icons.logout,
+                              color: Get.theme.colorPrimary,
+                            );
+                          },
+                          openBuilder: (context, action) => Container(),
                         ),
                       ),
                     ],

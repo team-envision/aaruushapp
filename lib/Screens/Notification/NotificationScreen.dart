@@ -74,7 +74,7 @@ class NotificationScreen extends GetView<NotificationController> {
                       );
                     }
                   } else {
-                    return const Center(child: CircularProgressIndicator());
+                    return  Center(child: Image.asset('assets/images/spinner.gif', scale: 4));
                   }
                 },
               ),
