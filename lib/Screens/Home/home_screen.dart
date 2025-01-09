@@ -64,7 +64,6 @@ class HomeScreen extends StatelessWidget {
               },
               openBuilder: (context, action) => NotificationScreen(),
             ),
-
             OpenContainer(
               middleColor: Colors.transparent,
               openColor: Colors.transparent,
@@ -85,7 +84,8 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               openBuilder: (context, action) => const AboutPage(),
-            ),          ],
+            ),
+          ],
           title: "AARUUSH",
         ),
         body: BgArea(
@@ -93,30 +93,44 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height / 8),
+                SizedBox(height: MediaQuery.of(context).size.height / 7.5
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => {Get.to(() => const ProfileScreen())},
-                        icon: Obx(
-                          () => controller.common.profileUrl.value.isNotEmpty
-                              ? CircleAvatar(
-                                  radius: 22,
-                                  backgroundImage: NetworkImage(
-                                      controller.common.profileUrl.value),
-                                )
-                              : Image.asset(
-                                  'assets/images/profile.png',
-                                  height: 30,
-                                ),
+                      OpenContainer(
+                        middleColor: Colors.transparent,
+                        openColor: Colors.transparent,
+                        closedColor: Colors.transparent,
+                        transitionType: ContainerTransitionType.fadeThrough,
+                        transitionDuration: const Duration(milliseconds: 400),
+                        closedBuilder: (context, action) {
+                          return GestureDetector(
+                            onTap: () {
+                              action();  // Trigger the OpenContainer animation
+                            },
+                            child: Obx(
+                                  () => controller.common.profileUrl.value.isNotEmpty
+                                  ? CircleAvatar(
+                                radius: 22,
+                                backgroundImage:
+                                NetworkImage(controller.common.profileUrl.value),
+                              )
+                                  : Image.asset(
+                                'assets/images/profile.png',
+                                height: 30,
+                              ),
+                            ),
+                          );
+                        },
+                        openBuilder: (context, action) => const ProfileScreen(
+                          isSwipingEnabled: true,
+                          showCloseButton: true,
                         ),
-                        color: Colors.white,
-                        iconSize: 40,
                       ),
                       sizeBox(0, 9),
                       Obx(() => FittedBox(
@@ -137,11 +151,12 @@ class HomeScreen extends StatelessWidget {
                         transitionType: ContainerTransitionType.fadeThrough,
                         transitionDuration: const Duration(milliseconds: 400),
                         closedBuilder: (context, action) => Image.asset(
-                          "assets/images/icons/certificates.png",
+                          "assets/images/icons/certificates.png", scale: 22,
                           color: Colors.white,
                         ),
                         openBuilder: (context, action) => Certificateview(),
-                      ),                    ],
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -212,8 +227,8 @@ class HomeScreen extends StatelessWidget {
                       return Center(
                         child: Container(
                             color: Colors.black,
-                            child:
-                            Image.asset('assets/images/spinner.gif', scale: 4)),
+                            child: Image.asset('assets/images/spinner.gif',
+                                scale: 4)),
                       );
                     }
 
@@ -282,10 +297,9 @@ class HomeScreen extends StatelessWidget {
                       return Center(
                         child: Container(
                             color: Colors.black,
-                            child:
-                            Image.asset('assets/images/spinner.gif', scale: 4)),
-                      )
-                      ;
+                            child: Image.asset('assets/images/spinner.gif',
+                                scale: 4)),
+                      );
                     }
                     return SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),

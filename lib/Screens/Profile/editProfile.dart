@@ -1,6 +1,5 @@
 import 'package:AARUUSH_CONNECT/Screens/Profile/profileController.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
-import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,9 @@ import '../../components/profile_text_field.dart';
 import '../Home/home_controller.dart';
 
 class EditProfile extends StatelessWidget {
-  const EditProfile({super.key,});
+  const EditProfile({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,9 @@ class EditProfile extends StatelessWidget {
     final homeController = Get.put<HomeController>(HomeController());
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       backgroundColor: const Color(0xFF070709),
       appBar: AaruushAppBar(
         title: "Edit Profile",
@@ -37,47 +41,65 @@ class EditProfile extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: BgArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
-            child: Form(
-              key: controller.formkey,
+      body: Container(
+        height: Get.height,
+        width: Get.width,
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+          image: DecorationImage(
+              image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+          child: Form(
+            key: controller.formkey,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.zero,
               child: Column(
                 children: [
-                   Obx(
-                          () => CircleAvatar(
-                        radius: 70,
-                        backgroundImage: homeController.common.profileUrl.value != null
-                            ? NetworkImage(homeController.common.profileUrl.value)
-                            : const AssetImage('assets/images/profile.png') as ImageProvider,
-                      ),
+                  SizedBox(height: MediaQuery.of(context).size.height / 8),
+                  Obx(
+                    () => CircleAvatar(
+                      radius: 70,
+                      backgroundImage: homeController.common.profileUrl.value !=
+                              null
+                          ? NetworkImage(homeController.common.profileUrl.value)
+                          : const AssetImage('assets/images/profile.png')
+                              as ImageProvider,
                     ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
-                    child: CustomTextField(
-                      label: 'Name',
-                      type: TextInputType.text,
-                      controller: controller.nameController,
+                    child: SizedBox(
+                      height: 55,
+                      child: CustomTextField(
+                        label: 'Name',
+                        type: TextInputType.text,
+                        controller: controller.nameController,
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
-                    child: CustomTextField(
-                      controller: controller.phoneController,
-                      label: 'Phone',
-                      type: TextInputType.phone,
+                    child: SizedBox(
+                      height: 55,
+                      child: CustomTextField(
+                        controller: controller.phoneController,
+                        label: 'Phone',
+                        type: TextInputType.phone,
+                      ),
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
-                    child: CustomTextField(
-                      controller: controller.emailController,
-                      label: 'Email',
-                      type: TextInputType.emailAddress,
-                      enabled: false,
+                    child: SizedBox(
+                      height: 55,
+                      child: CustomTextField(
+                        controller: controller.emailController,
+                        label: 'Email',
+                        type: TextInputType.emailAddress,
+                        enabled: false,
+                      ),
                     ),
                   ),
                   Padding(

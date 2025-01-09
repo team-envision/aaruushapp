@@ -16,12 +16,13 @@ class registerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BgArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
             double screenWidth = constraints.maxWidth;
             double screenHeight = constraints.maxHeight;
-            double fieldHeight = screenHeight * 0.07; // Shared height for fields and button
+            double fieldHeight = screenHeight * 0.07;
 
             return Padding(
               padding: EdgeInsets.only(
@@ -30,12 +31,10 @@ class registerView extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  SafeArea(
-                    child: SvgPicture.asset(
-                      'assets/images/Aarushlogo.svg',
-                      height: screenHeight * 0.4,
-                      width: screenWidth * 0.8,
-                    ),
+                  SvgPicture.asset(
+                    'assets/images/Aarushlogo.svg',
+                    height: screenHeight * 0.4,
+                    width: screenWidth * 0.8,
                   ),
                   Obx(() {
                     return Expanded(

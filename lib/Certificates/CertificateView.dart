@@ -13,57 +13,67 @@ class Certificateview extends StatelessWidget {
   final controller = Get.put(Certificatecontroller());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(title: "Certificates", actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 15),
-          child: Container(
-            height: 35,
-            width: 35,
-            child: IconButton.outlined(
-              padding: EdgeInsets.zero,
-              onPressed: () => {Navigator.pop(context)},
-              icon: Icon(Icons.close_rounded),
-              color: Colors.white,
-              iconSize: 20,
+    return GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        if (details.primaryDelta! > -1 && details.localPosition.dx < 100) {
+          Navigator.pop(context);
+        }
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AaruushAppBar(title: "Certificates", actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Container(
+              height: 35,
+              width: 35,
+              child: IconButton.outlined(
+                padding: EdgeInsets.zero,
+                onPressed: () => {Navigator.pop(context)},
+                icon: Icon(Icons.close_rounded),
+                color: Colors.white,
+                iconSize: 20,
+              ),
             ),
           ),
-        ),
-      ]),
-      body: BgArea(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height / 9),
-          Obx(
-            () => controller.isLoading.value
-                ? Center(
-              child: Image.asset('assets/images/spinner.gif', scale: 4,),
-            )
-                : controller.certificates.isEmpty
-                    ? const Text(
-                        "No Certificates",
-                        style: TextStyle(letterSpacing: 4),
-                      )
-                    : Expanded(
-                        child: LiveList.options(
-                          padding: EdgeInsets.zero,
-                          itemBuilder: buildCertificateCard,
-                          itemCount: controller.certificates.length,
-                          options: const LiveOptions(
-                            // delay: Duration(seconds: 1),
-                            showItemInterval: Duration(milliseconds: 200),
-                            showItemDuration: Duration(milliseconds: 300),
-                            visibleFraction: 0.05,
-                            reAnimateOnVisibility: false,
+        ]),
+        body: BgArea(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height / 9),
+            Obx(
+              () => controller.isLoading.value
+                  ? Center(
+                      child: Image.asset(
+                        'assets/images/spinner.gif',
+                        scale: 4,
+                      ),
+                    )
+                  : controller.certificates.isEmpty
+                      ? const Text(
+                          "No Certificates",
+                          style: TextStyle(letterSpacing: 4),
+                        )
+                      : Expanded(
+                          child: LiveList.options(
+                            padding: EdgeInsets.zero,
+                            itemBuilder: buildCertificateCard,
+                            itemCount: controller.certificates.length,
+                            options: const LiveOptions(
+                              // delay: Duration(seconds: 1),
+                              showItemInterval: Duration(milliseconds: 200),
+                              showItemDuration: Duration(milliseconds: 300),
+                              visibleFraction: 0.05,
+                              reAnimateOnVisibility: false,
+                            ),
                           ),
                         ),
-                      ),
-          )
-        ],
-      )),
+            )
+          ],
+        )),
+      ),
     );
   }
 

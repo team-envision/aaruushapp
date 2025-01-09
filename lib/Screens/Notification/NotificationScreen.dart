@@ -18,68 +18,76 @@ class NotificationScreen extends GetView<NotificationController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      appBar: AaruushAppBar(
-        title: "NOTIFICATIONS",
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: SizedBox(
-              height: 35,
-              width: 35,
-              child: IconButton.outlined(
-                padding: EdgeInsets.zero,
-                onPressed: () => {Navigator.pop(context)},
-                icon: const Icon(Icons.close_rounded),
-                color: Colors.white,
-                iconSize: 20,
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: BgArea(
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 8),
-            Expanded(
-              child: FutureBuilder<dynamic>(
-                future: controller.loadNotifications(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                          child: Text("No notifications available"));
-                    } else if (snapshot.data == null ||
-                        snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: Text('No notifications available'));
-                    } else {
-                      notifications = snapshot.data!;
-                      notifications = notifications.toList();
+    return GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        if (details.primaryDelta! > -1 && details.localPosition.dx < 100) {
+          Navigator.pop(context);
+        }
+      },
 
-                      return LiveList.options(
-                        padding: EdgeInsets.only(bottom: 0.4 * Get.width),
-                        physics: const RangeMaintainingScrollPhysics(),
-                        itemCount: notifications.length,
-                        itemBuilder: notificationCard,
-                        options: const LiveOptions(
-                          showItemInterval: Duration(milliseconds: 200),
-                          showItemDuration: Duration(milliseconds: 300),
-                          visibleFraction: 0.05,
-                          reAnimateOnVisibility: false,
-                        ),
-                      );
-                    }
-                  } else {
-                    return  Center(child: Image.asset('assets/images/spinner.gif', scale: 4));
-                  }
-                },
+      child: Scaffold(
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        appBar: AaruushAppBar(
+          title: "NOTIFICATIONS",
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: SizedBox(
+                height: 35,
+                width: 35,
+                child: IconButton.outlined(
+                  padding: EdgeInsets.zero,
+                  onPressed: () => {Navigator.pop(context)},
+                  icon: const Icon(Icons.close_rounded),
+                  color: Colors.white,
+                  iconSize: 20,
+                ),
               ),
             ),
           ],
+        ),
+        body: BgArea(
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height / 8),
+              Expanded(
+                child: FutureBuilder<dynamic>(
+                  future: controller.loadNotifications(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                            child: Text("No notifications available"));
+                      } else if (snapshot.data == null ||
+                          snapshot.data!.isEmpty) {
+                        return const Center(
+                            child: Text('No notifications available'));
+                      } else {
+                        notifications = snapshot.data!;
+                        notifications = notifications.toList();
+
+                        return LiveList.options(
+                          padding: EdgeInsets.only(bottom: 0.4 * Get.width),
+                          physics: const RangeMaintainingScrollPhysics(),
+                          itemCount: notifications.length,
+                          itemBuilder: notificationCard,
+                          options: const LiveOptions(
+                            showItemInterval: Duration(milliseconds: 200),
+                            showItemDuration: Duration(milliseconds: 300),
+                            visibleFraction: 0.05,
+                            reAnimateOnVisibility: false,
+                          ),
+                        );
+                      }
+                    } else {
+                      return  Center(child: Image.asset('assets/images/spinner.gif', scale: 4));
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
