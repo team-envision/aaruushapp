@@ -40,12 +40,12 @@ class appRating {
     void rateApp(BuildContext context) {
     RateMyApp rateMyApp = RateMyApp(
       preferencesPrefix: 'rateMyApp_',
-      minDays: 2,
-      minLaunches: 3,
-      remindDays: 4,
-      remindLaunches: 4,
+      minDays: 1,
+      minLaunches: 2,
+      remindDays: 2,
+      remindLaunches: 2,
       googlePlayIdentifier: 'com.aaruush.connect',
-      // appStoreIdentifier: '1491556149',
+      appStoreIdentifier: '6737286063',
     );
 
     rateMyApp.init().then((_) async {

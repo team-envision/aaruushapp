@@ -64,7 +64,6 @@ class HomeScreen extends StatelessWidget {
               },
               openBuilder: (context, action) => NotificationScreen(),
             ),
-
             OpenContainer(
               middleColor: Colors.transparent,
               openColor: Colors.transparent,
@@ -85,7 +84,8 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               openBuilder: (context, action) => const AboutPage(),
-            ),          ],
+            ),
+          ],
           title: "AARUUSH",
         ),
         body: BgArea(
@@ -93,30 +93,44 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height / 8),
+                SizedBox(height: MediaQuery.of(context).size.height / 7.5),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => {Get.to(() => const ProfileScreen())},
-                        icon: Obx(
-                          () => controller.common.profileUrl.value.isNotEmpty
-                              ? CircleAvatar(
-                                  radius: 22,
-                                  backgroundImage: NetworkImage(
-                                      controller.common.profileUrl.value),
-                                )
-                              : Image.asset(
-                                  'assets/images/profile.png',
-                                  height: 30,
-                                ),
+                      OpenContainer(
+                        middleColor: Colors.transparent,
+                        openColor: Colors.transparent,
+                        closedColor: Colors.transparent,
+                        transitionType: ContainerTransitionType.fadeThrough,
+                        transitionDuration: const Duration(milliseconds: 400),
+                        closedBuilder: (context, action) {
+                          return GestureDetector(
+                            onTap: () {
+                              action();
+                            },
+                            child: Obx(
+                              () => controller
+                                      .common.profileUrl.value.isNotEmpty
+                                  ? CircleAvatar(
+                                      radius: 22,
+                                      backgroundImage: NetworkImage(
+                                          controller.common.profileUrl.value),
+                                    )
+                                  : Image.asset(
+                                      'assets/images/profile.png',
+                                      height: 30,
+                                    ),
+                            ),
+                          );
+                        },
+                        openBuilder: (context, action) => const ProfileScreen(
+                          isSwipingEnabled: true,
+                          showCloseButton: true,
                         ),
-                        color: Colors.white,
-                        iconSize: 40,
                       ),
                       sizeBox(0, 9),
                       Obx(() => FittedBox(
@@ -137,11 +151,13 @@ class HomeScreen extends StatelessWidget {
                         transitionType: ContainerTransitionType.fadeThrough,
                         transitionDuration: const Duration(milliseconds: 400),
                         closedBuilder: (context, action) => Image.asset(
-                          "assets/images/icons/certificates.png",
+                          "assets/images/icons/certificate.png",
+                          scale: 24,
                           color: Colors.white,
                         ),
                         openBuilder: (context, action) => Certificateview(),
-                      ),                    ],
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -212,8 +228,8 @@ class HomeScreen extends StatelessWidget {
                       return Center(
                         child: Container(
                             color: Colors.black,
-                            child:
-                            Image.asset('assets/images/spinner.gif', scale: 4)),
+                            child: Image.asset('assets/images/spinner.gif',
+                                scale: 4)),
                       );
                     }
 
@@ -222,39 +238,45 @@ class HomeScreen extends StatelessWidget {
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             primary: false,
-                            child: Row(
-                              children: controller.eventList
-                                  .where((e) =>
-                                      e.live! &&
-                                      (controller.sortName.value == "All" ||
-                                          controller.sortName.value ==
-                                              e.sortCategory))
-                                  .map((event) {
-                                return OpenContainer(
-                                  middleColor: Colors.transparent,
-                                  openColor: Colors.transparent,
-                                  closedColor: Colors.transparent,
-                                  transitionType:
-                                      ContainerTransitionType.fadeThrough,
-                                  closedShape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                  transitionDuration:
-                                      const Duration(milliseconds: 400),
-                                  closedBuilder: (context, action) => eventCard(
-                                    event,
-                                    () => Get.to(() => EventsScreen(
-                                          event: event,
-                                          fromMyEvents: false.obs,
-                                        )),
-                                    controller,
-                                  ),
-                                  openBuilder: (context, action) =>
-                                      EventsScreen(
-                                    event: event,
-                                    fromMyEvents: false.obs,
-                                  ),
-                                );
-                              }).toList(),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 8),
+                              child: Row(
+                                children: controller.eventList
+                                    .where((e) =>
+                                        e.live! &&
+                                        (controller.sortName.value == "All" ||
+                                            controller.sortName.value ==
+                                                e.sortCategory))
+                                    .map((event) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 12),
+                                    child: OpenContainer(
+                                      middleColor: Colors.transparent,
+                                      openColor: Colors.transparent,
+                                      closedColor: Colors.transparent,
+                                      closedShape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      transitionDuration:
+                                          const Duration(milliseconds: 400),
+                                      transitionType:
+                                          ContainerTransitionType.fadeThrough,
+                                      closedBuilder: (context, action) =>
+                                          eventCard(
+                                        event,
+                                        action,
+                                        controller,
+                                      ),
+                                      openBuilder: (context, action) =>
+                                          EventsScreen(
+                                        event: event,
+                                        fromMyEvents: false.obs,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           )
                         : const Center(
@@ -282,10 +304,9 @@ class HomeScreen extends StatelessWidget {
                       return Center(
                         child: Container(
                             color: Colors.black,
-                            child:
-                            Image.asset('assets/images/spinner.gif', scale: 4)),
-                      )
-                      ;
+                            child: Image.asset('assets/images/spinner.gif',
+                                scale: 4)),
+                      );
                     }
                     return SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),

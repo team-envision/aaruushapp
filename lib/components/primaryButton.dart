@@ -9,28 +9,32 @@ class primaryButton extends StatelessWidget {
     required this.onTap,
     this.isDisabled = false,
     this.borderRadius = 19.0,
+    this.buttonheight,
 
   });
   final String text;
   final VoidCallback onTap;
   bool? isDisabled;
   final double borderRadius;
+  final buttonheight;
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-        style: TextButton.styleFrom(
-            elevation: 4,
-            padding: const EdgeInsets.all(10),
-            fixedSize: Size.fromWidth(Get.width),
-            backgroundColor:
-                isDisabled! ? Colors.grey : Get.theme.colorPrimary,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius))),
-        onPressed: isDisabled! ? null : onTap,
-        child: Text(
-          text,
-          style: Get.theme.kSmallTextStyle,
-        ));
+    return SizedBox(
+      height: buttonheight,
+      child: TextButton(
+          style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(10),
+              fixedSize: Size.fromWidth(Get.width),
+              backgroundColor:
+                  isDisabled! ? Colors.grey : Get.theme.colorPrimary,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(borderRadius))),
+          onPressed: isDisabled! ? null : onTap,
+          child: Text(
+            text,
+            style: Get.theme.kSmallTextStyle,
+          )),
+    );
   }
 }

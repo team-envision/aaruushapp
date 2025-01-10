@@ -25,7 +25,7 @@ AppBar AaruushAppBar(
     clipBehavior: Clip.none,
     titleTextStyle: TextStyle(fontSize: fontsize),
     leading: Padding(
-      padding: const EdgeInsets.only(left: 15.0, bottom: 10),
+      padding: const EdgeInsets.only(left: 0.0, bottom: 10,),
       child: Image.asset(
         'assets/images/spinner.gif',
         fit: BoxFit.contain,

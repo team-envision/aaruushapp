@@ -74,58 +74,61 @@ class RegisterEvent extends GetView<EventsController> {
                                         controller.registerFieldData[e.label] ?? "",
                                   ));
                             } else {
-                              return profileTextField(
-                                validator: (v) {
-                                  if (e.type == "email" && e.required!) {
-                                    if (!GetUtils.isEmail(v!)) {
-                                      return 'Please enter a valid email';
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                                child: profileTextField(
+                                  validator: (v) {
+                                    if (e.type == "email" && e.required!) {
+                                      if (!GetUtils.isEmail(v!)) {
+                                        return 'Please enter a valid email';
+                                      }
+                                    } else if (e.type == "tel" && e.required!) {
+                                      if (!GetUtils.isPhoneNumber(v!)) {
+                                        return 'Please enter a valid phone number';
+                                      }
                                     }
-                                  } else if (e.type == "tel" && e.required!) {
-                                    if (!GetUtils.isPhoneNumber(v!)) {
-                                      return 'Please enter a valid phone number';
-                                    }
-                                  }
-                                  return null;
-                                },
-                                keyboard: e.type == "email"
-                                    ? TextInputType.emailAddress
-                                    : (e.type == "tel" || e.type == "number")
-                                        ? TextInputType.phone
-                                        : TextInputType.text,
-                                initialValue: e.label!.toLowerCase() == "name"
-                                    ? controller.common.userName.toString()
-                                    : (e.label!.toLowerCase() ==
-                                                "college (na if not applicable)" ||
-                                            e.label!.toLowerCase() ==
-                                                "college name")
-                                        ? controller.common.college.toString()
-                                        : (e.label!.toLowerCase() ==
-                                                    "registration number (na if not applicable)" ||
-                                                e.label!.toLowerCase() ==
-                                                    "registration number")
-                                            ? controller.common.RegNo.toString()
-                                            : (e.label!.toLowerCase() ==
-                                                        "phone number" ||
-                                                    e.label!.toLowerCase() ==
-                                                        "contact number")
-                                                ? controller.common.phoneNumber
-                                                    .toString()
-                                                : (e.label!.toLowerCase() ==
-                                                            "email id" ||
-                                                        e.label!.toLowerCase() ==
-                                                            "email")
-                                                    ? controller.common.emailAddress
-                                                        .toString()
-                                                    : "",
-                                onChanged: (v) {
-                                  controller.registerFieldData.value[e.label!] = v;
-                                  debugPrint("${e.label} $v");
-                                },
-                                label: e.label ?? e.placeholder ?? "",
+                                    return null;
+                                  },
+                                  keyboard: e.type == "email"
+                                      ? TextInputType.emailAddress
+                                      : (e.type == "tel" || e.type == "number")
+                                          ? TextInputType.phone
+                                          : TextInputType.text,
+                                  initialValue: e.label!.toLowerCase() == "name"
+                                      ? controller.common.userName.toString()
+                                      : (e.label!.toLowerCase() ==
+                                                  "college (na if not applicable)" ||
+                                              e.label!.toLowerCase() ==
+                                                  "college name")
+                                          ? controller.common.college.toString()
+                                          : (e.label!.toLowerCase() ==
+                                                      "registration number (na if not applicable)" ||
+                                                  e.label!.toLowerCase() ==
+                                                      "registration number")
+                                              ? controller.common.RegNo.toString()
+                                              : (e.label!.toLowerCase() ==
+                                                          "phone number" ||
+                                                      e.label!.toLowerCase() ==
+                                                          "contact number")
+                                                  ? controller.common.phoneNumber
+                                                      .toString()
+                                                  : (e.label!.toLowerCase() ==
+                                                              "email id" ||
+                                                          e.label!.toLowerCase() ==
+                                                              "email")
+                                                      ? controller.common.emailAddress
+                                                          .toString()
+                                                      : "",
+                                  onChanged: (v) {
+                                    controller.registerFieldData.value[e.label!] = v;
+                                    debugPrint("${e.label} $v");
+                                  },
+                                  label: e.label ?? e.placeholder ?? "",
+                                ),
                               );
                             }
                           }),
-                        sizeBox(20, 0),
+                        sizeBox(10, 0),
                         Obx(
                           () => controller.isLoading.value
                               ? Container(
@@ -134,8 +137,9 @@ class RegisterEvent extends GetView<EventsController> {
                               color: Colors.black,
                               child:
                               Image.asset('assets/images/spinner.gif', scale: 4))
-                              : SizedBox(
-                                  width: 250,
+                              : Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: SizedBox(height: 55,
                                   child: primaryButton(
                                     text: "Submit data",
                                     onTap: () {
@@ -160,6 +164,7 @@ class RegisterEvent extends GetView<EventsController> {
                                     },
                                   ),
                                 ),
+                              ),
                         ),
                         sizeBox(30, 0),
                       ],

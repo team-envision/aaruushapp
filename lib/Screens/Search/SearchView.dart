@@ -1,5 +1,6 @@
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:animations/animations.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -187,20 +188,28 @@ Widget _buildAnimatedCard(
         begin: 0,
         end: 1,
       ).animate(animation),
-      // And slide transition
       child: SlideTransition(
           position: Tween<Offset>(
             begin: const Offset(0, -0.1),
             end: Offset.zero,
           ).animate(animation),
-          // Paste you Widget
-          child: eventCard(
-            event,
-            () => Get.to(() => EventsScreen(
-                  event: event,
-                  fromMyEvents: false.obs,
-                )),
-            homeController,
+          child: OpenContainer(
+            middleColor: Colors.transparent,
+            openColor: Colors.transparent,
+            closedColor: Colors.transparent,
+            closedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12)),
+            transitionDuration: const Duration(milliseconds: 400),
+            transitionType: ContainerTransitionType.fadeThrough,
+            openBuilder: (context, _) => EventsScreen(
+              event: event,
+              fromMyEvents: false.obs,
+            ),
+            closedBuilder: (context, openContainer) => eventCard(
+              event,
+              openContainer,
+              homeController,
+            ),
           )));
 }
 
@@ -212,19 +221,27 @@ Widget _buildSearchedAnimatedCard(
         begin: 0,
         end: 1,
       ).animate(animation),
-      // And slide transition
       child: SlideTransition(
           position: Tween<Offset>(
             begin: const Offset(0, -0.1),
             end: Offset.zero,
           ).animate(animation),
-          // Paste you Widget
-          child: eventCard(
-            event,
-            () => Get.to(() => EventsScreen(
-                  event: event,
-                  fromMyEvents: false.obs,
-                )),
-            homeController,
+          child: OpenContainer(
+            middleColor: Colors.transparent,
+            openColor: Colors.transparent,
+            closedColor: Colors.transparent,
+            closedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12)),
+            transitionDuration: const Duration(milliseconds: 400),
+            transitionType: ContainerTransitionType.fadeThrough,
+            openBuilder: (context, _) => EventsScreen(
+              event: event,
+              fromMyEvents: false.obs,
+            ),
+            closedBuilder: (context, openContainer) => eventCard(
+              event,
+              openContainer,
+              homeController,
+            ),
           )));
 }
