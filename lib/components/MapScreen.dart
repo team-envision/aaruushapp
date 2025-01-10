@@ -1,9 +1,7 @@
 import 'package:AARUUSH_CONNECT/Screens/Events/events_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Mapscreen extends StatefulWidget {
   final String? Lattitude;
@@ -70,9 +68,9 @@ class _MapscreenState extends State<Mapscreen> {
                         return  Column(mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             FittedBox(child: Text(widget.location??'',style: const TextStyle(fontSize: 40),)),
-                          Icon(
+                          const Icon(
                           Icons.location_pin,
-                          size: 50,
+                          size: 30,
                           color: Colors.red,
                                                   ),
                           ],

@@ -15,7 +15,8 @@ class ProfileScreen extends StatelessWidget {
   final dynamic showCloseButton;
   final bool isSwipingEnabled;
 
-  const ProfileScreen({super.key, this.showCloseButton = false, this.isSwipingEnabled = false});
+  const ProfileScreen(
+      {super.key, this.showCloseButton = false, this.isSwipingEnabled = false});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,11 @@ class ProfileScreen extends StatelessWidget {
     return GestureDetector(
       onHorizontalDragUpdate: isSwipingEnabled
           ? (details) {
-        if (details.primaryDelta! > -1 && details.localPosition.dx < 100) {
-          Navigator.pop(context);
-        }
-      }
+              if (details.primaryDelta! > -1 &&
+                  details.localPosition.dx < 100) {
+                Navigator.pop(context);
+              }
+            }
           : null,
       child: Scaffold(
         extendBody: true,
@@ -36,14 +38,14 @@ class ProfileScreen extends StatelessWidget {
           title: "Profile",
           actions: showCloseButton
               ? [
-            IconButton.outlined(
-              padding: EdgeInsets.zero,
-              onPressed: () => {Navigator.pop(context)},
-              icon: const Icon(Icons.close_rounded),
-              color: Colors.white,
-              iconSize: 20,
-            ),
-          ]
+                  IconButton.outlined(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => {Navigator.pop(context)},
+                    icon: const Icon(Icons.close_rounded),
+                    color: Colors.white,
+                    iconSize: 20,
+                  ),
+                ]
               : [],
         ),
         body: BgArea(
@@ -58,7 +60,8 @@ class ProfileScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(height: MediaQuery.of(context).size.height / 8),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height / 8),
                         Stack(
                           alignment: AlignmentDirectional.center,
                           children: [
@@ -68,13 +71,14 @@ class ProfileScreen extends StatelessWidget {
                               icon: Obx(
                                 () => CircleAvatar(
                                   radius: Get.width * 0.15,
-                                  backgroundImage:
-                                      controller.common.profileUrl.value != null
-                                          ? NetworkImage(
-                                              controller.common.profileUrl.value)
-                                          : const AssetImage(
-                                                  'assets/images/profile.png')
-                                              as ImageProvider,
+                                  backgroundImage: controller
+                                              .common.profileUrl.value !=
+                                          null
+                                      ? NetworkImage(
+                                          controller.common.profileUrl.value)
+                                      : const AssetImage(
+                                              'assets/images/profile.png')
+                                          as ImageProvider,
                                 ),
                               ),
                             ),
@@ -161,38 +165,62 @@ class ProfileScreen extends StatelessWidget {
                                   middleColor: Colors.transparent,
                                   openColor: Colors.transparent,
                                   closedColor: Colors.transparent,
-                                  transitionType: ContainerTransitionType.fadeThrough,
-                                  transitionDuration: const Duration(milliseconds: 400),
+                                  transitionType:
+                                      ContainerTransitionType.fadeThrough,
+                                  transitionDuration:
+                                      const Duration(milliseconds: 400),
                                   closedBuilder: (context, action) {
                                     return ProfileButtons(
                                       buttonName: 'Certificates',
-                                      // leadingIcon: Icon(Icons.info_outline_rounded),
-                                      trailingIcon: Icons.arrow_forward_ios_outlined,
+                                      leadingIcon: Padding(
+                                        padding: const EdgeInsets.only(right: 5.0),
+                                        child: Image.asset(
+                                          "assets/images/icons/certificate.png",
+                                          scale: 27,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      trailingIcon:
+                                          Icons.arrow_forward_ios_outlined,
                                       onPressedFunc: action,
                                       color: Colors.white,
                                     );
                                   },
-                                  openBuilder: (context, action) => Certificateview(),
+                                  openBuilder: (context, action) =>
+                                      Certificateview(),
                                 ),
                               ),
-                              SizedBox(width: 10,),
+                              const SizedBox(
+                                width: 10,
+                              ),
                               Expanded(
                                 child: OpenContainer(
                                   middleColor: Colors.transparent,
                                   openColor: Colors.transparent,
                                   closedColor: Colors.transparent,
-                                  transitionType: ContainerTransitionType.fadeThrough,
-                                  transitionDuration: const Duration(milliseconds: 400),
+                                  transitionType:
+                                      ContainerTransitionType.fadeThrough,
+                                  transitionDuration:
+                                      const Duration(milliseconds: 400),
                                   closedBuilder: (context, action) {
                                     return ProfileButtons(
                                       buttonName: 'About',
-                                      // leadingIcon: Icon(Icons.info_outline_rounded),
-                                      trailingIcon: Icons.arrow_forward_ios_outlined,
+                                      leadingIcon: const Padding(
+                                        padding: EdgeInsets.only(right: 5.0),
+                                        child: Icon(
+                                          Icons.info_outline_rounded,
+                                          color: Colors.black,
+                                          size: 20,
+                                        ),
+                                      ),
+                                      trailingIcon:
+                                          Icons.arrow_forward_ios_outlined,
                                       onPressedFunc: action,
                                       color: Colors.white,
                                     );
                                   },
-                                  openBuilder: (context, action) => const AboutPage(),
+                                  openBuilder: (context, action) =>
+                                      const AboutPage(),
                                 ),
                               ),
                             ],
@@ -213,8 +241,12 @@ class ProfileScreen extends StatelessWidget {
                                   controller.common.signOutCurrentUser();
                                 },
                                 leadingIcon: const Padding(
-                                  padding: EdgeInsets.only(right: 8.0),
-                                  child: Icon(Icons.logout, color: Colors.black,),
+                                  padding: EdgeInsets.only(right: 5.0),
+                                  child: Icon(
+                                    Icons.logout,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
                                 ),
                                 color: Get.theme.colorPrimary,
                               );

@@ -15,57 +15,60 @@ class registerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: BgArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            double screenWidth = constraints.maxWidth;
-            double screenHeight = constraints.maxHeight;
-            double fieldHeight = screenHeight * 0.07;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: BgArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              double screenWidth = constraints.maxWidth;
+              double screenHeight = constraints.maxHeight;
+              double fieldHeight = screenHeight * 0.08;
 
-            return Padding(
-              padding: EdgeInsets.only(
-                top: screenHeight * 0.06,
-                bottom: screenHeight * 0.06,
-              ),
-              child: Column(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/Aarushlogo.svg',
-                    height: screenHeight * 0.4,
-                    width: screenWidth * 0.8,
-                  ),
-                  Obx(() {
-                    return Expanded(
-                      child: WhiteBox(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.05,
-                        ),
-                        width: screenWidth,
-                        height: controller.height.value,
-                        bordersize: 28,
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.zero,
-                          child: Form(
-                            key: controller.formKey,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: screenWidth * 0.04,
-                                vertical: screenHeight * 0.02,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  // Text Fields
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: screenHeight * 0.01,
-                                      bottom: screenHeight * 0.01,
-                                    ),
-                                    child: SizedBox(
-                                      height: fieldHeight,
+              return Padding(
+                padding: EdgeInsets.only(
+                  top: screenHeight * 0.06,
+                  bottom: screenHeight * 0.06,
+                ),
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/Aarushlogo.svg',
+                      height: screenHeight * 0.4,
+                      width: screenWidth * 0.8,
+                    ),
+                    Obx(() {
+                      return Expanded(
+                        child: WhiteBox(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05,
+                          ),
+                          width: screenWidth,
+                          height: controller.height.value,
+                          bordersize: 28,
+                          child: SingleChildScrollView(
+                            padding: EdgeInsets.zero,
+                            child: Form(
+                              key: controller.formKey,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: screenWidth * 0.04,
+                                  vertical: screenHeight * 0.02,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        top: screenHeight * 0.01,
+                                        bottom: screenHeight * 0.02,
+                                      ),
                                       child: AuthTextFields(
+                                        fieldheight: fieldHeight,
                                         hintText: 'Name',
                                         controller: controller.NameTextEditingController,
                                         isPasswordObsecure: false.obs,
@@ -77,15 +80,12 @@ class registerView extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: screenHeight * 0.01,
-                                      bottom: screenHeight * 0.01,
-                                    ),
-                                    child: SizedBox(
-                                      height: fieldHeight,
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: screenHeight * 0.02,
+                                      ),
                                       child: AuthTextFields(
+                                        fieldheight: fieldHeight,
                                         hintText: 'College/University',
                                         controller: controller.CollgeTextEditingController,
                                         isPasswordObsecure: false.obs,
@@ -97,15 +97,12 @@ class registerView extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: screenHeight * 0.01,
-                                      bottom: screenHeight * 0.01,
-                                    ),
-                                    child: SizedBox(
-                                      height: fieldHeight,
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: screenHeight * 0.02,
+                                      ),
                                       child: AuthTextFields(
+                                        fieldheight: fieldHeight,
                                         hintText: 'Register Number',
                                         controller: controller.RegNoTextEditingController,
                                         isPasswordObsecure: false.obs,
@@ -121,15 +118,12 @@ class registerView extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: screenHeight * 0.01,
-                                      bottom: screenHeight * 0.01,
-                                    ),
-                                    child: SizedBox(
-                                      height: fieldHeight,
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: screenHeight * 0.02,
+                                      ),
                                       child: AuthTextFields(
+                                        fieldheight: fieldHeight,
                                         hintText: 'Phone Number',
                                         textInputType: TextInputType.phone,
                                         controller: controller.PhNoTextEditingController,
@@ -143,15 +137,12 @@ class registerView extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: screenHeight * 0.01,
-                                      bottom: screenHeight * 0.01,
-                                    ),
-                                    child: SizedBox(
-                                      height: fieldHeight,
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: screenHeight * 0.02,
+                                      ),
                                       child: AuthTextFields(
+                                        fieldheight: fieldHeight,
                                         hintText: 'Email',
                                         controller: controller.EmailTextEditingController,
                                         isPasswordObsecure: false.obs,
@@ -163,16 +154,13 @@ class registerView extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                  ),
-                                  // Submit Button
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: screenHeight * 0.02,
-                                      bottom: screenHeight * 0.01,
-                                    ),
-                                    child: SizedBox(
-                                      height: fieldHeight,
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        top: screenHeight * 0.01,
+                                        bottom: screenHeight * 0.01,
+                                      ),
                                       child: primaryButton(
+                                        buttonheight: Get.height *0.06,
                                         borderRadius: 28,
                                         text: "Submit",
                                         onTap: () async {
@@ -186,19 +174,19 @@ class registerView extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
-                ],
-              ),
-            );
-          },
+                      );
+                    }),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

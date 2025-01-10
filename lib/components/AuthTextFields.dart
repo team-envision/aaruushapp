@@ -11,6 +11,7 @@ class AuthTextFields extends StatelessWidget {
   final RxBool isPasswordObsecure;
   final IconButton? suffixIcon;
   TextInputType? textInputType;
+  final fieldheight;
 
   AuthTextFields(
       {super.key,
@@ -20,12 +21,15 @@ class AuthTextFields extends StatelessWidget {
       this.obscureText = true,
       this.icon,
       this.textInputType,
+      this.fieldheight,
       this.suffixIcon,
       required this.isPasswordObsecure});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textAlign: TextAlign.left,
+      textAlignVertical: TextAlignVertical.center,
       controller: controller,
       obscureText: isPasswordObsecure.value,
       keyboardType: textInputType,

@@ -24,13 +24,13 @@ class Certificateview extends StatelessWidget {
         appBar: AaruushAppBar(title: "Certificates", actions: [
           Padding(
             padding: const EdgeInsets.only(right: 15),
-            child: Container(
+            child: SizedBox(
               height: 35,
               width: 35,
               child: IconButton.outlined(
                 padding: EdgeInsets.zero,
                 onPressed: () => {Navigator.pop(context)},
-                icon: Icon(Icons.close_rounded),
+                icon: const Icon(Icons.close_rounded),
                 color: Colors.white,
                 iconSize: 20,
               ),
@@ -89,7 +89,7 @@ class Certificateview extends StatelessWidget {
         // And slide transition
         child: SlideTransition(
           position: Tween<Offset>(
-            begin: Offset(0, -0.1),
+            begin: const Offset(0, -0.1),
             end: Offset.zero,
           ).animate(animation),
           // Paste you Widget

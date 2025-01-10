@@ -93,8 +93,7 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height / 7.5
-                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 7.5),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
@@ -111,19 +110,20 @@ class HomeScreen extends StatelessWidget {
                         closedBuilder: (context, action) {
                           return GestureDetector(
                             onTap: () {
-                              action();  // Trigger the OpenContainer animation
+                              action();
                             },
                             child: Obx(
-                                  () => controller.common.profileUrl.value.isNotEmpty
+                              () => controller
+                                      .common.profileUrl.value.isNotEmpty
                                   ? CircleAvatar(
-                                radius: 22,
-                                backgroundImage:
-                                NetworkImage(controller.common.profileUrl.value),
-                              )
+                                      radius: 22,
+                                      backgroundImage: NetworkImage(
+                                          controller.common.profileUrl.value),
+                                    )
                                   : Image.asset(
-                                'assets/images/profile.png',
-                                height: 30,
-                              ),
+                                      'assets/images/profile.png',
+                                      height: 30,
+                                    ),
                             ),
                           );
                         },
@@ -151,7 +151,8 @@ class HomeScreen extends StatelessWidget {
                         transitionType: ContainerTransitionType.fadeThrough,
                         transitionDuration: const Duration(milliseconds: 400),
                         closedBuilder: (context, action) => Image.asset(
-                          "assets/images/icons/certificates.png", scale: 22,
+                          "assets/images/icons/certificate.png",
+                          scale: 24,
                           color: Colors.white,
                         ),
                         openBuilder: (context, action) => Certificateview(),
@@ -237,39 +238,45 @@ class HomeScreen extends StatelessWidget {
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             primary: false,
-                            child: Row(
-                              children: controller.eventList
-                                  .where((e) =>
-                                      e.live! &&
-                                      (controller.sortName.value == "All" ||
-                                          controller.sortName.value ==
-                                              e.sortCategory))
-                                  .map((event) {
-                                return OpenContainer(
-                                  middleColor: Colors.transparent,
-                                  openColor: Colors.transparent,
-                                  closedColor: Colors.transparent,
-                                  transitionType:
-                                      ContainerTransitionType.fadeThrough,
-                                  closedShape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                  transitionDuration:
-                                      const Duration(milliseconds: 400),
-                                  closedBuilder: (context, action) => eventCard(
-                                    event,
-                                    () => Get.to(() => EventsScreen(
-                                          event: event,
-                                          fromMyEvents: false.obs,
-                                        )),
-                                    controller,
-                                  ),
-                                  openBuilder: (context, action) =>
-                                      EventsScreen(
-                                    event: event,
-                                    fromMyEvents: false.obs,
-                                  ),
-                                );
-                              }).toList(),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 8),
+                              child: Row(
+                                children: controller.eventList
+                                    .where((e) =>
+                                        e.live! &&
+                                        (controller.sortName.value == "All" ||
+                                            controller.sortName.value ==
+                                                e.sortCategory))
+                                    .map((event) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 12),
+                                    child: OpenContainer(
+                                      middleColor: Colors.transparent,
+                                      openColor: Colors.transparent,
+                                      closedColor: Colors.transparent,
+                                      closedShape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      transitionDuration:
+                                          const Duration(milliseconds: 400),
+                                      transitionType:
+                                          ContainerTransitionType.fadeThrough,
+                                      closedBuilder: (context, action) =>
+                                          eventCard(
+                                        event,
+                                        action,
+                                        controller,
+                                      ),
+                                      openBuilder: (context, action) =>
+                                          EventsScreen(
+                                        event: event,
+                                        fromMyEvents: false.obs,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           )
                         : const Center(

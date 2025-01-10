@@ -1,6 +1,6 @@
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class TicketButton extends StatelessWidget {
@@ -38,8 +38,8 @@ class TicketButton extends StatelessWidget {
               style: Get.theme.kSmallTextStyle,
             ),
             const SizedBox(width: 8), // Add some space between text and icon
-            const Icon(
-              CupertinoIcons.ticket, // Use Cupertino icon
+            const FaIcon(
+              FontAwesomeIcons.ticket,size: 20, // Use Cupertino icon
               color: Colors.white, // Adjust the color as needed
             ),
           ],
