@@ -109,7 +109,7 @@ Widget notificationCard(
     receivedAt = DateTime.now();
   }
 
-  if (notification["linkAndroid"] != null) {
+  if (notification["linkAndroid"] != null || notification["linkApple"] != null) {
     return FadeTransition(
       opacity: Tween<double>(
         begin: 0,
@@ -133,12 +133,12 @@ Widget notificationCard(
                 notification['title'] ?? '',
                 timeago.format(receivedAt, locale: "en_short"),
                 notification['body'] ?? '',
-                notification["linkAndroid"] ?? "",
+                notification["linkAndroid"] ?? notification["linkApple"] ?? "",
               ),
               children: [
                 SizedBox(
                   child: CachedNetworkImage(
-                    imageUrl: notification["linkAndroid"] ?? "",
+                    imageUrl: notification["linkAndroid"] ?? notification["linkApple"] ?? "",
                   ),
                 ),
               ],

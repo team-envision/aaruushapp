@@ -6,6 +6,7 @@ import 'package:AARUUSH_CONNECT/Model/Events/gallery.dart';
 import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
 import 'package:AARUUSH_CONNECT/Services/appRating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -48,6 +49,11 @@ class HomeController extends GetxController {
     notificationServices.firebaseInit(Get.context!);
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
     notificationServices.getDeviceToken().then((newToken) async {
       if (kDebugMode) {
         print('device token');
