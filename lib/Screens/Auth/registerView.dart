@@ -129,13 +129,6 @@ class registerView extends StatelessWidget {
                                         textInputType: TextInputType.phone,
                                         controller: controller.PhNoTextEditingController,
                                         isPasswordObsecure: false.obs,
-                                        validator: (value) {
-                                          if (value!.isEmpty ||
-                                              !value.isPhoneNumber) {
-                                            return "Enter Your Phone Number";
-                                          }
-                                          return null;
-                                        },
                                       ),
                                     ),
                                     Padding(
