@@ -52,7 +52,7 @@ class Certificatecontroller extends GetxController {
 
 
   Future<void> fetchCertificates() async {
-    final email = commonConroller.emailAddress.value;
+    RxString email = CommonController.emailAddress;
     print(email);
     isLoading.value = true;
     try {

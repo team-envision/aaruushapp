@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Screens/Auth/auth_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Auth/registerView.dart';
@@ -12,25 +13,31 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../Model/Events/event_list_model.dart';
 
 class CommonController extends GetxController {
-  var bottomBarIndex = 0.obs;
-  var profileUrl = ''.obs;
-  var userName = ''.obs;
-  var emailAddress = ''.obs;
 
-  var aaruushId = ''.obs;
-  var phoneNumber = ''.obs;
-  var RegNo = ''.obs;
-  var college = ''.obs;
-  var uID = ''.obs;
-  var userDetails = <String, dynamic>{}.obs;
-  var isLoading = false.obs;
-  var isEventRegistered = false.obs;
+  static RxString profileUrl = ''.obs;
+  static RxString userName = ''.obs;
+  static RxString emailAddress = ''.obs;
 
-@override
+  static RxString aaruushId = ''.obs;
+  static RxString phoneNumber = ''.obs;
+  static RxString RegNo = ''.obs;
+  static RxString college = ''.obs;
+  static RxString uID = ''.obs;
+  static RxMap<String, dynamic> userDetails = <String, dynamic>{}.obs;
+  static RxBool isLoading = false.obs;
+  static RxBool isEventRegistered = false.obs;
+  // void resetProfileData() {
+  //   final profileController = Get.put(ProfileController());
+  //   profileController.resetProfileData();
+  // }
+
+
+  @override
   void onReady() {
     // TODO: implement onReady
     super.onReady();
@@ -39,9 +46,10 @@ class CommonController extends GetxController {
 
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     // TODO: implement onInit
     super.onInit();
+    await fetchAndLoadDetails();
 
 
   }
@@ -51,34 +59,46 @@ class CommonController extends GetxController {
 
 
   Future<bool> isUserSignedIn() async {
-    return FirebaseAuth.instance.currentUser != null;
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.reload();
+    }
+    return user != null;
   }
 
   Future<Widget> getLandingPage() async {
 
-    final isSignedIn = await isUserSignedIn();
-    final String? googleUser =  await GetStorage().read('userEmail');
+    RxBool isSignedIn = (await isUserSignedIn()).obs;
+     RxString? googleUser =   GetStorage().read('userEmail');
     print(googleUser);
-    final isUserAvailableinFirebase = await isUserAvailableInFirebase(googleUser ?? "tester@gmail.com");
+    RxBool isUserAvailableinFirebase =(await isUserAvailableInFirebase(googleUser?.value ?? "tester@gmail.com")).obs;
     print("isUserAvailableinFirebase");
     print(isUserAvailableinFirebase);
     print(googleUser);
-    if (isSignedIn && isUserAvailableinFirebase) {
+    print(isSignedIn);
+    if (isSignedIn.value && isUserAvailableinFirebase.value) {
       debugPrint("User signed in");
       return  AaruushBottomBar();
-    }else if(isSignedIn && !isUserAvailableinFirebase) {
+    }else if(isSignedIn.value && !isUserAvailableinFirebase.value) {
       debugPrint("User not registered in firebase");
-      return  registerView();
+      return registerView();
     } else {
       debugPrint("User not signed in");
       return const OnBoardingScreen();
     }
   }
 
-  User getCurrentUser() {
-    FirebaseAuth.instance.currentUser?.reload();
-    final user = FirebaseAuth.instance.currentUser;
-    return user!;
+  Future<User?> getCurrentUser() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        return user; // Directly return the current user if not null
+      }
+      return null;
+    } on FirebaseAuthException catch (e) {
+      debugPrint("Firebase Auth Error: ${e.message}");
+      return null;
+    }
   }
 
   Future<bool> isUserAvailableInFirebase(String email) async {
@@ -108,36 +128,37 @@ class CommonController extends GetxController {
     }
   }
 
-
-
-
-
   Future<void> signOutCurrentUser() async {
     try {
       final GoogleSignInAccount? googleUser = GoogleSignIn().currentUser;
+      await googleUser?.clearAuthCache();
       await FirebaseAuth.instance.signOut();
-      GoogleSignIn().disconnect();
-      googleUser?.clearAuthCache();
-      GetStorage().erase();
+      await GetStorage().erase();
+      await GoogleSignIn().disconnect();
+      await GoogleSignIn().signOut();
+
+
+      // await _deleteCacheDir();
+      // await _deleteAppDir();
 
 
 
     } on FirebaseAuthException catch (e) {
       debugPrint("Errr $e");
     }
-    Get.offAll(() => const AuthScreen());
+    Get.offAll(() => const OnBoardingScreen());
   }
 
   Future<Map<String, dynamic>> getUserDetails() async {
-    final userSignedIn = await isUserSignedIn();
-    if (!userSignedIn) {
+    RxBool userSignedIn = (await isUserSignedIn()).obs;
+    if (!(userSignedIn.value)) {
       debugPrint("User not signed in");
       return {"error": "User not found"};
     } else {
       debugPrint("User signed in");
-      final attributes = getCurrentUser();
+      Rx<User?> attributes = (await getCurrentUser()).obs;
       final response = await get(
-          Uri.parse('https://api.aaruush.org/api/v1/users/${attributes.email}'),
+          Uri.parse('https://api.aaruush.org/api/v1/users/${attributes.value?.email}'),
           headers: {'Authorization': ApiData.accessToken});
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
@@ -153,6 +174,7 @@ class CommonController extends GetxController {
         RegNo.value = data['registration number (na if not applicable)'] ?? data['college_id'] ?? data['Registration Number'] ?? "";
         college.value = data['college'] ?? data['college (na if not applicable)'] ?? data['college_name'] ?? "";
         debugPrint("User details: $data");
+        update();
         return data;
       } else {
         var data = jsonDecode(response.body);
@@ -180,9 +202,24 @@ class CommonController extends GetxController {
 
   Future<void> fetchAndLoadDetails() async {
     userDetails.value = await getUserDetails();
+    update();
     // isEventRegistered.value = userDetails['events'].contains(e.id);
   }
 
+  Future<void> _deleteCacheDir() async {
+    Directory tempDir = await getTemporaryDirectory();
 
+    if (tempDir.existsSync()) {
+      tempDir.deleteSync(recursive: true);
+    }
+  }
+
+  Future<void> _deleteAppDir() async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+
+    if (appDocDir.existsSync()) {
+      appDocDir.deleteSync(recursive: true);
+    }
+  }
 
 }

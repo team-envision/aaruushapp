@@ -1,3 +1,4 @@
+import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -18,8 +19,8 @@ class TicketDisplayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<HomeController>(HomeController());
-    final qrDetails = '''emailid:${controller.common.emailAddress.value},
-aaruushId:${controller.common.aaruushId.value},eventId:${event.id}''';
+    final qrDetails = '''emailid:${CommonController.emailAddress.value},
+aaruushId:${CommonController.aaruushId.value},eventId:${event.id}''';
 
     return Scaffold(
       extendBody: true,

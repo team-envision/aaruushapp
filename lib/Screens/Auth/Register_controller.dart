@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:AARUUSH_CONNECT/Screens/Home/home_controller.dart';
 import 'package:AARUUSH_CONNECT/Utilities/AaruushBottomBar.dart';
@@ -16,7 +15,6 @@ import '../../Common/common_controller.dart';
 import '../../Data/api_data.dart';
 import '../../Utilities/snackbar.dart';
 
-
 class RegisterController extends GetxController {
   final formKey = GlobalKey<FormState>();
   RxDouble height = (Get.height * 0.55).obs;
@@ -28,29 +26,27 @@ class RegisterController extends GetxController {
   final common = Get.put(CommonController());
   final homeController = Get.put(HomeController());
   String? googleUserEmail;
-  String? googleUserName;
+
 
   @override
-  Future<void> onInit() async {
+  Future<void> onInit()  async {
     // TODO: implement onInit
     super.onInit();
-    googleUserEmail =  GetStorage().read('userEmail');
-    googleUserName =  GetStorage().read('userName');
-
-    EmailTextEditingController.text = googleUserEmail ?? "";
-    NameTextEditingController.text =  toRemoveTextInBracketsIfExists(googleUserName ?? "");
-    PhNoTextEditingController.text = common.phoneNumber.value;
-    RegNoTextEditingController.text = common.RegNo.value;
-    CollgeTextEditingController.text = common.college.value;
-
-
-
+    Rx<User?> currentUser = (await common.getCurrentUser()).obs;
+    print('hhhhhhh');
+    print(currentUser.value?.email);
+    print(currentUser.value?.displayName);
+    googleUserEmail = currentUser.value?.email;
+    EmailTextEditingController.text = currentUser.value?.email ?? "";
+    NameTextEditingController.text =
+        toRemoveTextInBracketsIfExists(currentUser.value?.displayName ?? "");
+    PhNoTextEditingController.text = CommonController.phoneNumber.value;
+    RegNoTextEditingController.text = CommonController.RegNo.value;
+    CollgeTextEditingController.text = CommonController.college.value;
+    update();
   }
 
-
-
   Future<void> updateProfile() async {
-
     final userRes = await put(
       Uri.parse('${ApiData.API}/users'),
       headers: {
@@ -58,19 +54,19 @@ class RegisterController extends GetxController {
         'Accept': 'application/json',
         'Authorization': ApiData.accessToken
       },
-
       body: json.encode(<String, dynamic>{
-
         "email": googleUserEmail,
-        "aaruushId": homeController.common.aaruushId.value,
+        "aaruushId": CommonController.aaruushId.value,
         "name": NameTextEditingController.text.toString(),
         "phone": PhNoTextEditingController.text.toString(),
-        "college_name" : CollgeTextEditingController.text.toString(),
-        "Registration Number" : RegNoTextEditingController.text.toString()
+        "college_name": CollgeTextEditingController.text.toString(),
+        "Registration Number": RegNoTextEditingController.text.toString()
       }),
     );
 
-    if (userRes.statusCode == 200 || userRes.statusCode == 201 || userRes.statusCode == 202) {
+    if (userRes.statusCode == 200 ||
+        userRes.statusCode == 201 ||
+        userRes.statusCode == 202) {
       setSnackBar(
         'SUCCESS:',
         "Profile Updated Successfully",
@@ -79,9 +75,8 @@ class RegisterController extends GetxController {
           color: Colors.green,
         ),
       );
-      Get.to(()=>AaruushBottomBar());
+      Get.to(() => AaruushBottomBar());
     } else {
-
       setSnackBar(
         'ERROR:',
         json.decode(userRes.body)['message'],
@@ -92,31 +87,25 @@ class RegisterController extends GetxController {
       );
       debugPrint("ERROR : ${userRes.body}");
       debugPrint("ERROR : ${userRes.reasonPhrase}");
-
     }
-
 
     await homeController.common.fetchAndLoadDetails();
   }
 
-
-
   Future<void> saveUserToFirestore() async {
-
     if (kDebugMode) {
       print(FirebaseAuth.instance.currentUser!.getIdToken());
     }
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     String? fcmToken = await messaging.getToken();
 
-
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
     String name = NameTextEditingController.text;
-    String college= CollgeTextEditingController.text;
-    String registerNumber= RegNoTextEditingController.text;
-    String phoneNumber= PhNoTextEditingController.text;
-    String email= EmailTextEditingController.text;
+    String college = CollgeTextEditingController.text;
+    String registerNumber = RegNoTextEditingController.text;
+    String phoneNumber = PhNoTextEditingController.text;
+    String email = EmailTextEditingController.text;
 
     Map<String, dynamic> userData = {
       'name': name,
@@ -126,29 +115,23 @@ class RegisterController extends GetxController {
       'email': email,
       'fcmToken': fcmToken,
       'createdAt': FieldValue.serverTimestamp(),
-      "Uid" : FirebaseAuth.instance.currentUser!.uid
+      "Uid": FirebaseAuth.instance.currentUser!.uid
     };
 
-
-     Future<bool> isAvailable = common.isUserAvailableInFirebase(email);
-     if(!await isAvailable){
-       kDebugMode ? print('User data saved successfully!'):null;
-       try{
-       await users.doc(email).set(userData);
-       Get.offAll(()=>AaruushBottomBar());
-     } on FirebaseException catch(e){
-         kDebugMode ? print(e.message):null;
-         setSnackBar(e.code, e.message!);
-       }
-   catch(error){
-     printError(info: error.toString());
-   }
-
-     }
-
+    Future<bool> isAvailable = common.isUserAvailableInFirebase(email);
+    if (!await isAvailable) {
+      kDebugMode ? print('User data saved successfully!') : null;
+      try {
+        await users.doc(email).set(userData);
+        Get.offAll(() => AaruushBottomBar());
+      } on FirebaseException catch (e) {
+        kDebugMode ? print(e.message) : null;
+        setSnackBar(e.code, e.message!);
+      } catch (error) {
+        printError(info: error.toString());
+      }
+    }
   }
-
-
 
   @override
   void dispose() {
@@ -164,6 +147,4 @@ class RegisterController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-
 }

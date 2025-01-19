@@ -59,10 +59,17 @@ class AboutPage extends StatelessWidget {
                             mode: LaunchMode.externalApplication);
                       }
                     },
-                    child: Text("Developed by Team Envision",
-                        style: Get.theme.kVerySmallTextStyle.copyWith(
-                            color: const Color.fromRGBO(239, 101, 34, 1),
-                            fontSize: 15)),
+                    child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("Developed by Team Envision",
+                            style: Get.theme.kVerySmallTextStyle.copyWith(
+                                // decoration: TextDecoration.underline, decorationColor: const Color.fromRGBO(239, 101, 34, 1),
+                                color: const Color.fromRGBO(239, 101, 34, 1),
+                                fontSize: 15)),
+                        SizedBox(width: Get.width * 0.02,),
+                        const Icon(Icons.link, color: Color.fromRGBO(239, 101, 34, 1), size: 22,),
+                      ],
+                    ),
                   ),
                   sizeBox(20, 0),
                   Text("About Aaruush", style: Get.theme.kSubTitleTextStyle),

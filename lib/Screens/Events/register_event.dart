@@ -7,6 +7,7 @@ import 'package:AARUUSH_CONNECT/components/dropdown_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../Common/common_controller.dart';
 import '../../Model/Events/event_list_model.dart';
 import '../../components/DynamicWhiteBox.dart';
 import '../../components/profile_text_field.dart';
@@ -37,9 +38,7 @@ class RegisterEvent extends GetView<EventsController> {
             ),
           ),
         ],
-
-        title:
-            "AARUUSH",
+        title: "AARUUSH",
       ),
       body: BgArea(
         child: Center(
@@ -68,14 +67,17 @@ class RegisterEvent extends GetView<EventsController> {
                                     hint: e.label ?? "Select",
                                     list: e.options?.split(',') ?? [],
                                     onChanged: (val) {
-                                      controller.registerFieldData[e.label] = val;
+                                      controller.registerFieldData[e.label] =
+                                          val;
                                     },
                                     value:
-                                        controller.registerFieldData[e.label] ?? "",
+                                        controller.registerFieldData[e.label] ??
+                                            "",
                                   ));
                             } else {
                               return Padding(
-                                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                                padding: const EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 10),
                                 child: profileTextField(
                                   validator: (v) {
                                     if (e.type == "email" && e.required!) {
@@ -95,32 +97,34 @@ class RegisterEvent extends GetView<EventsController> {
                                           ? TextInputType.phone
                                           : TextInputType.text,
                                   initialValue: e.label!.toLowerCase() == "name"
-                                      ? controller.common.userName.toString()
+                                      ? CommonController.userName.toString()
                                       : (e.label!.toLowerCase() ==
                                                   "college (na if not applicable)" ||
                                               e.label!.toLowerCase() ==
                                                   "college name")
-                                          ? controller.common.college.toString()
+                                          ? CommonController.college.toString()
                                           : (e.label!.toLowerCase() ==
                                                       "registration number (na if not applicable)" ||
                                                   e.label!.toLowerCase() ==
                                                       "registration number")
-                                              ? controller.common.RegNo.toString()
+                                              ? CommonController.RegNo
+                                                  .toString()
                                               : (e.label!.toLowerCase() ==
                                                           "phone number" ||
                                                       e.label!.toLowerCase() ==
                                                           "contact number")
-                                                  ? controller.common.phoneNumber
+                                                  ? CommonController.phoneNumber
                                                       .toString()
                                                   : (e.label!.toLowerCase() ==
                                                               "email id" ||
                                                           e.label!.toLowerCase() ==
                                                               "email")
-                                                      ? controller.common.emailAddress
+                                                      ? CommonController.emailAddress
                                                           .toString()
                                                       : "",
                                   onChanged: (v) {
-                                    controller.registerFieldData.value[e.label!] = v;
+                                    controller
+                                        .registerFieldData.value[e.label!] = v;
                                     debugPrint("${e.label} $v");
                                   },
                                   label: e.label ?? e.placeholder ?? "",
@@ -132,39 +136,44 @@ class RegisterEvent extends GetView<EventsController> {
                         Obx(
                           () => controller.isLoading.value
                               ? Container(
-                              height: Get.height,
-                              width: Get.width,
-                              color: Colors.black,
-                              child:
-                              Image.asset('assets/images/spinner.gif', scale: 4))
+                                  height: Get.height,
+                                  width: Get.width,
+                                  color: Colors.black,
+                                  child: Image.asset(
+                                      'assets/images/spinner.gif',
+                                      scale: 4))
                               : Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: SizedBox(height: 55,
-                                  child: primaryButton(
-                                    text: "Submit data",
-                                    onTap: () {
-                                      if (controller.registerFormKey.currentState!
-                                              .validate() &&
-                                          event.dynamicform != null) {
-                                        for (var e in event.dynamicform!) {
-                                          controller.registerFieldData.value
-                                              .addAllIf(
-                                            controller.userDetails.value[e.label] !=
-                                                null,
-                                            {
-                                              e.label!: controller
-                                                  .userDetails.value[e.label]
-                                            },
-                                          );
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: SizedBox(
+                                    height: 55,
+                                    child: primaryButton(
+                                      text: "Submit data",
+                                      onTap: () {
+                                        if (controller
+                                                .registerFormKey.currentState!
+                                                .validate() &&
+                                            event.dynamicform != null) {
+                                          for (var e in event.dynamicform!) {
+                                            controller.registerFieldData.value
+                                                .addAllIf(
+                                              controller.userDetails
+                                                      .value[e.label] !=
+                                                  null,
+                                              {
+                                                e.label!: controller
+                                                    .userDetails.value[e.label]
+                                              },
+                                            );
+                                          }
+                                          debugPrint(
+                                              "Register data ${controller.registerFieldData.value}");
+                                          controller.registerEvent(e: event);
                                         }
-                                        debugPrint(
-                                            "Register data ${controller.registerFieldData.value}");
-                                        controller.registerEvent(e: event);
-                                      }
-                                    },
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
                         ),
                         sizeBox(30, 0),
                       ],

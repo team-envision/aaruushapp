@@ -6,6 +6,7 @@ import 'package:AARUUSH_CONNECT/Model/Events/gallery.dart';
 import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
 import 'package:AARUUSH_CONNECT/Services/appRating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -41,8 +42,8 @@ class HomeController extends GetxController {
     super.onInit();
     print("GetStorage().read('accessToken')");
     print(GetStorage().read('accessToken'));
-    common.isEventRegistered;
-    common.fetchAndLoadDetails();
+    CommonController.isEventRegistered;
+    await common.fetchAndLoadDetails();
     fetchEventData();
     NotificationServices notificationServices = NotificationServices();
     notificationServices.setupInteractMessage(Get.context!);
@@ -60,10 +61,10 @@ class HomeController extends GetxController {
         print(newToken);
       }
       try {
-        String? email = common.getCurrentUser().email;
+        User? user = await common.getCurrentUser();
 
         DocumentReference userDoc =
-            FirebaseFirestore.instance.collection('users').doc(email);
+            FirebaseFirestore.instance.collection('users').doc(user?.email);
 
           await userDoc.update({'fcmToken': newToken});
           if (kDebugMode) {
@@ -96,9 +97,9 @@ class HomeController extends GetxController {
   }
 
   Future<void> updateProfile() async {
-    final attributes = common.getCurrentUser();
+    User? attributes = await common.getCurrentUser();
     final response = await get(
-        Uri.parse('https://api.aaruush.org/api/v1/users/${attributes.email}'),
+        Uri.parse('https://api.aaruush.org/api/v1/users/${attributes?.email}'),
         headers: {'Authorization': ApiData.accessToken});
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -109,7 +110,7 @@ class HomeController extends GetxController {
 
       var collection = FirebaseFirestore.instance.collection('users');
       collection
-          .doc(attributes.email)
+          .doc(attributes?.email)
           .update({
             "aaruushId": data['aaruushId'] ?? "",
             "email": data['email'] ?? "",

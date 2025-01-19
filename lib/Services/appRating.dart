@@ -10,8 +10,8 @@ import '../Common/common_controller.dart';
 
 
 class appRating {
-  RxBool _flag = false.obs;
-  TextEditingController _feedbackController = TextEditingController();
+  final RxBool _flag = false.obs;
+  final TextEditingController _feedbackController = TextEditingController();
   final _common = Get.put(CommonController());
 
   Future<void> updateFeedback({
@@ -24,7 +24,7 @@ class appRating {
     };
 
       try {
-        await users.doc(_common.emailAddress.value).update(userData);
+        await users.doc(CommonController.emailAddress.value).update(userData);
         Get.back();
       } on FirebaseException catch (e) {
         kDebugMode ? print(e.message) : null;

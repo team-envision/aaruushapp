@@ -1,4 +1,3 @@
-
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
@@ -77,20 +76,16 @@ class _MyEventsState extends State<MyEvents> {
                     : SizedBox(height: MediaQuery.of(context).size.height / 8),
               ),
               registeredEvents.isEmpty
-                  ? SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: Get.height,
-                        width: Get.width,
-                        child: Center(
-                          child: Text(
-                            "You Haven't registered For Any Event",
-                            style: Get.textTheme.labelMedium!
-                                .copyWith(letterSpacing: 4),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    )
+                  ? SliverFillRemaining(
+                hasScrollBody: false, // Prevents scrolling
+                child: Center(
+                  child: Text(
+                    "You Haven't registered For Any Event",
+                    style: Get.textTheme.labelMedium!.copyWith(letterSpacing: 4),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
                   : LiveSliverGrid.options(
                       controller: scrollController,
                       options: const LiveOptions(
@@ -128,7 +123,9 @@ Widget _buildAnimatedCard(
     child: SlideTransition(
       position: Tween<Offset>(begin: const Offset(0, -0.1), end: Offset.zero)
           .animate(animation),
-      child: OpenContainer(middleColor: Colors.transparent,openColor: Colors.transparent,
+      child: OpenContainer(
+        middleColor: Colors.transparent,
+        openColor: Colors.transparent,
         closedColor: Colors.transparent,
         closedShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

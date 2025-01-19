@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/events_controller.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/register_event.dart';
+import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
@@ -335,22 +336,17 @@ class _EventsScreenState extends State<EventsScreen> {
               padding: const EdgeInsets.symmetric(vertical: 18.0),
               child: TicketButton(
                 text: controller.isEventRegistered.value
-                    ? 'Registered'
+                    ? 'View Ticket'
                     : 'Register now',
                 onTap: () async {
+                  print(controller.eventData);
+
                   if (controller.isEventRegistered.value) {
-                    setSnackBar(
-                      "INFO:",
-                      "You have already registered",
-                      icon: const Icon(
-                        Icons.info,
-                        color: Colors.orange,
-                      ),
-                    );
+                    Get.to(() => TicketDisplayPage(event: controller.eventData.value));
                     return;
                   }
 
-                  if (eventData.reqdfields ?? false) {
+                  if (controller.eventData.value.dynamicform!.isNotEmpty) {
                     if (eventData.live ?? false) {
                       Get.to(() => RegisterEvent(event: eventData));
                     } else {
@@ -363,8 +359,10 @@ class _EventsScreenState extends State<EventsScreen> {
                         ),
                       );
                     }
-                  } else {
-                    if (await canLaunchUrl(
+
+                  } else if((controller.eventData.value.reglink!.isNotEmpty)) {
+                    if (
+                    await canLaunchUrl(
                         Uri.parse(eventData.reglink.toString()))) {
                       launchUrl(Uri.parse(eventData.reglink.toString()));
                       controller.registerEvent(e: eventData);
@@ -384,7 +382,20 @@ class _EventsScreenState extends State<EventsScreen> {
               ),
             );
           } else {
-            return const SizedBox();
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 18.0),
+              child: TicketButton(
+                text:  'View Ticket',
+                onTap: () async {
+                  if (controller.isEventRegistered.value) {
+                    Get.to(() => TicketDisplayPage(event: controller.eventData.value));
+                    return;
+                  }
+
+                },
+                isDisabled: !(eventData.live ?? false),
+              ),
+            );;
           }
         }),
       ),

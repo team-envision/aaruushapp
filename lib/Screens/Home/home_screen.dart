@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:AARUUSH_CONNECT/Certificates/CertificateView.dart';
+import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Screens/About/aboutpage.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/home_controller.dart';
@@ -113,12 +114,11 @@ class HomeScreen extends StatelessWidget {
                               action();
                             },
                             child: Obx(
-                              () => controller
-                                      .common.profileUrl.value.isNotEmpty
+                              () => CommonController.profileUrl.value.isNotEmpty
                                   ? CircleAvatar(
                                       radius: 22,
                                       backgroundImage: NetworkImage(
-                                          controller.common.profileUrl.value),
+                                          CommonController.profileUrl.value),
                                     )
                                   : Image.asset(
                                       'assets/images/profile.png',
@@ -127,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        openBuilder: (context, action) => const ProfileScreen(
+                        openBuilder: (context, action) =>  ProfileScreen(
                           isSwipingEnabled: true,
                           showCloseButton: true,
                         ),
@@ -135,7 +135,7 @@ class HomeScreen extends StatelessWidget {
                       sizeBox(0, 9),
                       Obx(() => FittedBox(
                             child: Text(
-                              "Hi, ${toRemoveTextInBracketsIfExists(controller.common.userName.toString())}"
+                              "Hi, ${toRemoveTextInBracketsIfExists(CommonController.userName.toString())}"
                                   .useCorrectEllipsis(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
