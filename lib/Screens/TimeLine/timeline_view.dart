@@ -179,10 +179,8 @@ class timeLineCard extends StatelessWidget {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              SvgPicture.asset(
-                "assets/images/aaruush.svg",
-                colorFilter: const ColorFilter.mode(
-                    Colors.black45, BlendMode.luminosity),
+              Image.asset(
+                "assets/images/aaruush.png",
               ),
               Padding(
                 padding: const EdgeInsets.all(25.0),

@@ -1,4 +1,3 @@
-
 import 'package:AARUUSH_CONNECT/Screens/Home/home_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/profilepage.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/myEvents.dart';
@@ -9,42 +8,66 @@ import 'package:get/get.dart';
 
 import '../Screens/TimeLine/timeline_view.dart';
 
+// Controller to manage bottom navigation bar state
+class BottomNavController extends GetxController {
+  int selectedIndex = 0;
+
+  void updateIndex(int index) {
+    selectedIndex = index;
+    update(); // Notify GetBuilder to rebuild widgets
+  }
+}
+
 class AaruushBottomBar extends StatelessWidget {
-  AaruushBottomBar({
-    super.key,
+  AaruushBottomBar({super.key});
 
-  });
-
-
-  final RxInt _selectedIndex = 0.obs;
-
-  final RxList<Widget> _screens = [const HomeScreen(), MyEvents(fromProfile: false,),TimelineView(), const ProfileScreen()].obs;
+  final List<Widget> screens = [
+    const HomeScreen(),
+    MyEvents(fromProfile: false),
+    TimelineView(),
+     ProfileScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(extendBody: true,
-      body: _screens[_selectedIndex.value],
-      bottomNavigationBar:
-          CurvedNavigationBar(
-        color: Get.theme.colorPrimary,
-        backgroundColor: Colors.transparent,
-        buttonBackgroundColor: Get.theme.colorPrimary,
-        height: 60,
-        animationCurve: Curves.linear,
-        animationDuration: const Duration(milliseconds: 350),
-        index: _selectedIndex.value,
-        onTap: (index) {
-          _selectedIndex.value = index;
-        },
-        items: [
-          Image.asset("assets/AppBarIcons/home.png",scale: 2.2,),
-          Image.asset("assets/AppBarIcons/map.png",scale: 2.2,),
-          Image.asset("assets/AppBarIcons/calendar.png",scale: 2.2,),
-          Image.asset("assets/AppBarIcons/user.png",scale: 2.2,)
-
-        ],
-      ),
-      ),
+    return GetBuilder<BottomNavController>(
+      init: BottomNavController(),
+      builder: (controller) {
+        return Scaffold(
+          extendBody: true,
+          body: screens[controller.selectedIndex],
+          bottomNavigationBar: CurvedNavigationBar(
+            color: Get.theme.colorPrimary,
+            backgroundColor: Colors.transparent,
+            buttonBackgroundColor: Get.theme.colorPrimary,
+            height: 60,
+            animationCurve: Curves.linear,
+            animationDuration: const Duration(milliseconds: 350),
+            index: controller.selectedIndex,
+            onTap: (index) {
+              controller.updateIndex(index);
+            },
+            items: [
+              Image.asset(
+                "assets/AppBarIcons/home.png",
+                scale: 2.2,
+              ),
+              Image.asset(
+                "assets/AppBarIcons/map.png",
+                scale: 2.2,
+              ),
+              Image.asset(
+                "assets/AppBarIcons/calendar.png",
+                scale: 2.2,
+              ),
+              Image.asset(
+                "assets/AppBarIcons/user.png",
+                scale: 2.2,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

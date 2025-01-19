@@ -1,6 +1,7 @@
 import 'package:AARUUSH_CONNECT/Certificates/CertificateView.dart';
 import 'package:AARUUSH_CONNECT/Screens/About/aboutpage.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/editProfile.dart';
+import 'package:AARUUSH_CONNECT/Screens/Profile/profileController.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
@@ -8,16 +9,17 @@ import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../../Common/common_controller.dart';
 import '../Home/home_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
   final dynamic showCloseButton;
   final bool isSwipingEnabled;
 
-  const ProfileScreen(
+   ProfileScreen(
       {super.key, this.showCloseButton = false, this.isSwipingEnabled = false});
 
+  final profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<HomeController>(HomeController());
@@ -69,17 +71,23 @@ class ProfileScreen extends StatelessWidget {
                               onPressed: () {},
                               iconSize: Get.width * 0.15,
                               icon: Obx(
-                                () => CircleAvatar(
-                                  radius: Get.width * 0.15,
-                                  backgroundImage: controller
-                                              .common.profileUrl.value !=
-                                          null
-                                      ? NetworkImage(
-                                          controller.common.profileUrl.value)
-                                      : const AssetImage(
-                                              'assets/images/profile.png')
-                                          as ImageProvider,
-                                ),
+                                () => CommonController.profileUrl.value.isNotEmpty
+                                    ? CircleAvatar(
+                                        radius: Get.width * 0.15,
+                                        backgroundImage: NetworkImage(
+                                          CommonController.profileUrl.value,
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: Get.width * 0.3,
+                                        width: Get.width * 0.3,
+                                        child: ClipOval(
+                                          child: Image.asset(
+                                            'assets/images/profile.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
                               ),
                             ),
                             Positioned(
@@ -117,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
                             Obx(
                               () => FittedBox(
                                 child: Text(
-                                  controller.common.userName.value
+                                  CommonController.userName.value
                                       .useCorrectEllipsis(),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -130,7 +138,7 @@ class ProfileScreen extends StatelessWidget {
                             SizedBox(height: Get.width * 0.015),
                             FittedBox(
                               child: Text(
-                                controller.common.emailAddress.value,
+                                CommonController.emailAddress.value,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: Get.theme.kVerySmallTextStyle.copyWith(
@@ -141,7 +149,7 @@ class ProfileScreen extends StatelessWidget {
                             SizedBox(height: Get.width * 0.015),
                             FittedBox(
                               child: Text(
-                                controller.common.aaruushId.value,
+                                CommonController.aaruushId.value,
                                 style: Get.theme.kVerySmallTextStyle.copyWith(
                                     fontWeight: FontWeight.w700,
                                     fontSize: Get.width * 0.035),
@@ -173,7 +181,8 @@ class ProfileScreen extends StatelessWidget {
                                     return ProfileButtons(
                                       buttonName: 'Certificates',
                                       leadingIcon: Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
+                                        padding:
+                                            const EdgeInsets.only(right: 5.0),
                                         child: Image.asset(
                                           "assets/images/icons/certificate.png",
                                           scale: 27,
@@ -236,9 +245,10 @@ class ProfileScreen extends StatelessWidget {
                             closedBuilder: (context, action) {
                               return ProfileButtons(
                                 buttonName: "Log out",
-                                onPressedFunc: () {
+                                onPressedFunc: () async {
                                   action();
-                                  controller.common.signOutCurrentUser();
+                                  profileController.resetProfileData();
+                                  await controller.common.signOutCurrentUser();
                                 },
                                 leadingIcon: const Padding(
                                   padding: EdgeInsets.only(right: 5.0),

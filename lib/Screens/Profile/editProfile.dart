@@ -1,8 +1,11 @@
+import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/profileController.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/primaryButton.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/profile_text_field.dart';
 import '../Home/home_controller.dart';
@@ -59,14 +62,23 @@ class EditProfile extends StatelessWidget {
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height / 8),
                   Obx(
-                    () => CircleAvatar(
-                      radius: 70,
-                      backgroundImage: homeController.common.profileUrl.value !=
-                              null
-                          ? NetworkImage(homeController.common.profileUrl.value)
-                          : const AssetImage('assets/images/profile.png')
-                              as ImageProvider,
-                    ),
+                    () => CommonController.profileUrl.value.isNotEmpty
+                        ? CircleAvatar(
+                            radius: Get.width * 0.15,
+                            backgroundImage: NetworkImage(
+                              CommonController.profileUrl.value,
+                            ),
+                          )
+                        : SizedBox(
+                            height: Get.width * 0.3,
+                            width: Get.width * 0.3,
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/profile.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
@@ -114,6 +126,28 @@ class EditProfile extends StatelessWidget {
                             controller.updateProfile();
                           }
                         },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: GestureDetector(
+                      onTap: () async {
+                        const url = 'https://www.aaruush.org/request/deletion';
+                        if (await canLaunchUrl(Uri.parse(url))) {
+                          await launchUrl(Uri.parse(url));
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
+                      child: const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('Delete your account?',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.white)),
+                        ),
                       ),
                     ),
                   ),

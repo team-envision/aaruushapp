@@ -83,7 +83,7 @@ class OnBoardingScreen extends StatelessWidget {
                                 child: primaryButton(
                                   text: 'Get Started',
                                   onTap: () => {
-                                    Get.off(() => const AuthScreen(),transition: Transition.fadeIn),
+                                    Get.off(() => const AuthScreen(),transition: Transition.fadeIn,),
                                   },
                                 ),
                               ),
