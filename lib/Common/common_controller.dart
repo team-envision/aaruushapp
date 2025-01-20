@@ -18,7 +18,6 @@ import 'package:path_provider/path_provider.dart';
 import '../Model/Events/event_list_model.dart';
 
 class CommonController extends GetxController {
-
   static RxString profileUrl = ''.obs;
   static RxString userName = ''.obs;
   static RxString emailAddress = ''.obs;
@@ -36,27 +35,18 @@ class CommonController extends GetxController {
   //   profileController.resetProfileData();
   // }
 
-
   @override
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-
   }
-
 
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
     super.onInit();
-    await fetchAndLoadDetails();
-
-
+    // await fetchAndLoadDetails();
   }
-
-
-
-
 
   Future<bool> isUserSignedIn() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -67,19 +57,20 @@ class CommonController extends GetxController {
   }
 
   Future<Widget> getLandingPage() async {
+    bool isSignedIn = await isUserSignedIn();
+    String? googleUser = GetStorage().read('userEmail');
 
-    RxBool isSignedIn = (await isUserSignedIn()).obs;
-     RxString? googleUser =   GetStorage().read('userEmail');
     print(googleUser);
-    RxBool isUserAvailableinFirebase =(await isUserAvailableInFirebase(googleUser?.value ?? "tester@gmail.com")).obs;
+    bool isUserAvailableinFirebase =
+        await isUserAvailableInFirebase(googleUser ?? "tester@gmail.com");
     print("isUserAvailableinFirebase");
     print(isUserAvailableinFirebase);
     print(googleUser);
     print(isSignedIn);
-    if (isSignedIn.value && isUserAvailableinFirebase.value) {
+    if (isSignedIn && isUserAvailableinFirebase) {
       debugPrint("User signed in");
-      return  AaruushBottomBar();
-    }else if(isSignedIn.value && !isUserAvailableinFirebase.value) {
+      return AaruushBottomBar();
+    } else if (isSignedIn && !isUserAvailableinFirebase) {
       debugPrint("User not registered in firebase");
       return registerView();
     } else {
@@ -103,7 +94,8 @@ class CommonController extends GetxController {
 
   Future<bool> isUserAvailableInFirebase(String email) async {
     try {
-      CollectionReference users = FirebaseFirestore.instance.collection('users');
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
 
       DocumentReference userDoc = users.doc(email);
 
@@ -137,12 +129,8 @@ class CommonController extends GetxController {
       await GoogleSignIn().disconnect();
       await GoogleSignIn().signOut();
 
-
       // await _deleteCacheDir();
       // await _deleteAppDir();
-
-
-
     } on FirebaseAuthException catch (e) {
       debugPrint("Errr $e");
     }
@@ -158,7 +146,8 @@ class CommonController extends GetxController {
       debugPrint("User signed in");
       Rx<User?> attributes = (await getCurrentUser()).obs;
       final response = await get(
-          Uri.parse('https://api.aaruush.org/api/v1/users/${attributes.value?.email}'),
+          Uri.parse(
+              'https://api.aaruush.org/api/v1/users/${attributes.value?.email}'),
           headers: {'Authorization': ApiData.accessToken});
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
@@ -170,9 +159,21 @@ class CommonController extends GetxController {
         userName.value = data['name'] ?? "";
         emailAddress.value = data['email'] ?? "";
         aaruushId.value = data['aaruushId'] ?? "";
-        phoneNumber.value = data['phone'] ?? data["whatsapp"] ?? data["phone number"] ?? data["Whatsapp Number"] ?? data["whatsappnumber"] ?? data["whatsapp number"] ?? "";
-        RegNo.value = data['registration number (na if not applicable)'] ?? data['college_id'] ?? data['Registration Number'] ?? "";
-        college.value = data['college'] ?? data['college (na if not applicable)'] ?? data['college_name'] ?? "";
+        phoneNumber.value = data['phone'] ??
+            data["whatsapp"] ??
+            data["phone number"] ??
+            data["Whatsapp Number"] ??
+            data["whatsappnumber"] ??
+            data["whatsapp number"] ??
+            "";
+        RegNo.value = data['registration number (na if not applicable)'] ??
+            data['college_id'] ??
+            data['Registration Number'] ??
+            "";
+        college.value = data['college'] ??
+            data['college (na if not applicable)'] ??
+            data['college_name'] ??
+            "";
         debugPrint("User details: $data");
         update();
         return data;
@@ -221,5 +222,4 @@ class CommonController extends GetxController {
       appDocDir.deleteSync(recursive: true);
     }
   }
-
 }
