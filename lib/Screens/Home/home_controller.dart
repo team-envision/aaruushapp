@@ -42,9 +42,8 @@ class HomeController extends GetxController {
     super.onInit();
     print("GetStorage().read('accessToken')");
     print(GetStorage().read('accessToken'));
-    CommonController.isEventRegistered;
-    await common.fetchAndLoadDetails();
-    fetchEventData();
+     common.fetchAndLoadDetails();
+     fetchEventData();
     NotificationServices notificationServices = NotificationServices();
     notificationServices.setupInteractMessage(Get.context!);
     notificationServices.firebaseInit(Get.context!);
@@ -82,8 +81,8 @@ class HomeController extends GetxController {
         }
       }
     });
-    updateProfile();
-    fetchGallery(year: "2023");
+     updateProfile();
+     fetchGallery(year: "2023");
   }
 
   @override
