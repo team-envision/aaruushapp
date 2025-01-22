@@ -114,6 +114,7 @@ class ProfileController extends GetxController {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   HomeController homeController = Get.put(HomeController());
+  final common = Get.find<CommonController>();
   final formkey = GlobalKey<FormState>();
 
   void resetProfileData() {
@@ -212,19 +213,19 @@ class ProfileController extends GetxController {
     CommonController.aaruushId.value = userData['aaruushId'];
   }
 
+
   @override
-  void onInit() {
+  Future<void> onReady() async {
+    // TODO: implement onReady
     // Initialize text controllers with current user data if logged in
+    super.onReady();
+    await common.fetchAndLoadDetails();
     phoneController.text = CommonController.phoneNumber.value;
     nameController.text = CommonController.userName.value;
     emailController.text = CommonController.emailAddress.value;
-    super.onInit();
+    update();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   @override
   void dispose() {

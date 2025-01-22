@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
   final dynamic showCloseButton;
   final bool isSwipingEnabled;
 
-   ProfileScreen(
+  ProfileScreen(
       {super.key, this.showCloseButton = false, this.isSwipingEnabled = false});
 
   final profileController = Get.put(ProfileController());
@@ -71,30 +71,34 @@ class ProfileScreen extends StatelessWidget {
                               onPressed: () {},
                               iconSize: Get.width * 0.15,
                               icon: Obx(
-                                () => CommonController.profileUrl.value.isNotEmpty
-                                    ? CircleAvatar(
-                                        radius: Get.width * 0.15,
-                                        backgroundImage: NetworkImage(
-                                          CommonController.profileUrl.value,
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        height: Get.width * 0.3,
-                                        width: Get.width * 0.3,
-                                        child: ClipOval(
-                                          child: Image.asset(
-                                            'assets/images/profile.png',
-                                            fit: BoxFit.cover,
+                                () =>
+                                    CommonController.profileUrl.value.isNotEmpty
+                                        ? CircleAvatar(
+                                            radius: Get.width * 0.15,
+                                            backgroundImage: NetworkImage(
+                                              CommonController.profileUrl.value,
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            height: Get.width * 0.3,
+                                            width: Get.width * 0.3,
+                                            child: ClipOval(
+                                              child: Image.asset(
+                                                'assets/images/profile.png',
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
                               ),
                             ),
                             Positioned(
                               bottom: 12,
                               right: 4,
                               child: GestureDetector(
-                                onTap: () => Get.to(() => const EditProfile()),
+                                onTap: () => Get.to(() {
+                                  profileController.update();
+                                  return const EditProfile();
+                                }),
                                 child: Container(
                                   width: Get.height / 25,
                                   height: Get.height / 25,

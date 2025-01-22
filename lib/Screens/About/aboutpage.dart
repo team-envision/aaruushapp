@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
@@ -15,7 +17,7 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
-        if (details.primaryDelta! > -1 && details.localPosition.dx < 100) {
+        if ((details.primaryDelta! > -1 && details.localPosition.dx < 100) && Platform.isIOS) {
           Navigator.pop(context);
         }
       },

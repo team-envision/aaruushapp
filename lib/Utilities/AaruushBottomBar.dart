@@ -1,3 +1,4 @@
+import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/home_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/profilepage.dart';
 import 'package:AARUUSH_CONNECT/Screens/Tickets/myEvents.dart';
@@ -11,8 +12,14 @@ import '../Screens/TimeLine/timeline_view.dart';
 // Controller to manage bottom navigation bar state
 class BottomNavController extends GetxController {
   int selectedIndex = 0;
-
-  void updateIndex(int index) {
+@override
+  Future<void> onInit() async {
+    // TODO: implement onInit
+  await CommonController().fetchAndLoadDetails();
+    super.onInit();
+  }
+  Future<void> updateIndex(int index) async {
+    await CommonController().fetchAndLoadDetails();
     selectedIndex = index;
     update(); // Notify GetBuilder to rebuild widgets
   }
@@ -24,7 +31,7 @@ class AaruushBottomBar extends StatelessWidget {
   final List<Widget> screens = [
     const HomeScreen(),
     MyEvents(fromProfile: false),
-    TimelineView(),
+    const TimelineView(),
      ProfileScreen(),
   ];
 
