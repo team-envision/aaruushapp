@@ -18,7 +18,6 @@ class EditProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<ProfileController>(ProfileController());
-    final homeController = Get.put<HomeController>(HomeController());
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -54,15 +53,15 @@ class EditProfile extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
-          child: Form(
-            key: controller.formkey,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.zero,
-              child: Column(
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height / 8),
-                  Obx(
-                    () => CommonController.profileUrl.value.isNotEmpty
+          child: SingleChildScrollView(
+            padding: EdgeInsets.zero,
+            child: Obx(
+              () => Form(
+                key: controller.formkey,
+                child: Column(
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height / 8),
+                    CommonController.profileUrl.value.isNotEmpty
                         ? CircleAvatar(
                             radius: Get.width * 0.15,
                             backgroundImage: NetworkImage(
@@ -79,33 +78,24 @@ class EditProfile extends StatelessWidget {
                               ),
                             ),
                           ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: SizedBox(
-                      height: 55,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
                       child: CustomTextField(
                         label: 'Name',
                         type: TextInputType.text,
                         controller: controller.nameController,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                      height: 55,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
                       child: CustomTextField(
                         controller: controller.phoneController,
                         label: 'Phone',
                         type: TextInputType.phone,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                      height: 55,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
                       child: CustomTextField(
                         controller: controller.emailController,
                         label: 'Email',
@@ -113,45 +103,46 @@ class EditProfile extends StatelessWidget {
                         enabled: false,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: SizedBox(
-                      height: 55,
-                      width: Get.width,
-                      child: primaryButton(
-                        text: "Save",
-                        onTap: () {
-                          if (controller.formkey.currentState!.validate()) {
-                            controller.updateProfile();
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: GestureDetector(
-                      onTap: () async {
-                        const url = 'https://www.aaruush.org/request/deletion';
-                        if (await canLaunchUrl(Uri.parse(url))) {
-                          await launchUrl(Uri.parse(url));
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                      },
-                      child: const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text('Delete your account?',
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: Colors.white)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: SizedBox(
+                        height: 55,
+                        width: Get.width,
+                        child: primaryButton(
+                          text: "Save",
+                          onTap: () async {
+                            if (controller.formkey.currentState!.validate()) {
+                              await controller.updateProfile();
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: GestureDetector(
+                        onTap: () async {
+                          const url =
+                              'https://www.aaruush.org/request/deletion';
+                          if (await canLaunchUrl(Uri.parse(url))) {
+                            await launchUrl(Uri.parse(url));
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        child: const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text('Delete your account?',
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: Colors.white)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

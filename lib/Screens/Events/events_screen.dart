@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/events_controller.dart';
@@ -66,7 +67,7 @@ class _EventsScreenState extends State<EventsScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
-        if (details.primaryDelta! > -1 && details.localPosition.dx < 100) {
+        if ((details.primaryDelta! > -1 && details.localPosition.dx < 100) && Platform.isIOS) {
           Navigator.pop(context);
         }
       },
@@ -84,8 +85,7 @@ class _EventsScreenState extends State<EventsScreen> {
               child: IconButton.outlined(
                 style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
-                        Color.fromRGBO(255, 255, 255, 0.04)
-                    ),
+                        Color.fromRGBO(255, 255, 255, 0.04)),
                     shape: WidgetStatePropertyAll(
                         CircleBorder(side: BorderSide(color: Colors.white)))),
                 padding: EdgeInsets.zero,
@@ -286,7 +286,8 @@ class _EventsScreenState extends State<EventsScreen> {
                             physics: const BouncingScrollPhysics(),
                             children: [
                               _tabDataWidget(text: eventData.about ?? "Nil"),
-                              _tabDataWidget(text: eventData.structure ?? "Nil"),
+                              _tabDataWidget(
+                                  text: eventData.structure ?? "Nil"),
                               _tabDataWidget(text: eventData.contact ?? "Nil"),
                             ],
                           ),
@@ -316,7 +317,8 @@ class _EventsScreenState extends State<EventsScreen> {
                                     height: 200,
                                     width: Get.width * 0.9,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(210)),
+                                        borderRadius:
+                                            BorderRadius.circular(210)),
                                     child: Mapscreen(
                                         Lattitude: eventData.locationLat,
                                         Longitude: eventData.locationLng,
@@ -342,7 +344,8 @@ class _EventsScreenState extends State<EventsScreen> {
                   print(controller.eventData);
 
                   if (controller.isEventRegistered.value) {
-                    Get.to(() => TicketDisplayPage(event: controller.eventData.value));
+                    Get.to(() =>
+                        TicketDisplayPage(event: controller.eventData.value));
                     return;
                   }
 
@@ -359,10 +362,8 @@ class _EventsScreenState extends State<EventsScreen> {
                         ),
                       );
                     }
-
-                  } else if((controller.eventData.value.reglink!.isNotEmpty)) {
-                    if (
-                    await canLaunchUrl(
+                  } else if ((controller.eventData.value.reglink!.isNotEmpty)) {
+                    if (await canLaunchUrl(
                         Uri.parse(eventData.reglink.toString()))) {
                       launchUrl(Uri.parse(eventData.reglink.toString()));
                       controller.registerEvent(e: eventData);
@@ -385,17 +386,18 @@ class _EventsScreenState extends State<EventsScreen> {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 18.0),
               child: TicketButton(
-                text:  'View Ticket',
+                text: 'View Ticket',
                 onTap: () async {
                   if (controller.isEventRegistered.value) {
-                    Get.to(() => TicketDisplayPage(event: controller.eventData.value));
+                    Get.to(() =>
+                        TicketDisplayPage(event: controller.eventData.value));
                     return;
                   }
-
                 },
-                isDisabled: !(eventData.live ?? false),
+                isDisabled: false,
               ),
-            );;
+            );
+            ;
           }
         }),
       ),

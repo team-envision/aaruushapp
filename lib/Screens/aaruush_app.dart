@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:upgrader/upgrader.dart';
 
 
 
@@ -15,14 +18,24 @@ class AaruushAppScreen extends GetView<CommonController> {
         if (snapshot.hasData) {
           return snapshot.data!;
         } else {
-          return    Scaffold(
-            body: Center(
-              child: Container(
-                  height: Get.height,
-                  width: Get.width,
-                  color: Colors.black,),
-            ),
+          return    UpgradeAlert(
+            showLater: false,upgrader: Upgrader(countryCode: 'IN'),
+            showIgnore: false,
+            shouldPopScope: () => false,
+            barrierDismissible: false,
+            showReleaseNotes: false,
+            dialogStyle: Platform.isAndroid
+                ? UpgradeDialogStyle.material
+                : UpgradeDialogStyle.cupertino,
+            child: Scaffold(
+              body: Center(
+                child: Container(
+                    height: Get.height,
+                    width: Get.width,
+                    color: Colors.black,),
+              ),
 
+            ),
           );
         }
       },

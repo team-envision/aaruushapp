@@ -203,7 +203,6 @@ class CommonController extends GetxController {
 
   Future<void> fetchAndLoadDetails() async {
     userDetails.value = await getUserDetails();
-    update();
     // isEventRegistered.value = userDetails['events'].contains(e.id);
   }
 

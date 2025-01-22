@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:AARUUSH_CONNECT/Screens/Notification/NotificationController.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
@@ -20,7 +21,7 @@ class NotificationScreen extends GetView<NotificationController> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
-        if (details.primaryDelta! > -1 && details.localPosition.dx < 100) {
+        if ((details.primaryDelta! > -1 && details.localPosition.dx < 100) && Platform.isIOS) {
           Navigator.pop(context);
         }
       },
