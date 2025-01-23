@@ -17,13 +17,14 @@ import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends GetxController {
   var eventList = <EventListModel>[].obs;
+  var myEventList = <EventListModel>[].obs;
   var templiveEventList = <EventListModel>[].obs;
 
   var galleryList = [].obs;
   var tempGalleryList = [].obs;
 
   RxList LiveEventsList = [].obs;
-  RxList regEvents = [].obs;
+ RxList regEvents = [].obs;
   final common = Get.find<CommonController>();
   var isLoading = false.obs;
   var sortName = "All".obs;
@@ -159,6 +160,8 @@ class HomeController extends GetxController {
         List<dynamic> filteredLiveEvents =
             jsonResponse.where((event) => event['live'] == true).toList();
         eventList.assignAll(
+            jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
+        myEventList.assignAll(
             jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
         templiveEventList.assignAll(
             filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());

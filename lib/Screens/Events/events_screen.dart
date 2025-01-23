@@ -228,7 +228,7 @@ class _EventsScreenState extends State<EventsScreen> {
                       ),
                     ),
                   DefaultTabController(
-                    length: 3,
+                    length: 4,
                     child: Column(
                       children: [
                         TabBar(
@@ -269,6 +269,15 @@ class _EventsScreenState extends State<EventsScreen> {
                                   borderRadius: BorderRadius.circular(13),
                                 ),
                                 child: const Tab(
+                                  text: 'Timeline',
+                                )),
+                            Container(
+                                width: 250,
+                                decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(29, 29, 29, 1),
+                                  borderRadius: BorderRadius.circular(13),
+                                ),
+                                child: const Tab(
                                   text: 'Contact',
                                 )),
                           ],
@@ -285,10 +294,12 @@ class _EventsScreenState extends State<EventsScreen> {
                           child: TabBarView(
                             physics: const BouncingScrollPhysics(),
                             children: [
-                              _tabDataWidget(text: eventData.about ?? "Nil"),
+                              _tabDataWidget(text: eventData.about ?? "N/A"),
                               _tabDataWidget(
-                                  text: eventData.structure ?? "Nil"),
-                              _tabDataWidget(text: eventData.contact ?? "Nil"),
+                                  text: eventData.structure ?? "N/A"),
+                              _tabDataWidget(text: eventData.timeline ?? "N/A"),
+                              _tabDataWidget(text: eventData.contact ?? "N/A"),
+
                             ],
                           ),
                         ),

@@ -12,7 +12,7 @@ import '../Common/common_controller.dart';
 class appRating {
   final RxBool _flag = false.obs;
   final TextEditingController _feedbackController = TextEditingController();
-  final _common = Get.put(CommonController());
+
 
   Future<void> updateFeedback({
     required String feedback,
@@ -41,9 +41,9 @@ class appRating {
     RateMyApp rateMyApp = RateMyApp(
       preferencesPrefix: 'rateMyApp_',
       minDays: 1,
-      minLaunches: 2,
-      remindDays: 2,
-      remindLaunches: 2,
+      minLaunches: 1,
+      remindDays: 1,
+      remindLaunches: 1,
       googlePlayIdentifier: 'com.aaruush.connect',
       appStoreIdentifier: '6737286063',
     );

@@ -13,13 +13,13 @@ import '../Screens/TimeLine/timeline_view.dart';
 class BottomNavController extends GetxController {
   int selectedIndex = 0;
 @override
-  Future<void> onInit() async {
+  Future<void> onReady() async {
     // TODO: implement onInit
   await CommonController().fetchAndLoadDetails();
-    super.onInit();
+    super.onReady();
   }
   Future<void> updateIndex(int index) async {
-    await CommonController().fetchAndLoadDetails();
+     CommonController().fetchAndLoadDetails();
     selectedIndex = index;
     update(); // Notify GetBuilder to rebuild widgets
   }
@@ -49,7 +49,7 @@ class AaruushBottomBar extends StatelessWidget {
             buttonBackgroundColor: Get.theme.colorPrimary,
             height: 60,
             animationCurve: Curves.linear,
-            animationDuration: const Duration(milliseconds: 350),
+            animationDuration: const Duration(milliseconds: 250),
             index: controller.selectedIndex,
             onTap: (index) {
               controller.updateIndex(index);

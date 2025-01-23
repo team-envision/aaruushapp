@@ -33,7 +33,7 @@ class _MyEventsState extends State<MyEvents> {
   @override
   Widget build(BuildContext context) {
     HomeController controller = Get.find();
-    widget.eventList ??= controller.eventList;
+    widget.eventList ??= controller.myEventList;
     controller.common.fetchAndLoadDetails();
     final eventIds = controller.common.registeredEvents();
     registeredEvents = <EventListModel>[];
@@ -88,8 +88,7 @@ class _MyEventsState extends State<MyEvents> {
               )
                   : LiveSliverGrid.options(
                       controller: scrollController,
-                      options: const LiveOptions(
-                        showItemInterval: Duration(milliseconds: 100),
+                      options:   const LiveOptions(
                         showItemDuration: Duration(milliseconds: 300),
                         visibleFraction: 0.05,
                         reAnimateOnVisibility: false,
