@@ -107,20 +107,27 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
 import '../../Utilities/snackbar.dart';
-import '../Auth/Register_controller.dart';
+import '../Search/SearchView.dart';
 
 class ProfileController extends GetxController {
   final phoneController = TextEditingController();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  HomeController homeController = Get.put(HomeController());
   final common = Get.find<CommonController>();
   final formkey = GlobalKey<FormState>();
 
-  void resetProfileData() {
-    CommonController.college = ''.obs;
-    CommonController.phoneNumber = ''.obs;
-    CommonController.RegNo = ''.obs;
+  @override
+  Future<void> onReady() async {
+    super.onReady();
+    await common.fetchAndLoadDetails();
+    _updateTextFields();
+  }
+
+  void _updateTextFields() {
+    phoneController.text = CommonController.phoneNumber.value;
+    nameController.text = CommonController.userName.value;
+    emailController.text = CommonController.emailAddress.value;
+    update();
   }
 
   Future<void> updateProfile() async {
@@ -138,6 +145,7 @@ class ProfileController extends GetxController {
         "phone": phoneController.text
       }),
     );
+
 
     if (userRes.statusCode == 200 ||
         userRes.statusCode == 201 ||
@@ -213,18 +221,6 @@ class ProfileController extends GetxController {
     CommonController.aaruushId.value = userData['aaruushId'];
   }
 
-
-  @override
-  Future<void> onReady() async {
-    // TODO: implement onReady
-    // Initialize text controllers with current user data if logged in
-    super.onReady();
-    await common.fetchAndLoadDetails();
-    phoneController.text = CommonController.phoneNumber.value;
-    nameController.text = CommonController.userName.value;
-    emailController.text = CommonController.emailAddress.value;
-    update();
-  }
 
 
   @override

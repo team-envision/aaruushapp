@@ -30,10 +30,10 @@ class CommonController extends GetxController {
   static RxMap<String, dynamic> userDetails = <String, dynamic>{}.obs;
   static RxBool isLoading = false.obs;
   static RxBool isEventRegistered = false.obs;
-  // void resetProfileData() {
-  //   final profileController = Get.put(ProfileController());
-  //   profileController.resetProfileData();
-  // }
+  Future<void> refreshUserData() async {
+    resetUserData();
+    await fetchAndLoadDetails();
+  }
 
   @override
   void onReady() {
@@ -48,12 +48,26 @@ class CommonController extends GetxController {
     // await fetchAndLoadDetails();
   }
 
+  // Future<bool> isUserSignedIn() async {
+  //   User? user = FirebaseAuth.instance.currentUser;
+  //   if (user != null) {
+  //     await user.reload();
+  //   }
+  //   return user != null;
+  // }
+
   Future<bool> isUserSignedIn() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await user.reload();
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.reload();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      debugPrint("Error checking user sign in status: $e");
+      return false;
     }
-    return user != null;
   }
 
   Future<Widget> getLandingPage() async {
@@ -79,15 +93,15 @@ class CommonController extends GetxController {
     }
   }
 
-  Future<User?> getCurrentUser() async {
+  User? getCurrentUser() {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        return user; // Directly return the current user if not null
+        user.reload();
       }
-      return null;
-    } on FirebaseAuthException catch (e) {
-      debugPrint("Firebase Auth Error: ${e.message}");
+      return user;
+    } catch (e) {
+      debugPrint("Error getting current user: $e");
       return null;
     }
   }
@@ -120,41 +134,60 @@ class CommonController extends GetxController {
     }
   }
 
+  void resetUserData() {
+    profileUrl.value = '';
+    userName.value = '';
+    emailAddress.value = '';
+    aaruushId.value = '';
+    phoneNumber.value = '';
+    RegNo.value = '';
+    college.value = '';
+    uID.value = '';
+    userDetails.clear();
+  }
+
+
   Future<void> signOutCurrentUser() async {
     try {
       final GoogleSignInAccount? googleUser = GoogleSignIn().currentUser;
-      await googleUser?.clearAuthCache();
       await FirebaseAuth.instance.signOut();
-      await GetStorage().erase();
-      await GoogleSignIn().disconnect();
-      await GoogleSignIn().signOut();
-
-      // await _deleteCacheDir();
-      // await _deleteAppDir();
+      GoogleSignIn().disconnect();
+      googleUser?.clearAuthCache();
+      GetStorage().erase();
+      resetUserData(); // Add this line to clear user data
     } on FirebaseAuthException catch (e) {
-      debugPrint("Errr $e");
+      debugPrint("Error $e");
     }
-    Get.offAll(() => const OnBoardingScreen());
+    Get.offAll(() => const AuthScreen());
   }
 
   Future<Map<String, dynamic>> getUserDetails() async {
-    RxBool userSignedIn = (await isUserSignedIn()).obs;
-    if (!(userSignedIn.value)) {
-      debugPrint("User not signed in");
-      return {"error": "User not found"};
-    } else {
-      debugPrint("User signed in");
-      Rx<User?> attributes = (await getCurrentUser()).obs;
+    try {
+      final userSignedIn = await isUserSignedIn();
+      if (!userSignedIn) {
+        debugPrint("User not signed in");
+        return {"error": "User not found"};
+      }
+
+      final attributes = getCurrentUser();
+      if (attributes == null || attributes.email == null) {
+        debugPrint("User attributes not found");
+        return {"error": "User attributes not found"};
+      }
+
       final response = await get(
-          Uri.parse(
-              'https://api.aaruush.org/api/v1/users/${attributes.value?.email}'),
+          Uri.parse('https://api.aaruush.org/api/v1/users/${attributes.email}'),
           headers: {'Authorization': ApiData.accessToken});
+
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data["message"] == "Unauthorized") {
           debugPrint("unauthorized");
-          signOutCurrentUser();
+          await signOutCurrentUser();
+          return {"error": "Unauthorized"};
         }
+
+        // Safely set values with null checks
         profileUrl.value = data['image'] ?? "";
         userName.value = data['name'] ?? "";
         emailAddress.value = data['email'] ?? "";
@@ -174,14 +207,17 @@ class CommonController extends GetxController {
             data['college (na if not applicable)'] ??
             data['college_name'] ??
             "";
-        debugPrint("User details: $data");
-        update();
+
+        debugPrint("User details fetched successfully: $data");
         return data;
       } else {
         var data = jsonDecode(response.body);
-        debugPrint("Error data $data");
+        debugPrint("Error fetching user details: $data");
         return {"error": data};
       }
+    } catch (e) {
+      debugPrint("Exception in getUserDetails: $e");
+      return {"error": "An unexpected error occurred"};
     }
   }
 
@@ -202,23 +238,13 @@ class CommonController extends GetxController {
   }
 
   Future<void> fetchAndLoadDetails() async {
-    userDetails.value = await getUserDetails();
-    // isEventRegistered.value = userDetails['events'].contains(e.id);
-  }
-
-  Future<void> _deleteCacheDir() async {
-    Directory tempDir = await getTemporaryDirectory();
-
-    if (tempDir.existsSync()) {
-      tempDir.deleteSync(recursive: true);
-    }
-  }
-
-  Future<void> _deleteAppDir() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-
-    if (appDocDir.existsSync()) {
-      appDocDir.deleteSync(recursive: true);
+    try {
+      isLoading.value = true;
+      userDetails.value = await getUserDetails();
+    } catch (e) {
+      debugPrint("Error in fetchAndLoadDetails: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
 }

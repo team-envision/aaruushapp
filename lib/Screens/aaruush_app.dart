@@ -18,24 +18,14 @@ class AaruushAppScreen extends GetView<CommonController> {
         if (snapshot.hasData) {
           return snapshot.data!;
         } else {
-          return    UpgradeAlert(
-            showLater: false,upgrader: Upgrader(countryCode: 'IN'),
-            showIgnore: false,
-            shouldPopScope: () => false,
-            barrierDismissible: false,
-            showReleaseNotes: false,
-            dialogStyle: Platform.isAndroid
-                ? UpgradeDialogStyle.material
-                : UpgradeDialogStyle.cupertino,
-            child: Scaffold(
-              body: Center(
-                child: Container(
-                    height: Get.height,
-                    width: Get.width,
-                    color: Colors.black,),
-              ),
-
+          return    Scaffold(
+            body: Center(
+              child: Container(
+                  height: Get.height,
+                  width: Get.width,
+                  color: Colors.black,),
             ),
+
           );
         }
       },

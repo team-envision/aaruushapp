@@ -17,7 +17,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #//TODO:increase point version also to enable upgrader
-version: 2.0.2+7
+version: 2.0.4+7
 
 
 environment:
@@ -79,10 +79,10 @@ dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/unnamed.png"
   remove_alpha_ios: true
   adaptive_icon_background: "#000000"
-##  flutter pub run flutter_launcher_icons:main
+##  dart run flutter_launcher_icons:generate
 
 flutter_native_splash:
   android: true

@@ -157,7 +157,7 @@ class AuthController extends GetxController {
             Get.to(() => registerView());
           }
         } else {
-          throw Exception('Failed to register user: ${response.body}');
+          throw Exception('Failed to register user');
         }
       } else {
         throw Exception('Email is required but not provided.');

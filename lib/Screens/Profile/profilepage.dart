@@ -251,7 +251,6 @@ class ProfileScreen extends StatelessWidget {
                                 buttonName: "Log out",
                                 onPressedFunc: () async {
                                   action();
-                                  profileController.resetProfileData();
                                   await controller.common.signOutCurrentUser();
                                 },
                                 leadingIcon: const Padding(

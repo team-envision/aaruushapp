@@ -43,26 +43,26 @@ Widget eventCard(
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 8),
-          child: TextButton(
-            onPressed: onTap,
-            style: TextButton.styleFrom(
-              backgroundColor: Color.fromRGBO(0, 0, 0, 0.777),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+            child: TextButton(
+              onPressed: onTap,
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromRGBO(0, 0, 0, 0.777),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                fixedSize: const Size.fromWidth(130),
               ),
-              fixedSize: const Size.fromWidth(130),
+              child: Text(
+                event.live ?? false
+                    ? (controller.regEvents.contains(event.id)
+                        ? "Registered"
+                        : "Register Now")
+                    : "View Event",
+                style: Get.theme.kVerySmallTextStyle.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(255, 255, 255, 0.85)),
+              ),
             ),
-            child: Text(
-              event.live ?? false
-                  ? (controller.regEvents.contains(event.id)
-                      ? "Registered"
-                      : "Register Now")
-                  : "View Event",
-              style: Get.theme.kVerySmallTextStyle.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(255, 255, 255, 0.85)),
-            ),
-          ),
         ),
       ],
     ),
