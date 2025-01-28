@@ -30,23 +30,6 @@ extension ThemeExtension on ThemeData {
       ? const Color(0xA4353534)
       : const Color(0xA4353534);
 
-  // Color get materialColor2 => const Color(0xff9BF6FF);
-  // Color get materialColorDark2 => const Color(0xff006670);
-  // Color get materialColor3 => const Color(0xffA0C4FF);
-  // Color get materialColorDark3 => const Color(0xff013180);
-  // Color get materialColor4 => const Color(0xffbdb2ff);
-  // Color get materialColorDark4 => const Color(0xff42368a);
-  // Color get materialColor5 => const Color(0xffFFC6FF);
-  // Color get materialColorDark5 => const Color(0xff800180);
-  // Color get materialColor6 => const Color(0xffFFADAD);
-  // Color get materialColorDark6 => const Color(0xff873232);
-  // Color get materialColor7 => const Color(0xffFFD6A5);
-  // Color get materialColorDark7 => const Color(0xff785123);
-  // Color get materialColor8 => const Color(0xfff6f8ba);
-  // Color get materialColorDark8 => const Color(0xff8E9200);
-  // Color get materialColor9 => const Color(0xfff694c1);
-  // Color get materialColorDark9 => const Color(0xff8c0342);
-
   TextStyle get kTitleTextStyle => GoogleFonts.montserrat(
         //roboto
         fontWeight: FontWeight.w500,

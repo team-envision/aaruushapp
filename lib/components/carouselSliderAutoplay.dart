@@ -3,17 +3,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../Screens/Home/home_controller.dart';
+import '../Screens/Home/controllers/home_controller.dart';
 
 class Autoplay extends StatelessWidget {
-  final homeController = Get.put(HomeController());
+  final HomeController homeController = Get.find<HomeController>();
 
   Autoplay({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final List imageList = homeController.galleryList;
+      final List imageList = homeController.state.galleryList;
 
       if (imageList.isEmpty) {
         return const Center(

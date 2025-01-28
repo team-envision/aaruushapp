@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Model/Events/event_list_model.dart';
-import '../Screens/Home/home_controller.dart';
+import '../Screens/Home/controllers/home_controller.dart';
 
 Widget eventCard(
-    EventListModel event, VoidCallback onTap, HomeController controller) {
+    EventListModel event, VoidCallback onTap, HomeController homeController) {
   return Container(
     padding: const EdgeInsets.all(0),
     height: 250,
@@ -54,7 +54,7 @@ Widget eventCard(
             ),
             child: Text(
               event.live ?? false
-                  ? (controller.regEvents.contains(event.id)
+                  ? (homeController.state.regEvents.contains(event.id)
                       ? "Registered"
                       : "Register Now")
                   : "View Event",

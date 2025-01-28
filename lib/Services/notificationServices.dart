@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:AARUUSH_CONNECT/Screens/Events/events_screen.dart';
+import 'package:AARUUSH_CONNECT/Screens/Events/views/events_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../Screens/Notification/NotificationScreen.dart';
+import '../Screens/Notification/views/NotificationScreen.dart';
 
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;

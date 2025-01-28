@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:AARUUSH_CONNECT/Common/core/Routes/app_pages.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Utils/Navigator_Observer/app_navigator_observer.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -10,9 +13,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'Common/default_controller_bindings.dart';
+import 'Common/bindings/default_controller_bindings.dart';
 import 'Data/api_data.dart';
-import 'Screens/aaruush_app.dart';
 import 'Themes/theme_service.dart';
 import 'Themes/themes.dart';
 import 'firebase_options.dart';
@@ -64,7 +66,6 @@ class AaruushApp extends StatelessWidget {
     return GetMaterialApp(
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
       defaultTransition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 400),
       initialBinding: DefaultController(),
@@ -72,7 +73,10 @@ class AaruushApp extends StatelessWidget {
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
-      home: const AaruushAppScreen(),
+      // home: const AaruushAppScreen(),
+      getPages: AppPages.pages,
+      initialRoute: AppRoutes.splash,
+      navigatorObservers: [AppNavigatorObserver()],
     );
   }
 }

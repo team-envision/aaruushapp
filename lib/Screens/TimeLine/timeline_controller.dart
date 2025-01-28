@@ -10,13 +10,12 @@ class TimelineController extends GetxController{
     super.onInit();
     flipCardController =FlipCardController();
   }
+
   @override
-  void onClose() {
-    super.onClose();
-  }
-  @override
-  void onReady() {
-    super.onReady();
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    swiperController.dispose();
   }
 
 }

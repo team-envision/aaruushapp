@@ -1,3 +1,5 @@
+import 'package:AARUUSH_CONNECT/Common/core/Storage_Resources/local_client.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Storage_Resources/local_key.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
@@ -21,17 +23,12 @@ class ApiData {
 
   // Method to get the access token from GetStorage
   static String get accessToken {
-    final box = GetStorage();
-    return box.read('accessToken') ?? '';
+    return LocalClient.getString(key:LocalKeys.accessToken);
   }
 
   // Method to save the access token to GetStorage
   static set accessToken(String token) {
-    final box = GetStorage();
-    box.write('accessToken', token);
-    if (kDebugMode) {
-      print("token");
-      print(token);
-    }
+    LocalClient.saveString(key:LocalKeys.accessToken,value: token);
+
   }
 }

@@ -1,4 +1,4 @@
-import 'package:AARUUSH_CONNECT/Common/common_controller.dart';
+import 'package:AARUUSH_CONNECT/Common/controllers/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -9,7 +9,7 @@ import '../../Utilities/aaruushappbar.dart';
 import '../../Utilities/custom_sizebox.dart';
 import '../../components/bg_area.dart';
 import '../../components/ticketWidget.dart';
-import '../Home/home_controller.dart';
+import '../Home/controllers/home_controller.dart';
 import '../QrPage/QrGenerator.dart';
 
 class TicketDisplayPage extends StatelessWidget {
@@ -18,7 +18,6 @@ class TicketDisplayPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put<HomeController>(HomeController());
     final qrDetails = '''emailid:${CommonController.emailAddress.value},
 aaruushId:${CommonController.aaruushId.value},eventId:${event.id}''';
 

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
-import '../Common/common_controller.dart';
+import '../Common/controllers/common_controller.dart';
 
 
 class appRating {

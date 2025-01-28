@@ -1,6 +1,6 @@
-import 'package:AARUUSH_CONNECT/Screens/Home/home_screen.dart';
-import 'package:AARUUSH_CONNECT/Screens/Profile/profilepage.dart';
-import 'package:AARUUSH_CONNECT/Screens/Tickets/myEvents.dart';
+import 'package:AARUUSH_CONNECT/Screens/Home/views/home_screen.dart';
+import 'package:AARUUSH_CONNECT/Screens/Profile/views/profilepage.dart';
+import 'package:AARUUSH_CONNECT/Screens/Events/views/myEvents.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +22,9 @@ class AaruushBottomBar extends StatelessWidget {
   AaruushBottomBar({super.key});
 
   final List<Widget> screens = [
-    const HomeScreen(),
+     HomeScreen(),
     MyEvents(fromProfile: false),
-    TimelineView(),
+    const TimelineView(),
      ProfileScreen(),
   ];
 
