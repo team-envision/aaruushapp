@@ -14,7 +14,6 @@ import '../../../components/profile_text_field.dart';
 
 class RegisterEvent extends GetView<EventsController> {
   const RegisterEvent({super.key, required this.event});
-
   final EventListModel event;
 
   @override
@@ -80,11 +79,11 @@ class RegisterEvent extends GetView<EventsController> {
                                     left: 20, right: 20, bottom: 10),
                                 child: profileTextField(
                                   validator: (v) {
-                                    if (e.type == "email" && e.required!) {
+                                    if (e.type == "email" && (e.required ?? false)) {
                                       if (!GetUtils.isEmail(v!)) {
                                         return 'Please enter a valid email';
                                       }
-                                    } else if (e.type == "tel" && e.required!) {
+                                    } else if (e.type == "tel" && (e.required ?? false)) {
                                       if (!GetUtils.isPhoneNumber(v!)) {
                                         return 'Please enter a valid phone number';
                                       }

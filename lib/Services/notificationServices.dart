@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/views/events_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -200,48 +201,26 @@ class NotificationServices {
       if (kDebugMode) {
         print("eventroute");
       }
-      Get.to(() => EventsScreen(
-            fromNotificationRoute: true,
-            EventId: eventRoute,
-            fromMyEvents: false.obs,
-          ));
+      // Get.to(() => EventsScreen(
+      //       fromNotificationRoute: true,
+      //       EventId: eventRoute,
+      //       fromMyEvents: false.obs,
+      //     ));
+      Get.toNamed(
+          AppRoutes.eventScreen,
+          arguments: {
+            'fromNotificationRoute': true,
+            'EventId': eventRoute,
+            'fromMyEvents': false.obs,
+          });
     } else {
       if (kDebugMode) {
-        Get.to(NotificationScreen());
+        Get.toNamed(AppRoutes.notificationScreen);
         print('No valid URL or key in the notification.');
         print(message);
       }
     }
   }
-
-  // void get_launch_url() async {
-  //   print("get_launch_url");
-  //
-  //   final prefs = await SharedPreferences.getInstance();
-  //   String? url = prefs.getString('KEY_LAUNCH_URL');
-  //   print("get_launch_url opened");
-  //   print(url);
-  //
-  //   if (url != null && url.isNotEmpty) {
-  //     final Uri linkUrl = Uri.parse(url);
-  //
-  //     if (await canLaunchUrl(linkUrl)) {
-  //       if (kDebugMode) {
-  //         print("launching");
-  //       }
-  //       await launchUrl(linkUrl);
-  //       await prefs.remove("KEY_LAUNCH_URL");
-  //     } else {
-  //       if (kDebugMode) {
-  //         print("Could not launch URL: $linkUrl");
-  //       }
-  //     }
-  //   } else {
-  //     if (kDebugMode) {
-  //       print("get_launch_url: No URL found or empty");
-  //     }
-  //   }
-  // }
 
   Future<void> forgroundMessage() async {
     print("forgroundMessage");

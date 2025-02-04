@@ -4,7 +4,7 @@ import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Screens/Auth/Register/state/Register_State.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/controllers/home_controller.dart';
-import 'package:AARUUSH_CONNECT/Utilities/AaruushBottomBar.dart';
+import 'package:AARUUSH_CONNECT/Screens/Stage/Widget/AaruushBottomBar.dart';
 import 'package:AARUUSH_CONNECT/Utilities/removeBracketsIfExist.dart';
 import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

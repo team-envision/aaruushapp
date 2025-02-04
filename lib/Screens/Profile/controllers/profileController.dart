@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:AARUUSH_CONNECT/Common/controllers/common_controller.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
-import 'package:AARUUSH_CONNECT/Screens/Home/controllers/home_controller.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/state/Profile_State.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +53,8 @@ class ProfileController extends GetxController {
             'name': state.nameController.text,
             "phone": state.phoneController.text
           })
-          .then((_) => print('Success'))
-          .catchError((error) => print('Failed: $error'));
+          .then((_) => Log.highlight('Success'))
+          .catchError((error) => Log.verbose('Failed: $error'));
 
       setSnackBar(
         'SUCCESS:',
@@ -65,6 +65,7 @@ class ProfileController extends GetxController {
         ),
       );
     } else {
+      Log.verbose("ERROR : ${userRes.body}");
       setSnackBar(
         'ERROR:',
         json.decode(userRes.body)['message'],
@@ -73,60 +74,59 @@ class ProfileController extends GetxController {
           color: Colors.red,
         ),
       );
-      debugPrint("ERROR : ${userRes.body}");
     }
 
     // Fetch and reload details after updating profile
-    commonController.fetchAndLoadDetails();
+    await commonController.fetchAndLoadDetails();
 
     // Pop the current screen after updating profile
-    Navigator.pop(Get.context!);
+    Get.back();
   }
 
-  Future<void> loginWithEmail(String email) async {
-    // Check if the email exists in the database before proceeding
-    final userRes = await get(
-      Uri.parse('${ApiData.API}/users/$email'),
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': ApiData.accessToken
-      },
-    );
-
-    if (userRes.statusCode == 404) {
-      setSnackBar(
-        'ERROR:',
-        'Unregistered Email Address',
-        icon: const Icon(
-          Icons.warning_amber_rounded,
-          color: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    // If email exists, continue with normal login process
-    final userData = json.decode(userRes.body);
-    CommonController.emailAddress.value = userData['email'];
-    CommonController.userName.value = userData['name'];
-    CommonController.phoneNumber.value = userData['phone'];
-    CommonController.aaruushId.value = userData['aaruushId'];
-  }
+  // Future<void> loginWithEmail(String email) async {
+  //   // Check if the email exists in the database before proceeding
+  //   final userRes = await get(
+  //     Uri.parse('${ApiData.API}/users/$email'),
+  //     headers: {
+  //       'Content-type': 'application/json',
+  //       'Accept': 'application/json',
+  //       'Authorization': ApiData.accessToken
+  //     },
+  //   );
+  //
+  //   if (userRes.statusCode == 404) {
+  //     Log.error("ERROR: Unregistered Email Address");
+  //     setSnackBar(
+  //       'ERROR:',
+  //       'Unregistered Email Address',
+  //       icon: const Icon(
+  //         Icons.warning_amber_rounded,
+  //         color: Colors.red,
+  //       ),
+  //     );
+  //     return;
+  //   }
+  //
+  //   // If email exists, continue with normal login process
+  //   final userData = json.decode(userRes.body);
+  //   CommonController.emailAddress.value = userData['email'];
+  //   CommonController.userName.value = userData['name'];
+  //   CommonController.phoneNumber.value = userData['phone'];
+  //   CommonController.aaruushId.value = userData['aaruushId'];
+  // }
 
   @override
-  void onInit() {
-    // Initialize text controllers with current user data if logged in
-    state.phoneController.text = CommonController.phoneNumber.value;
-    state.nameController.text = CommonController.userName.value;
-    state.emailController.text = CommonController.emailAddress.value;
-    super.onInit();
+  void onReady() {
+Future.delayed(Duration(milliseconds: 300),(){
+  // Initialize text controllers with current user data if logged in
+  state.phoneController.text = CommonController.phoneNumber.value;
+  state.nameController.text = CommonController.userName.value;
+  state.emailController.text = CommonController.emailAddress.value;
+});
+    super.onReady();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+
 
   @override
   void dispose() {

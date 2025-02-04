@@ -8,6 +8,13 @@ abstract class AppRoutes{
   static const homeScreen = '/homeScreen';
   static const notificationScreen = '/notificationScreen';
   static const profileScreen = '/profileScreen';
+  static const editprofileScreen = '/editprofileScreen';
   static const timeLine = '/timeLine';
   static const myEvents = '/myEvents';
+  static const stage = '/stage';
+  static const about = '/about';
+  static const search = '/search';
+  static const ticket = '/ticket';
+  static const registerEvent = '/registerEvent';
+  static const eventScreen = '/eventScreen';
 }

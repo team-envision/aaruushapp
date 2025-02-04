@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Storage_Resources/local_client.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Model/Events/event_list_model.dart';
-import '../../Screens/Auth/OnBoard/views/on_boarding_screen.dart';
 
 class CommonController extends GetxController {
   static RxString profileUrl = ''.obs;
@@ -38,9 +37,9 @@ class CommonController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    // TODO: implement onInit
+    await fetchAndLoadDetails();
     super.onInit();
-    // await fetchAndLoadDetails();
+
   }
 
 
@@ -137,10 +136,10 @@ class CommonController extends GetxController {
   Future<Map<String, dynamic>> getUserDetails() async {
     RxBool userSignedIn = (await isUserSignedIn()).obs;
     if (!(userSignedIn.value)) {
-      debugPrint("User not signed in");
+      Log.warning("User not signed in");
       return {"error": "User not found"};
     } else {
-      debugPrint("User signed in");
+      Log.info("User signed in");
       Rx<User?> attributes = (await getCurrentUser()).obs;
       final response = await get(
           Uri.parse(
@@ -149,7 +148,7 @@ class CommonController extends GetxController {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data["message"] == "Unauthorized") {
-          debugPrint("unauthorized");
+          Log.warning("unauthorized");
           signOutCurrentUser();
         }
         profileUrl.value = data['image'] ?? "";
@@ -171,12 +170,12 @@ class CommonController extends GetxController {
             data['college (na if not applicable)'] ??
             data['college_name'] ??
             "";
-        debugPrint("User details: $data");
+        Log.info("User details: $data");
         update();
         return data;
       } else {
         var data = jsonDecode(response.body);
-        debugPrint("Error data $data");
+        Log.error("Error data $data");
         return {"error": data};
       }
     }

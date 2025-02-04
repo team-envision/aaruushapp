@@ -1,7 +1,9 @@
+import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:auto_animated/auto_animated.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -10,14 +12,14 @@ import '../controllers/CertificateController.dart';
 
 class CertificateView extends StatelessWidget {
   CertificateView({super.key});
-  final CertificateController _certificateController =
+  final CertificateController certificateController =
       Get.find<CertificateController>();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
         if (details.primaryDelta! > -1 && details.localPosition.dx < 100) {
-          Navigator.pop(context);
+         Get.back();
         }
       },
       child: Scaffold(
@@ -30,7 +32,7 @@ class CertificateView extends StatelessWidget {
               width: 35,
               child: IconButton.outlined(
                 padding: EdgeInsets.zero,
-                onPressed: () => {Navigator.pop(context)},
+                onPressed: () => Get.back(),
                 icon: const Icon(Icons.close_rounded),
                 color: Colors.white,
                 iconSize: 20,
@@ -39,42 +41,43 @@ class CertificateView extends StatelessWidget {
           ),
         ]),
         body: BgArea(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 9),
-            Obx(
-              () => _certificateController.state.isLoading.value
-                  ? Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: Get.height / 9),
+              Obx(
+                () => certificateController.state.isLoading.value
+                    ? Center(
                       child: Image.asset(
                         'assets/images/spinner.gif',
                         scale: 4,
                       ),
                     )
-                  : _certificateController.state.certificates.isEmpty
-                      ? const Text(
-                          "No Certificates",
-                          style: TextStyle(letterSpacing: 4),
-                        )
-                      : Expanded(
-                          child: LiveList.options(
-                            padding: EdgeInsets.zero,
-                            itemBuilder: buildCertificateCard,
-                            itemCount: _certificateController
-                                .state.certificates.length,
-                            options: const LiveOptions(
-                              // delay: Duration(seconds: 1),
-                              showItemInterval: Duration(milliseconds: 200),
-                              showItemDuration: Duration(milliseconds: 300),
-                              visibleFraction: 0.05,
-                              reAnimateOnVisibility: false,
+                    : certificateController.state.certificates.isEmpty
+                        ? const Text(
+                            "No Certificates",
+                            style: TextStyle(letterSpacing: 4),
+                          )
+                        : Expanded(
+                            child: LiveList.options(
+                              padding: EdgeInsets.zero,
+                              itemBuilder: buildCertificateCard,
+                              itemCount: certificateController
+                                  .state.certificates.length,
+                              options: const LiveOptions(
+                                // delay: Duration(seconds: 1),
+                                showItemInterval: Duration(milliseconds: 200),
+                                showItemDuration: Duration(milliseconds: 300),
+                                visibleFraction: 0.05,
+                                reAnimateOnVisibility: false,
+                              ),
                             ),
                           ),
-                        ),
-            )
-          ],
-        )),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -82,9 +85,9 @@ class CertificateView extends StatelessWidget {
   Widget buildCertificateCard(
       BuildContext context, int index, Animation<double> animation) {
     String name =
-        _certificateController.state.certificates.keys.elementAt(index);
+        certificateController.state.certificates.keys.elementAt(index);
     String pdfUrl =
-        _certificateController.state.certificates.values.elementAt(index);
+        certificateController.state.certificates.values.elementAt(index);
     return FadeTransition(
         opacity: Tween<double>(
           begin: 0,
@@ -136,7 +139,7 @@ class CertificateView extends StatelessWidget {
                       ),
                       const Spacer(),
                       IconButton(
-                        onPressed: () => _certificateController
+                        onPressed: () => certificateController
                             .openPreviewDialog(Get.context!, pdfUrl),
                         icon: const Icon(Icons.open_in_new_outlined),
                         color: Colors.white,
@@ -144,7 +147,7 @@ class CertificateView extends StatelessWidget {
                       const SizedBox(width: 10),
                       IconButton(
                         onPressed: () =>
-                            _certificateController.downloadPDF(pdfUrl),
+                            certificateController.downloadPDF(pdfUrl),
                         icon: const Icon(Icons.file_download_outlined),
                         color: Colors.white,
                       ),

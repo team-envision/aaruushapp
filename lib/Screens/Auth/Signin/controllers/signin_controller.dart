@@ -8,7 +8,7 @@ import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Model/User/attributes.dart';
 import 'package:AARUUSH_CONNECT/Screens/Auth/Register/views/Register_View.dart';
 import 'package:AARUUSH_CONNECT/Screens/Auth/Signin/state/SignIn_state.dart';
-import 'package:AARUUSH_CONNECT/Utilities/AaruushBottomBar.dart';
+import 'package:AARUUSH_CONNECT/Screens/Stage/Widget/AaruushBottomBar.dart';
 import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ class SignInController extends GetxController {
         await LocalClient.saveString(key: 'userEmail',value:  googleUser.email);
         await LocalClient.saveString(key: 'userName',value:  googleUser.displayName ?? "");
         if (await CommonController.isUserAvailableInFirebase(googleUser.email)) {
-          Get.offAllNamed(AppRoutes.aaruushBottomBar);
+          Get.offAllNamed(AppRoutes.stage);
         } else {
           Get.toNamed(AppRoutes.registerView);
         }

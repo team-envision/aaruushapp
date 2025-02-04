@@ -1,21 +1,22 @@
+import 'package:AARUUSH_CONNECT/Common/controllers/common_controller.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
-import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
+import 'package:animations/animations.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:animations/animations.dart';
 import 'events_screen.dart';
 import '../../Home/controllers/home_controller.dart';
 
-var registeredEvents;
+var registeredEvents = <EventListModel>[].obs;
 
 class MyEvents extends StatefulWidget {
-  List<EventListModel>? eventList;
-  bool fromProfile;
-  MyEvents({super.key, this.eventList, required this.fromProfile});
+  RxList<EventListModel>? eventList;
+  MyEvents({super.key});
 
   @override
   State<MyEvents> createState() => _MyEventsState();
@@ -23,6 +24,9 @@ class MyEvents extends StatefulWidget {
 
 class _MyEventsState extends State<MyEvents> {
   final scrollController = ScrollController();
+
+
+
 
   @override
   void dispose() {
@@ -32,122 +36,126 @@ class _MyEventsState extends State<MyEvents> {
 
   @override
   Widget build(BuildContext context) {
-    HomeController controller = Get.find();
-    widget.eventList ??= controller.state.eventList;
-    controller.commonController.fetchAndLoadDetails();
-    final eventIds = controller.commonController.registeredEvents();
-    registeredEvents = <EventListModel>[];
-    for (var eventId in eventIds) {
-      for (var event in widget.eventList!) {
-        if (eventId == event.id) {
-          registeredEvents.add(event);
+    final screenWidth = Get.width;
+    final screenHeight = Get.height;
+
+    Future.delayed(Duration(milliseconds: 300), () async {
+      HomeController controller = Get.find<HomeController>();
+      CommonController commonController = Get.find<CommonController>();
+      widget.eventList ??= controller.state.eventList;
+
+      // Fetch data and populate registeredEvents
+      await commonController.fetchAndLoadDetails();
+      final eventIds = commonController.registeredEvents();
+      Log.info(eventIds);
+      for (var eventId in eventIds) {
+        for (var event in widget.eventList!) {
+          if (eventId == event.id) {
+            registeredEvents.add(event);
+
+          }
         }
       }
-    }
 
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    });
+
+
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: widget.fromProfile
-          ? AaruushAppBar(title: "Aaruush", actions: [
-              Padding(
-                padding: EdgeInsets.all(screenWidth * 0.02),
-                child: IconButton.outlined(
-                  padding: EdgeInsets.zero,
-                  alignment: Alignment.center,
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close_rounded),
-                  color: Colors.white,
-                  iconSize: screenWidth * 0.06,
-                ),
-              )
-            ])
-          : AaruushAppBar(title: "My Events"),
+      appBar: AaruushAppBar(title: "My Events"),
       body: BgArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: registeredEvents.isEmpty
-                    ? null
-                    : SizedBox(height: MediaQuery.of(context).size.height / 8),
-              ),
-              registeredEvents.isEmpty
-                  ? SliverFillRemaining(
-                hasScrollBody: false, // Prevents scrolling
-                child: Center(
-                  child: Text(
-                    "You Haven't registered For Any Event",
-                    style: Get.textTheme.labelMedium!.copyWith(letterSpacing: 4),
-                    textAlign: TextAlign.center,
-                  ),
+          child: Obx(() {
+            return CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: registeredEvents.isEmpty
+                      ? null
+                      : SizedBox(height: MediaQuery
+                      .of(context)
+                      .size
+                      .height / 8),
                 ),
-              )
-                  : LiveSliverGrid.options(
-                      controller: scrollController,
-                      options: const LiveOptions(
-                        showItemInterval: Duration(milliseconds: 100),
-                        showItemDuration: Duration(milliseconds: 300),
-                        visibleFraction: 0.05,
-                        reAnimateOnVisibility: false,
-                      ),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: screenWidth > 600 ? 3 : 2,
-                        mainAxisSpacing: screenHeight * 0.02,
-                        crossAxisSpacing: screenWidth * 0.03,
-                        childAspectRatio: 159 / 200,
-                      ),
-                      itemBuilder: _buildAnimatedCard,
-                      itemCount: registeredEvents.length,
+                if (registeredEvents.isEmpty) SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: Text(
+                      "You Haven't registered For Any Event",
+                      style: Get.textTheme.labelMedium!
+                          .copyWith(letterSpacing: 4),
+                      textAlign: TextAlign.center,
                     ),
-              SliverToBoxAdapter(
-                child: SizedBox(height: screenHeight * 0.1),
-              ),
-            ],
-          ),
+                  ),
+                ) else LiveSliverGrid.options(
+                  controller: scrollController,
+                  options: const LiveOptions(
+                    showItemInterval: Duration(milliseconds: 100),
+                    showItemDuration: Duration(milliseconds: 300),
+                    visibleFraction: 0.05,
+                    reAnimateOnVisibility: false,
+                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: screenWidth > 600 ? 3 : 2,
+                    mainAxisSpacing: screenHeight * 0.02,
+                    crossAxisSpacing: screenWidth * 0.03,
+                    childAspectRatio: 159 / 200,
+                  ),
+                  itemBuilder: _buildAnimatedCard,
+                  itemCount: registeredEvents.length,
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(height: screenHeight * 0.1),
+                ),
+              ],
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+
+  Widget _buildAnimatedCard(BuildContext context, int index,
+      Animation<double> animation) {
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+
+    return FadeTransition(
+      opacity: Tween<double>(begin: 0, end: 1).animate(animation),
+      child: SlideTransition(
+        position: Tween<Offset>(begin: const Offset(0, -0.1), end: Offset.zero)
+            .animate(animation),
+        child: OpenContainer(
+          middleColor: Colors.transparent,
+          openColor: Colors.transparent,
+          closedColor: Colors.transparent,
+          closedShape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          closedBuilder: (BuildContext _, VoidCallback openContainer) {
+            return TicketTile(
+              imagePath: registeredEvents[index].image!,
+              title: registeredEvents[index].name!,
+              event: registeredEvents[index],
+              width: screenWidth / 2.5,
+            );
+          },
+          openBuilder: (BuildContext _, VoidCallback __) {
+            return EventsScreen(
+              event: registeredEvents[index],
+              fromMyEvents: true.obs,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 400),
         ),
       ),
     );
   }
 }
 
-Widget _buildAnimatedCard(
-    BuildContext context, int index, Animation<double> animation) {
-  final screenWidth = MediaQuery.of(context).size.width;
-
-  return FadeTransition(
-    opacity: Tween<double>(begin: 0, end: 1).animate(animation),
-    child: SlideTransition(
-      position: Tween<Offset>(begin: const Offset(0, -0.1), end: Offset.zero)
-          .animate(animation),
-      child: OpenContainer(
-        middleColor: Colors.transparent,
-        openColor: Colors.transparent,
-        closedColor: Colors.transparent,
-        closedShape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        closedBuilder: (BuildContext _, VoidCallback openContainer) {
-          return TicketTile(
-            imagePath: registeredEvents[index].image!,
-            title: registeredEvents[index].name!,
-            event: registeredEvents[index],
-            width: screenWidth / 2.5,
-          );
-        },
-        openBuilder: (BuildContext _, VoidCallback __) {
-          return EventsScreen(
-            event: registeredEvents[index],
-            fromMyEvents: true.obs,
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 400),
-      ),
-    ),
-  );
-}
 
 class TicketTile extends StatelessWidget {
   final String imagePath;
@@ -210,7 +218,7 @@ class TicketTile extends StatelessWidget {
                   IconButton(
                     iconSize: 20,
                     onPressed: () {
-                      Get.to(() => TicketDisplayPage(event: event));
+                      Get.toNamed(AppRoutes.ticket, arguments: event);
                     },
                     icon: const Icon(Icons.qr_code_scanner_rounded, size: 20),
                   ),

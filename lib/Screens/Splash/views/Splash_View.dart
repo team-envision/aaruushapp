@@ -11,6 +11,7 @@ class SplashView extends StatelessWidget {
       body: Center(
         child: CircularProgressIndicator(
           backgroundColor: Get.theme.colorPrimary,
+          color: Colors.white,
         ),
       ),
     );

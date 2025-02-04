@@ -4,6 +4,7 @@ import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/gallery.dart';
+import 'package:AARUUSH_CONNECT/Screens/Events/controllers/events_controller.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/state/Home_State.dart';
 import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
 import 'package:AARUUSH_CONNECT/Services/appRating.dart';
@@ -12,7 +13,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +26,6 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-
     commonController.fetchAndLoadDetails();
     fetchEventData();
     NotificationServices notificationServices = NotificationServices();

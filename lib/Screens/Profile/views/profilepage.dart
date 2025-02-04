@@ -1,15 +1,13 @@
+import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Screens/About/views/aboutpage.dart';
-import 'package:AARUUSH_CONNECT/Screens/Profile/views/editProfile.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/controllers/profileController.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Common/controllers/common_controller.dart';
-import '../../Certificates/views/CertificateView.dart';
 import '../../Home/controllers/home_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -96,7 +94,7 @@ class ProfileScreen extends StatelessWidget {
                               bottom: 12,
                               right: 4,
                               child: GestureDetector(
-                                onTap: () => Get.to(() => const EditProfile()),
+                                onTap: () => Get.toNamed(AppRoutes.editprofileScreen),
                                 child: Container(
                                   width: Get.height / 25,
                                   height: Get.height / 25,
@@ -125,37 +123,31 @@ class ProfileScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Obx(
-                              () => FittedBox(
-                                child: Text(
-                                  CommonController.userName.value
-                                      .useCorrectEllipsis(),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: Get.theme.kTitleTextStyle.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Get.width * 0.06),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: Get.width * 0.015),
-                            FittedBox(
-                              child: Text(
-                                CommonController.emailAddress.value,
+                              () => Text(
+                                CommonController.userName.value
+                                    .useCorrectEllipsis(),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: Get.theme.kVerySmallTextStyle.copyWith(
+                                style: Get.theme.kTitleTextStyle.copyWith(
                                     fontWeight: FontWeight.w700,
-                                    fontSize: Get.width * 0.035),
+                                    fontSize: Get.width * 0.06),
                               ),
                             ),
                             SizedBox(height: Get.width * 0.015),
-                            FittedBox(
-                              child: Text(
-                                CommonController.aaruushId.value,
-                                style: Get.theme.kVerySmallTextStyle.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: Get.width * 0.035),
-                              ),
+                            Text(
+                              CommonController.emailAddress.value,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: Get.theme.kVerySmallTextStyle.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: Get.width * 0.035),
+                            ),
+                            SizedBox(height: Get.width * 0.015),
+                            Text(
+                              CommonController.aaruushId.value,
+                              style: Get.theme.kVerySmallTextStyle.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: Get.width * 0.035),
                             ),
                           ],
                         ),
@@ -171,16 +163,8 @@ class ProfileScreen extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                child: OpenContainer(
-                                  middleColor: Colors.transparent,
-                                  openColor: Colors.transparent,
-                                  closedColor: Colors.transparent,
-                                  transitionType:
-                                      ContainerTransitionType.fadeThrough,
-                                  transitionDuration:
-                                      const Duration(milliseconds: 400),
-                                  closedBuilder: (context, action) {
-                                    return ProfileButtons(
+                                child:
+                                     ProfileButtons(
                                       buttonName: 'Certificates',
                                       leadingIcon: Padding(
                                         padding:
@@ -193,28 +177,16 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       trailingIcon:
                                           Icons.arrow_forward_ios_outlined,
-                                      onPressedFunc: action,
+                                      onPressedFunc: ()=> Get.toNamed(AppRoutes.certificateView),
                                       color: Colors.white,
-                                    );
-                                  },
-                                  openBuilder: (context, action) =>
-                                      CertificateView(),
-                                ),
+                                    )
                               ),
                               const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
-                                child: OpenContainer(
-                                  middleColor: Colors.transparent,
-                                  openColor: Colors.transparent,
-                                  closedColor: Colors.transparent,
-                                  transitionType:
-                                      ContainerTransitionType.fadeThrough,
-                                  transitionDuration:
-                                      const Duration(milliseconds: 400),
-                                  closedBuilder: (context, action) {
-                                    return ProfileButtons(
+                                child:
+                                     ProfileButtons(
                                       buttonName: 'About',
                                       leadingIcon: const Padding(
                                         padding: EdgeInsets.only(right: 5.0),
@@ -226,29 +198,17 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       trailingIcon:
                                           Icons.arrow_forward_ios_outlined,
-                                      onPressedFunc: action,
+                                      onPressedFunc: ()=>Get.toNamed(AppRoutes.about),
                                       color: Colors.white,
-                                    );
-                                  },
-                                  openBuilder: (context, action) =>
-                                      const AboutPage(),
-                                ),
+                                    )
+
                               ),
                             ],
                           ),
                           const SizedBox(height: 10),
-                          OpenContainer(
-                            middleColor: Colors.transparent,
-                            openColor: Colors.transparent,
-                            closedColor: Colors.transparent,
-                            transitionType: ContainerTransitionType.fadeThrough,
-                            transitionDuration:
-                                const Duration(milliseconds: 1000),
-                            closedBuilder: (context, action) {
-                              return ProfileButtons(
+                          ProfileButtons(
                                 buttonName: "Log out",
                                 onPressedFunc: () async {
-                                  action();
                                   profileController.resetProfileData();
                                   await homeController.commonController.signOutCurrentUser();
                                 },
@@ -261,9 +221,6 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                                 color: Get.theme.colorPrimary,
-                              );
-                            },
-                            openBuilder: (context, action) => Container(),
                           ),
                         ],
                       ),

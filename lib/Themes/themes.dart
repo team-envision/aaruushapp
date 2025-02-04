@@ -87,6 +87,11 @@ extension ThemeExtension on ThemeData {
 class Themes {
   static final light = ThemeData.light().copyWith(
     // backgroundColor: Colors.white,
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: <TargetPlatform, PageTransitionsBuilder>{
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      },
+    ),
     dialogBackgroundColor: Colors.transparent,
     dialogTheme:
         const DialogTheme(backgroundColor: Colors.transparent, elevation: 0),
@@ -99,6 +104,11 @@ class Themes {
   );
   static final dark = ThemeData.dark().copyWith(
     // backgroundColor: Colors.black,
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: <TargetPlatform, PageTransitionsBuilder>{
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      },
+    ),
     appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.transparent,

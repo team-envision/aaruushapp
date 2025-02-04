@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:AARUUSH_CONNECT/Common/controllers/common_controller.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
-import 'package:AARUUSH_CONNECT/Screens/About/views/aboutpage.dart';
+import 'package:AARUUSH_CONNECT/Screens/Events/views/events_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/controllers/home_controller.dart';
-import 'package:AARUUSH_CONNECT/Screens/Notification/views/NotificationScreen.dart';
-import 'package:AARUUSH_CONNECT/Screens/Profile/views/profilepage.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/capitalize.dart';
 import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
@@ -20,12 +19,10 @@ import '../../../Utilities/aaruushappbar.dart';
 import '../../../components/carouselSliderAutoplay.dart';
 import '../../../components/eventCard.dart';
 import '../../../components/searchTextField.dart';
-import '../../Certificates/views/CertificateView.dart';
-import '../../Events/views/events_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-  final HomeController _homeController = Get.find<HomeController>();
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,48 +40,28 @@ class HomeScreen extends StatelessWidget {
         // extendBody: true,
         appBar: AaruushAppBar(
           actions: [
-            OpenContainer(
-              middleColor: Colors.transparent,
-              openColor: Colors.transparent,
-              closedColor: Colors.transparent,
-              transitionType: ContainerTransitionType.fadeThrough,
-              transitionDuration: const Duration(milliseconds: 400),
-              closedBuilder: (context, action) {
-                return GestureDetector(
-                  onTap: () => action(),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.notifications,
-                      color: Colors.white,
-                      size: 25,
-                    ),
-                  ),
-                );
-              },
-              openBuilder: (context, action) => NotificationScreen(),
+            GestureDetector(
+              onTap: () => Get.toNamed(AppRoutes.notificationScreen),
+              child: const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                  size: 25,
+                ),
+              ),
             ),
-            OpenContainer(
-              middleColor: Colors.transparent,
-              openColor: Colors.transparent,
-              closedColor: Colors.transparent,
-              transitionType: ContainerTransitionType.fadeThrough,
-              transitionDuration: const Duration(milliseconds: 400),
-              closedBuilder: (context, action) {
-                return GestureDetector(
-                  onTap: () => action(),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(
-                      Icons.info_outlined,
-                      color: Colors.white,
-                      size: 25,
-                    ),
-                  ),
-                );
-              },
-              openBuilder: (context, action) => const AboutPage(),
-            ),
+            GestureDetector(
+              onTap: () => Get.toNamed(AppRoutes.about),
+              child: const Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(
+                  Icons.info_outlined,
+                  color: Colors.white,
+                  size: 25,
+                ),
+              ),
+            )
           ],
           title: "AARUUSH",
         ),
@@ -101,34 +78,21 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      OpenContainer(
-                        middleColor: Colors.transparent,
-                        openColor: Colors.transparent,
-                        closedColor: Colors.transparent,
-                        transitionType: ContainerTransitionType.fadeThrough,
-                        transitionDuration: const Duration(milliseconds: 400),
-                        closedBuilder: (context, action) {
-                          return GestureDetector(
-                            onTap: () {
-                              action();
-                            },
-                            child: Obx(
-                              () => CommonController.profileUrl.value.isNotEmpty
-                                  ? CircleAvatar(
-                                      radius: 22,
-                                      backgroundImage: NetworkImage(
-                                          CommonController.profileUrl.value),
-                                    )
-                                  : Image.asset(
-                                      'assets/images/profile.png',
-                                      height: 30,
-                                    ),
-                            ),
-                          );
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.profileScreen);
                         },
-                        openBuilder: (context, action) =>  ProfileScreen(
-                          isSwipingEnabled: true,
-                          showCloseButton: true,
+                        child: Obx(
+                          () => CommonController.profileUrl.value.isNotEmpty
+                              ? CircleAvatar(
+                                  radius: 22,
+                                  backgroundImage: NetworkImage(
+                                      CommonController.profileUrl.value),
+                                )
+                              : Image.asset(
+                                  'assets/images/profile.png',
+                                  height: 30,
+                                ),
                         ),
                       ),
                       sizeBox(0, 9),
@@ -143,19 +107,14 @@ class HomeScreen extends StatelessWidget {
                             ),
                           )),
                       const Spacer(),
-                      OpenContainer(
-                        middleColor: Colors.transparent,
-                        openColor: Colors.transparent,
-                        closedColor: Colors.transparent,
-                        transitionType: ContainerTransitionType.fadeThrough,
-                        transitionDuration: const Duration(milliseconds: 400),
-                        closedBuilder: (context, action) => Image.asset(
+                      GestureDetector(
+                        onTap: () => Get.toNamed(AppRoutes.certificateView),
+                        child: Image.asset(
                           "assets/images/icons/certificate.png",
                           scale: 24,
                           color: Colors.white,
                         ),
-                        openBuilder: (context, action) => CertificateView(),
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -182,9 +141,9 @@ class HomeScreen extends StatelessWidget {
                       categoryButton(
                         iconData: Icons.all_inclusive_rounded,
                         name: "All",
-                        onTap: () => _homeController.setSortCategory("All"),
+                        onTap: () => homeController.setSortCategory("All"),
                       ),
-                      ..._homeController.state.catList.map((e) {
+                      ...homeController.state.catList.map((e) {
                         if (e != "events") {
                           return categoryButton(
                             icon:
@@ -194,7 +153,7 @@ class HomeScreen extends StatelessWidget {
                                 .split('-')
                                 .join(' ')
                                 .toCapitalized(),
-                            onTap: () => _homeController.setSortCategory(e),
+                            onTap: () => homeController.setSortCategory(e),
                           );
                         } else {
                           return categoryButton(
@@ -204,7 +163,7 @@ class HomeScreen extends StatelessWidget {
                                 .split('-')
                                 .join(' ')
                                 .toCapitalized(),
-                            onTap: () => _homeController.setSortCategory(e),
+                            onTap: () => homeController.setSortCategory(e),
                           );
                         }
                       }),
@@ -216,14 +175,14 @@ class HomeScreen extends StatelessWidget {
                       left: 20, right: 20, bottom: 20, top: 40),
                   child: Obx(
                     () => Text(
-                      "${_homeController.state.sortName.value.toLowerCase().split('-').join(' ').toCapitalized()} Live Events",
+                      "${homeController.state.sortName.value.toLowerCase().split('-').join(' ').toCapitalized()} Live Events",
                       style: Get.theme.kTitleTextStyle1.copyWith(fontSize: 28),
                     ),
                   ),
                 ),
                 Obx(
                   () {
-                    if (_homeController.state.isLoading.value) {
+                    if (homeController.state.isLoading.value) {
                       return Center(
                         child: Container(
                             color: Colors.black,
@@ -232,7 +191,7 @@ class HomeScreen extends StatelessWidget {
                       );
                     }
 
-                    return _homeController.state.LiveEventsList.isNotEmpty
+                    return homeController.state.LiveEventsList.isNotEmpty
                         ? SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
@@ -241,11 +200,13 @@ class HomeScreen extends StatelessWidget {
                               padding:
                                   const EdgeInsets.only(left: 20, right: 8),
                               child: Row(
-                                children: _homeController.state.eventList
+                                children: homeController.state.eventList
                                     .where((e) =>
                                         e.live! &&
-                                        (_homeController.state.sortName.value == "All" ||
-                                            _homeController.state.sortName.value ==
+                                        (homeController.state.sortName.value ==
+                                                "All" ||
+                                            homeController
+                                                    .state.sortName.value ==
                                                 e.sortCategory))
                                     .map((event) {
                                   return Padding(
@@ -265,7 +226,7 @@ class HomeScreen extends StatelessWidget {
                                           eventCard(
                                         event,
                                         action,
-                                        _homeController,
+                                        homeController,
                                       ),
                                       openBuilder: (context, action) =>
                                           EventsScreen(
@@ -299,7 +260,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Obx(
                   () {
-                    if (_homeController.state.isLoading.value) {
+                    if (homeController.state.isLoading.value) {
                       return Center(
                         child: Container(
                             color: Colors.black,
@@ -314,7 +275,7 @@ class HomeScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, right: 8),
                         child: Row(
-                          children: _homeController.state.eventList
+                          children: homeController.state.eventList
                               .where((e) =>
                                   !e.live! &&
                                   e.startdate != null &&
@@ -340,7 +301,7 @@ class HomeScreen extends StatelessWidget {
                                     eventCard(
                                   e,
                                   openContainer,
-                                  _homeController,
+                                  homeController,
                                 ),
                               ),
                             );
@@ -366,7 +327,7 @@ class HomeScreen extends StatelessWidget {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            _homeController.getToURL(
+                            homeController.getToURL(
                                 URL: "https://cap.aaruush.org/");
                           },
                           child: Container(
@@ -401,7 +362,7 @@ class HomeScreen extends StatelessWidget {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            _homeController.getToURL(
+                            homeController.getToURL(
                                 URL: "https://www.aaruush.org/about");
                           },
                           child: Container(

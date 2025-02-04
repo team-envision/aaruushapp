@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 
-import '../../Model/Events/event_list_model.dart';
-import '../../Utilities/aaruushappbar.dart';
-import '../../Utilities/custom_sizebox.dart';
-import '../../components/bg_area.dart';
-import '../../components/ticketWidget.dart';
-import '../Home/controllers/home_controller.dart';
-import '../QrPage/QrGenerator.dart';
+import '../../../Model/Events/event_list_model.dart';
+import '../../../Utilities/aaruushappbar.dart';
+import '../../../Utilities/custom_sizebox.dart';
+import '../../../components/bg_area.dart';
+import '../../../components/ticketWidget.dart';
+import '../widgets/QrGenerator.dart';
 
 class TicketDisplayPage extends StatelessWidget {
   const TicketDisplayPage({super.key, required this.event});
@@ -40,7 +39,8 @@ aaruushId:${CommonController.aaruushId.value},eventId:${event.id}''';
           ),
         ),
       ]),
-      body: BgArea(child: SingleChildScrollView(
+      body: BgArea(
+          child: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height / 8),
@@ -88,19 +88,19 @@ aaruushId:${CommonController.aaruushId.value},eventId:${event.id}''';
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text("Date:",
                                             style: Get.theme.kVerySmallTextStyle
                                                 .copyWith(
-                                                color: Get.theme.curveBG
-                                                    .withOpacity(0.8))),
+                                                    color: Get.theme.curveBG
+                                                        .withOpacity(0.8))),
                                         Text(event.date!,
                                             style: Get.theme.kVerySmallTextStyle
                                                 .copyWith(
-                                                fontSize: 12,
-                                                color: Get.theme.curveBG
-                                                    .withOpacity(0.8))),
+                                                    fontSize: 12,
+                                                    color: Get.theme.curveBG
+                                                        .withOpacity(0.8))),
                                       ],
                                     ),
                                   ),
@@ -108,19 +108,19 @@ aaruushId:${CommonController.aaruushId.value},eventId:${event.id}''';
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text("Time:",
                                             style: Get.theme.kVerySmallTextStyle
                                                 .copyWith(
-                                                color: Get.theme.curveBG
-                                                    .withOpacity(0.8))),
+                                                    color: Get.theme.curveBG
+                                                        .withOpacity(0.8))),
                                         Text(event.time!,
                                             style: Get.theme.kVerySmallTextStyle
                                                 .copyWith(
-                                                fontSize: 12,
-                                                color: Get.theme.curveBG
-                                                    .withOpacity(0.8))),
+                                                    fontSize: 12,
+                                                    color: Get.theme.curveBG
+                                                        .withOpacity(0.8))),
                                       ],
                                     ),
                                   ),
@@ -135,17 +135,15 @@ aaruushId:${CommonController.aaruushId.value},eventId:${event.id}''';
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text("Venue:",
                                             style: Get.theme.kVerySmallTextStyle
                                                 .copyWith(
-                                                color: Get.theme.curveBG
-                                                    .withOpacity(0.8))),
+                                                    color: Get.theme.curveBG
+                                                        .withOpacity(0.8))),
                                         Text(
-                                          event.location ??
-                                              event.mode ??
-                                              "N/A",
+                                          event.location ?? event.mode ?? "N/A",
                                           style: Get.theme.kVerySmallTextStyle
                                               .copyWith(
                                             fontSize: 12,
@@ -161,19 +159,19 @@ aaruushId:${CommonController.aaruushId.value},eventId:${event.id}''';
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text("Ticket Type:",
                                             style: Get.theme.kVerySmallTextStyle
                                                 .copyWith(
-                                                color: Get.theme.curveBG
-                                                    .withOpacity(0.8))),
+                                                    color: Get.theme.curveBG
+                                                        .withOpacity(0.8))),
                                         Text(event.payment_type!,
                                             style: Get.theme.kVerySmallTextStyle
                                                 .copyWith(
-                                                fontSize: 12,
-                                                color: Get.theme.curveBG
-                                                    .withOpacity(0.8))),
+                                                    fontSize: 12,
+                                                    color: Get.theme.curveBG
+                                                        .withOpacity(0.8))),
                                       ],
                                     ),
                                   ),
@@ -193,8 +191,7 @@ aaruushId:${CommonController.aaruushId.value},eventId:${event.id}''';
                               data: event.timeline ?? "",
                               style: {
                                 "body": Style(
-                                    color: Colors.black,
-                                    fontSize: FontSize(14))
+                                    color: Colors.black, fontSize: FontSize(14))
                               },
                             ),
                           ),

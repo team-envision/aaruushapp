@@ -1,16 +1,16 @@
 import 'dart:convert';
-import 'package:AARUUSH_CONNECT/Screens/TimeLine/timeline_controller.dart';
+import 'package:AARUUSH_CONNECT/Screens/TimeLine/controllers/timeline_controller.dart';
+import 'package:AARUUSH_CONNECT/Screens/TimeLine/state/Timeline_State.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../Utilities/aaruushappbar.dart';
+import '../../../Utilities/aaruushappbar.dart';
 
-TimelineController controller = Get.put(TimelineController());
+final TimelineController timelineController = Get.find<TimelineController>();
 
 class TimelineView extends GetView<TimelineController> {
   const TimelineView({super.key});
@@ -52,7 +52,7 @@ class TimelineView extends GetView<TimelineController> {
                       child: AppinioSwiper(
                         backgroundCardCount: 3,
                         allowUnSwipe: true,
-                        controller: controller.swiperController,
+                        controller: timelineController.state.swiperController,
                         swipeOptions: const SwipeOptions.only(right: true),
                         allowUnlimitedUnSwipe: true,
                         invertAngleOnBottomDrag: true,
@@ -108,14 +108,14 @@ class timeLineCard extends StatelessWidget {
     return GestureDetector(
       onHorizontalDragEnd: (dragEndDetails) {
         if (dragEndDetails.primaryVelocity!.isLowerThan(0)) {
-          controller.swiperController.unswipe();
+          timelineController.state.swiperController.unswipe();
         } else if (dragEndDetails.primaryVelocity!.isGreaterThan(0)) {
-          controller.swiperController.swipeRight();
+          timelineController.state.swiperController.swipeRight();
         }
       },
       child: FlipCard(
         side: CardSide.FRONT,
-        controller: controller.flipCardController,
+        controller: timelineController.state.flipCardController,
         front: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(

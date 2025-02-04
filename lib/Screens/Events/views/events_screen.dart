@@ -1,8 +1,7 @@
 import 'dart:ui';
+import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/controllers/events_controller.dart';
-import 'package:AARUUSH_CONNECT/Screens/Events/views/register_event.dart';
-import 'package:AARUUSH_CONNECT/Screens/Tickets/TicketDisplayPage.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
@@ -67,7 +66,7 @@ class _EventsScreenState extends State<EventsScreen> {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
         if (details.primaryDelta! > -1 && details.localPosition.dx < 100) {
-          Navigator.pop(context);
+          Get.back();
         }
       },
       child: Scaffold(
@@ -89,7 +88,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     shape: WidgetStatePropertyAll(
                         CircleBorder(side: BorderSide(color: Colors.white)))),
                 padding: EdgeInsets.zero,
-                onPressed: () => {Navigator.pop(context)},
+                onPressed: () => Get.back(),
                 icon: const Icon(Icons.arrow_back),
                 color: Colors.white,
                 iconSize: 20,
@@ -119,7 +118,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ImageColoredShadow(link: eventData.image!),
+                      ImageColoredShadow(link: eventData.image),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 22.0, vertical: 5),
@@ -342,13 +341,13 @@ class _EventsScreenState extends State<EventsScreen> {
                   print(controller.eventData);
 
                   if (controller.isEventRegistered.value) {
-                    Get.to(() => TicketDisplayPage(event: controller.eventData.value));
+                    Get.toNamed(AppRoutes.ticket, arguments: controller.eventData.value);
                     return;
                   }
 
                   if (controller.eventData.value.dynamicform!.isNotEmpty) {
                     if (eventData.live ?? false) {
-                      Get.to(() => RegisterEvent(event: eventData));
+                      Get.toNamed(AppRoutes.registerEvent, arguments: eventData);
                     } else {
                       setSnackBar(
                         "INFO:",
@@ -388,7 +387,7 @@ class _EventsScreenState extends State<EventsScreen> {
                 text:  'View Ticket',
                 onTap: () async {
                   if (controller.isEventRegistered.value) {
-                    Get.to(() => TicketDisplayPage(event: controller.eventData.value));
+                    Get.toNamed(AppRoutes.ticket, arguments: controller.eventData.value);
                     return;
                   }
 
