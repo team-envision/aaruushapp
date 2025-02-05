@@ -30,13 +30,16 @@ class MyEvents extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
           child: Obx(() {
-            return CustomScrollView(
+            if (myEventsController.isLoading.value) {
+              return Center(child: CircularProgressIndicator(color: Get.theme.colorPrimary,),);
+            } else {
+              return CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
                   child: myEventsController.registeredEvents.isEmpty
                       ? null
                       : SizedBox(
-                          height: MediaQuery.of(context).size.height / 8),
+                      height: MediaQuery.of(context).size.height / 8),
                 ),
                 if (myEventsController.registeredEvents.isEmpty)
                   SliverFillRemaining(
@@ -73,6 +76,7 @@ class MyEvents extends StatelessWidget {
                 ),
               ],
             );
+            }
           }),
         ),
       ),
@@ -199,6 +203,7 @@ class TicketTile extends StatelessWidget {
 }
 
 class MyEventsController extends GetxController {
+  RxBool isLoading = false.obs;
   final CommonController commonController;
   final HomeController homeController;
   final scrollController = ScrollController();
@@ -216,6 +221,7 @@ class MyEventsController extends GetxController {
 
   Future<void> fetchRegisteredEvents() async {
     try {
+      isLoading.value = true;
       Log.info(homeController.state.eventList);
       await homeController.fetchEventData();
       eventList ??= homeController.state.eventList;
@@ -236,7 +242,9 @@ class MyEventsController extends GetxController {
         if (b.timestamp == null) return -1;
         return b.timestamp!.compareTo(a.timestamp!); // Descending order
       });
+      isLoading.value = false;
     } catch (e) {
+      isLoading.value = false;
       Log.error("Error fetching registered events: \$e");
     }
   }
