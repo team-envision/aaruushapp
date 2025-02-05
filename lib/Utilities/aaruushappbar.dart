@@ -8,7 +8,7 @@ AppBar AaruushAppBar(
     {required String title, List<Widget>? actions, double? fontsize}) {
   return AppBar(
     systemOverlayStyle:
-    const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     backgroundColor: WidgetStateColor.resolveWith((states) {
       if (states.contains(WidgetState.scrolledUnder)) {
         return Colors.black87;
@@ -25,28 +25,28 @@ AppBar AaruushAppBar(
     clipBehavior: Clip.none,
     titleTextStyle: TextStyle(fontSize: fontsize),
     leading: Padding(
-      padding: const EdgeInsets.only(left: 0.0, bottom: 10,),
+      padding: const EdgeInsets.only(
+        left: 0.0,
+        bottom: 10,
+      ),
       child: Image.asset(
         'assets/images/spinner.gif',
         fit: BoxFit.contain,
         alignment: Alignment.center,
       ),
     ),
-    actions: actions
-        ?.asMap()
-        .entries
-        .map((entry) {
+    actions: actions?.asMap().entries.map((entry) {
       int index = entry.key;
       Widget action = entry.value;
       if (index == actions.length - 1) {
         return action;
       }
       return action;
-    })
-        .toList(),
+    }).toList(),
     title: Text(
       title,
-      style: Get.theme.kSubTitleTextStyle.copyWith(fontFamily: 'Xirod', fontSize: Get.width * 0.04),
+      style: Get.theme.kSubTitleTextStyle
+          .copyWith(fontFamily: 'Xirod', fontSize: Get.width * 0.04),
     ),
   );
 }

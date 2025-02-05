@@ -3,7 +3,6 @@ import 'package:AARUUSH_CONNECT/Common/controllers/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
-import 'package:AARUUSH_CONNECT/Screens/Stage/Widget/AaruushBottomBar.dart';
 import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,6 +26,9 @@ class EventsController extends GetxController {
     super.onInit();
     getUser();
   }
+
+
+
 
   Future<void> getUser() async {
     try {

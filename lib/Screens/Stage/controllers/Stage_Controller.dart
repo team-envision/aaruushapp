@@ -18,39 +18,45 @@ RxInt index = 0.obs;
   final pagesList = [
     GetBuilder<HomeController>(
       builder: (controller) => HomeScreen(),
-      init: HomeController(
-        state: Get.put(HomeState()),
-        commonController: Get.find<CommonController>(),
-      ),
+        init: Get.find<HomeController>()
+      // init: HomeController(
+      //   state: Get.put(HomeState()),
+      //   commonController: Get.find<CommonController>(),
+      // ),
     ),
 
     GetBuilder<HomeController>(
       builder: (controller) => MyEvents(),
-
-      init: Get.put(HomeController(commonController: Get.find<CommonController>(), state: HomeState())),
+      init: Get.find<HomeController>()
+      // init: HomeController(commonController:  Get.find<CommonController>(),state: Get.find()),
+      // init: Get.put(HomeController(commonController: Get.find<CommonController>(), state: HomeState())),
     ),
 
     GetBuilder<TimelineController>(
-      builder: (controller) => TimelineView(),
-      init: TimelineController(
-        state: Get.put(TimelineState()),
-      ),
+      builder: (controller) => const TimelineView(),
+      init: Get.find<TimelineController>(),
+      // init: TimelineController(
+      //   state: Get.put(TimelineState()),
+      // ),
     ),
 
     GetBuilder<ProfileController>(
       builder: (controller) => ProfileScreen(),
-      init: ProfileController(
-          commonController: Get.find<CommonController>(),
-          state: Get.put(ProfileState())
-      ),
+      init: Get.find<ProfileController>(),
+      // init: ProfileController(
+      //     commonController: Get.find<CommonController>(),
+      //     state: Get.put(ProfileState())
+      // ),
     ),
 
   ];
 
   void updateBottomNavBarIndex(int index) {
     this.index = index.obs;
+    if(index==2){
+
+    }
     update();
-    Get.appUpdate();
 
   }
 

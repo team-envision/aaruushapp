@@ -8,6 +8,7 @@ import 'package:AARUUSH_CONNECT/Screens/Auth/Signin/bindings/SignIn_binding.dart
 import 'package:AARUUSH_CONNECT/Screens/Auth/Signin/views/signin_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Certificates/bindings/Certificate_Bindings.dart';
 import 'package:AARUUSH_CONNECT/Screens/Certificates/views/CertificateView.dart';
+import 'package:AARUUSH_CONNECT/Screens/Events/myEventsBinding.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/views/events_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/views/myEvents.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/views/register_event.dart';
@@ -54,25 +55,27 @@ abstract class AppPages {
         page: () => const StageView(),
         binding: StageBinding(),
         transition: Transition.noTransition,
-        children: [
-          GetPage(
-              name: AppRoutes.homeScreen,
-              page: () => HomeScreen(),
-              binding: HomeBindings()
-          ),
-          GetPage(
-            name: AppRoutes.myEvents,
-            page: () => MyEvents(),
-          ),
-          GetPage(
-            name: AppRoutes.timeLine,
-            page: () => const TimelineView(),
-          ),
-          GetPage(
-              name: AppRoutes.profileScreen,
-              page: () => ProfileScreen(),
-              binding: ProfileBindings()),
-        ]
+        // children: [
+        //   GetPage(
+        //       name: AppRoutes.homeScreen,
+        //       page: () => HomeScreen(),
+        //       binding: HomeBindings()
+        //   ),
+        //   GetPage(
+        //     name: AppRoutes.myEvents,
+        //     page: () => MyEvents(),
+        //     binding: MyEventsBinding()
+        //
+        //   ),
+        //   GetPage(
+        //     name: AppRoutes.timeLine,
+        //     page: () => const TimelineView(),
+        //   ),
+        //   GetPage(
+        //       name: AppRoutes.profileScreen,
+        //       page: () => ProfileScreen(),
+        //       binding: ProfileBindings()),
+        // ]
     ),
     GetPage(
       name: AppRoutes.registerView,
@@ -92,6 +95,7 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.myEvents,
       page: () => MyEvents(),
+        binding: MyEventsBinding()
     ),
     GetPage(
       name: AppRoutes.timeLine,

@@ -1,4 +1,5 @@
 import 'package:AARUUSH_CONNECT/Screens/Home/controllers/home_controller.dart';
+import 'package:AARUUSH_CONNECT/Screens/Home/state/Home_State.dart';
 import 'package:AARUUSH_CONNECT/Screens/Search/state/Search_State.dart';
 import 'package:get/get.dart';
 

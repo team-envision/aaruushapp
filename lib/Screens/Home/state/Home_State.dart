@@ -2,7 +2,7 @@ import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:get/get.dart';
 
 class HomeState extends GetXState {
-  var eventList = <EventListModel>[].obs;
+  final eventList = <EventListModel>[].obs;
   var templiveEventList = <EventListModel>[].obs;
   var galleryList = [].obs;
   var tempGalleryList = [].obs;

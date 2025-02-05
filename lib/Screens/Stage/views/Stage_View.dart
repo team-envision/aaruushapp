@@ -15,7 +15,6 @@ class _StageViewState extends State<StageView> {
 
   @override
   Widget build(BuildContext context) {
-    final width = Get.width;
     return Scaffold(
       extendBody: true,
       backgroundColor: Colors.transparent,

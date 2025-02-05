@@ -8,6 +8,7 @@ import 'package:AARUUSH_CONNECT/Screens/Events/controllers/events_controller.dar
 import 'package:AARUUSH_CONNECT/Screens/Home/state/Home_State.dart';
 import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
 import 'package:AARUUSH_CONNECT/Services/appRating.dart';
+import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -113,7 +114,7 @@ class HomeController extends GetxController {
                 data["whatsapp number"] ??
                 ""
           })
-          .then((_) => debugPrint(
+          .then((_) => Log.highlight(
               'from HomeController: Success in updating info from aws to firebase'))
           .catchError((error) {
             if (kDebugMode) {
@@ -123,15 +124,14 @@ class HomeController extends GetxController {
             }
           });
     } else {
-      if (kDebugMode) {
-        print(
-            'from HomeController: error in updating info from aws to firebase');
-        print("ERROR : ${response.body}");
-      }
+        Log.verbose(
+            'from HomeController: ${response.statusCode} error in updating info from aws to firebase',[response.reasonPhrase,]);
+       
+      
     }
   }
 
-  Future<void> fetchEventData() async {
+   Future<void> fetchEventData() async {
     state.isLoading.value = true;
     try {
       final response = await http.get(Uri.parse('${ApiData.API}/events'));
@@ -147,15 +147,17 @@ class HomeController extends GetxController {
 
         state.LiveEventsList.value =
             state.templiveEventList.map((e) => e.id).toList();
+        update();
       } else {
-        debugPrint("Error banners: ${response.body} ${response.statusCode}");
+        Log.verbose("Error banners: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load events');
       }
-    } catch (e) {
-      printError(info: 'Error fetching events data: $e');
+    } catch (e,stacktrace) {
+      Log.verbose('Error fetching events data:' ,[e,stacktrace]);
     } finally {
       state.isLoading.value = false;
-      state.regEvents.value = commonController.registeredEvents();
+      state.regEvents.value = CommonController.registeredEvents();
+      refresh();
     }
   }
 
@@ -178,12 +180,12 @@ class HomeController extends GetxController {
           }
         });
       } else {
-        printError(
-            info: "Error gallery: ${response.body} ${response.statusCode}");
+        Log.error(
+            "Error gallery: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load gallery');
       }
-    } catch (e) {
-      printError(info: 'Error fetching gallery: $e');
+    } catch (e,stacktrace) {
+      Log.verbose( 'Error fetching gallery:',[e,stacktrace]);
     } finally {
       state.isLoading.value = false;
     }
@@ -204,12 +206,13 @@ class HomeController extends GetxController {
 
         state.eventList.assignAll(
             filteredEvents.map((e) => EventListModel.fromMap(e)).toList());
+        update();
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");
         throw Exception('Failed to load events');
       }
-    } catch (e) {
-      printError(info: 'Error fetching events by category: $e');
+    } catch (e,stackTrace) {
+      Log.verbose('Error fetching events by category:',[e,stackTrace]);
     } finally {
       state.isLoading.value = false;
     }
@@ -221,7 +224,8 @@ class HomeController extends GetxController {
     if (await canLaunchUrl(mapUrl)) {
       await launchUrl(mapUrl);
     } else {
-      debugPrint("Cannot launch map url");
+     setSnackBar("Error","Cannot launch map url");
+      Log.error("Cannot launch map url");
     }
   }
 

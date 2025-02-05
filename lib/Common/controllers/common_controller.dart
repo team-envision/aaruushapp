@@ -15,7 +15,6 @@ class CommonController extends GetxController {
   static RxString profileUrl = ''.obs;
   static RxString userName = ''.obs;
   static RxString emailAddress = ''.obs;
-
   static RxString aaruushId = ''.obs;
   static RxString phoneNumber = ''.obs;
   static RxString RegNo = ''.obs;
@@ -181,7 +180,7 @@ class CommonController extends GetxController {
     }
   }
 
-  List<String> registeredEvents() {
+ static List<String> registeredEvents() {
     List<String> events = [];
     if (userDetails['events'] != null) {
       for (var event in userDetails['events']) {

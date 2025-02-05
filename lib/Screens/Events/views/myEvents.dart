@@ -2,6 +2,7 @@ import 'package:AARUUSH_CONNECT/Common/controllers/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
+import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:animations/animations.dart';
@@ -12,54 +13,15 @@ import 'package:get/get.dart';
 import 'events_screen.dart';
 import '../../Home/controllers/home_controller.dart';
 
-var registeredEvents = <EventListModel>[].obs;
-
-class MyEvents extends StatefulWidget {
-  RxList<EventListModel>? eventList;
-  MyEvents({super.key});
-
-  @override
-  State<MyEvents> createState() => _MyEventsState();
-}
-
-class _MyEventsState extends State<MyEvents> {
-  final scrollController = ScrollController();
-
-
-
-
-  @override
-  void dispose() {
-    super.dispose();
-    scrollController.dispose();
-  }
+class MyEvents extends StatelessWidget {
+  const MyEvents({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final MyEventsController myEventsController =
+        Get.find<MyEventsController>();
     final screenWidth = Get.width;
     final screenHeight = Get.height;
-
-    Future.delayed(Duration(milliseconds: 300), () async {
-      HomeController controller = Get.find<HomeController>();
-      CommonController commonController = Get.find<CommonController>();
-      widget.eventList ??= controller.state.eventList;
-
-      // Fetch data and populate registeredEvents
-      await commonController.fetchAndLoadDetails();
-      final eventIds = commonController.registeredEvents();
-      Log.info(eventIds);
-      for (var eventId in eventIds) {
-        for (var event in widget.eventList!) {
-          if (eventId == event.id) {
-            registeredEvents.add(event);
-
-          }
-        }
-      }
-
-    });
-
-
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -71,40 +33,41 @@ class _MyEventsState extends State<MyEvents> {
             return CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
-                  child: registeredEvents.isEmpty
+                  child: myEventsController.registeredEvents.isEmpty
                       ? null
-                      : SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 8),
+                      : SizedBox(
+                          height: MediaQuery.of(context).size.height / 8),
                 ),
-                if (registeredEvents.isEmpty) SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(
-                    child: Text(
-                      "You Haven't registered For Any Event",
-                      style: Get.textTheme.labelMedium!
-                          .copyWith(letterSpacing: 4),
-                      textAlign: TextAlign.center,
+                if (myEventsController.registeredEvents.isEmpty)
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                      child: Text(
+                        "You Haven't registered For Any Event",
+                        style: Get.textTheme.labelMedium!
+                            .copyWith(letterSpacing: 4),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
+                  )
+                else
+                  LiveSliverGrid.options(
+                    controller: myEventsController.scrollController,
+                    options: const LiveOptions(
+                      showItemInterval: Duration(milliseconds: 100),
+                      showItemDuration: Duration(milliseconds: 300),
+                      visibleFraction: 0.05,
+                      reAnimateOnVisibility: false,
+                    ),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: screenWidth > 600 ? 3 : 2,
+                      mainAxisSpacing: screenHeight * 0.02,
+                      crossAxisSpacing: screenWidth * 0.03,
+                      childAspectRatio: 159 / 200,
+                    ),
+                    itemBuilder: _buildAnimatedCard,
+                    itemCount: myEventsController.registeredEvents.length,
                   ),
-                ) else LiveSliverGrid.options(
-                  controller: scrollController,
-                  options: const LiveOptions(
-                    showItemInterval: Duration(milliseconds: 100),
-                    showItemDuration: Duration(milliseconds: 300),
-                    visibleFraction: 0.05,
-                    reAnimateOnVisibility: false,
-                  ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: screenWidth > 600 ? 3 : 2,
-                    mainAxisSpacing: screenHeight * 0.02,
-                    crossAxisSpacing: screenWidth * 0.03,
-                    childAspectRatio: 159 / 200,
-                  ),
-                  itemBuilder: _buildAnimatedCard,
-                  itemCount: registeredEvents.length,
-                ),
                 SliverToBoxAdapter(
                   child: SizedBox(height: screenHeight * 0.1),
                 ),
@@ -116,13 +79,12 @@ class _MyEventsState extends State<MyEvents> {
     );
   }
 
+  Widget _buildAnimatedCard(
+      BuildContext context, int index, Animation<double> animation) {
+    final MyEventsController myEventsController =
+        Get.find<MyEventsController>();
 
-  Widget _buildAnimatedCard(BuildContext context, int index,
-      Animation<double> animation) {
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return FadeTransition(
       opacity: Tween<double>(begin: 0, end: 1).animate(animation),
@@ -134,20 +96,25 @@ class _MyEventsState extends State<MyEvents> {
           openColor: Colors.transparent,
           closedColor: Colors.transparent,
           closedShape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           closedBuilder: (BuildContext _, VoidCallback openContainer) {
             return TicketTile(
-              imagePath: registeredEvents[index].image!,
-              title: registeredEvents[index].name!,
-              event: registeredEvents[index],
+              imagePath: myEventsController.registeredEvents[index].image!,
+              title: myEventsController.registeredEvents[index].name!,
+              event: myEventsController.registeredEvents[index],
               width: screenWidth / 2.5,
             );
           },
           openBuilder: (BuildContext _, VoidCallback __) {
-            return EventsScreen(
-              event: registeredEvents[index],
-              fromMyEvents: true.obs,
-            );
+           Future.delayed(const Duration(milliseconds: 100),(){
+             return
+               Center(child: CircularProgressIndicator(color: Get.theme.colorPrimary,));
+           });
+           return EventsScreen(
+             event: myEventsController.registeredEvents[index],
+             fromMyEvents: true.obs,
+           );
+
           },
           transitionDuration: const Duration(milliseconds: 400),
         ),
@@ -155,7 +122,6 @@ class _MyEventsState extends State<MyEvents> {
     );
   }
 }
-
 
 class TicketTile extends StatelessWidget {
   final String imagePath;
@@ -229,5 +195,55 @@ class TicketTile extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class MyEventsController extends GetxController {
+  final CommonController commonController;
+  final HomeController homeController;
+  final scrollController = ScrollController();
+  MyEventsController(
+      {required this.commonController, required this.homeController});
+
+  RxList<EventListModel> registeredEvents = <EventListModel>[].obs;
+  RxList<EventListModel>? eventList;
+
+  @override
+  Future<void> onInit() async {
+    await fetchRegisteredEvents();
+    super.onInit();
+  }
+
+  Future<void> fetchRegisteredEvents() async {
+    try {
+      Log.info(homeController.state.eventList);
+      await homeController.fetchEventData();
+      eventList ??= homeController.state.eventList;
+
+      // await commonController.fetchAndLoadDetails();
+      final List<String> eventIds = CommonController.registeredEvents();
+      Log.info("Fetched registered event IDs: $eventIds");
+      Log.info(eventIds);
+      Log.info(eventList);
+      registeredEvents.clear();
+      eventList?.forEach((element) {
+        if (eventIds.contains(element.id)) {
+          registeredEvents.add(element);
+        }
+      });
+      registeredEvents.sort((a, b) {
+        if (a.timestamp == null) return 1; // nulls last
+        if (b.timestamp == null) return -1;
+        return b.timestamp!.compareTo(a.timestamp!); // Descending order
+      });
+    } catch (e) {
+      Log.error("Error fetching registered events: \$e");
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
   }
 }

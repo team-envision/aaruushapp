@@ -4,6 +4,7 @@ import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Screens/Events/views/events_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/controllers/home_controller.dart';
+import 'package:AARUUSH_CONNECT/Screens/Home/state/Home_State.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/capitalize.dart';
 import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
