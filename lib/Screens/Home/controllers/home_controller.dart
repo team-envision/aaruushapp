@@ -142,11 +142,17 @@ class HomeController extends GetxController {
             jsonResponse.where((event) => event['live'] == true).toList();
         state.eventList.assignAll(
             jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
+        state.eventList.sort((a, b) {
+          if (a.timestamp == null) return 1; // nulls last
+          if (b.timestamp == null) return -1;
+          return b.timestamp!.compareTo(a.timestamp!); // Descending order
+        });
         state.templiveEventList.assignAll(
             filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
 
         state.LiveEventsList.value =
             state.templiveEventList.map((e) => e.id).toList();
+
         update();
       } else {
         Log.verbose("Error banners: ${response.body} ${response.statusCode}");
@@ -206,6 +212,11 @@ class HomeController extends GetxController {
 
         state.eventList.assignAll(
             filteredEvents.map((e) => EventListModel.fromMap(e)).toList());
+        state.eventList.sort((a, b) {
+          if (a.timestamp == null) return 1; // nulls last
+          if (b.timestamp == null) return -1;
+          return b.timestamp!.compareTo(a.timestamp!); // Descending order
+        });
         update();
       } else {
         debugPrint("Error banners: ${response.body} ${response.statusCode}");
