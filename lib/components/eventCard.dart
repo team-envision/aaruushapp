@@ -7,7 +7,7 @@ import '../Model/Events/event_list_model.dart';
 import '../Screens/Home/controllers/home_controller.dart';
 
 Widget eventCard(
-    EventListModel event, VoidCallback onTap, HomeController homeController) {
+    {required EventListModel event, required VoidCallback onTap, required HomeController homeController}) {
   return Container(
     padding: const EdgeInsets.all(0),
     height: 250,

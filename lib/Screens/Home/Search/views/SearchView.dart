@@ -1,17 +1,19 @@
-import 'package:AARUUSH_CONNECT/Screens/Search/Widgets/AnimatedCard.dart';
-import 'package:AARUUSH_CONNECT/Screens/Search/Widgets/SearchedAnimatedCard.dart';
-import 'package:AARUUSH_CONNECT/Screens/Search/controllers/Search_Controller.dart';
+
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Searchscreen extends StatelessWidget {
+import '../Widgets/AnimatedCard.dart';
+import '../Widgets/SearchedAnimatedCard.dart';
+import '../controllers/Search_Controller.dart';
+
+class SearchScreen extends StatelessWidget {
   final SearchBarController searchController = Get.find<SearchBarController>();
 
 
-   Searchscreen({super.key});
+   SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class Searchscreen extends StatelessWidget {
                     controller: searchController.state.searchController,
                     onTapOutside: (val) {
                       FocusManager.instance.primaryFocus?.unfocus();
-                    },
+                    },onChanged:(value) => searchController.onSearchChanged(),
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(left: 18),
                       filled: true,

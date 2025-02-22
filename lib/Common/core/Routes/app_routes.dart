@@ -17,4 +17,5 @@ abstract class AppRoutes{
   static const ticket = '/ticket';
   static const registerEvent = '/registerEvent';
   static const eventScreen = '/eventScreen';
+  static const pageNotFound = '/pageNotFound';
 }

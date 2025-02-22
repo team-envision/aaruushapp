@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../components/DynamicWhiteBox.dart';
+import '../../components/DynamicWhiteBox.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});

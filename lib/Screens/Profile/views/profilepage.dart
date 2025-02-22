@@ -1,5 +1,4 @@
 import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
-import 'package:AARUUSH_CONNECT/Screens/About/views/aboutpage.dart';
 import 'package:AARUUSH_CONNECT/Screens/Profile/controllers/profileController.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
@@ -134,21 +133,21 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: Get.width * 0.015),
-                            Text(
+                            Obx(()=>Text(
                               CommonController.emailAddress.value,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: Get.theme.kVerySmallTextStyle.copyWith(
                                   fontWeight: FontWeight.w700,
                                   fontSize: Get.width * 0.035),
-                            ),
+                            ),),
                             SizedBox(height: Get.width * 0.015),
-                            Text(
+                            Obx(()=>Text(
                               CommonController.aaruushId.value,
                               style: Get.theme.kVerySmallTextStyle.copyWith(
                                   fontWeight: FontWeight.w700,
                                   fontSize: Get.width * 0.035),
-                            ),
+                            )),
                           ],
                         ),
                       ],

@@ -3,6 +3,7 @@ import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
 import 'package:AARUUSH_CONNECT/components/white_box.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -46,7 +47,7 @@ class SignInScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               horizontal: screenWidth * 0.1),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
@@ -77,35 +78,41 @@ class SignInScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              sizeBox(innerConstraints.maxHeight * 0.1, 0),
-                              SizedBox(
-                                height: innerConstraints.maxHeight * 0.25,
-                                width: Get.width,
-                                child: TextButton.icon(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    // fixedSize: const Size(300, 60),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                              if(defaultTargetPlatform==TargetPlatform.iOS)
+                                Column(
+                                  children: [
+                                    sizeBox(innerConstraints.maxHeight * 0.1, 0),
+                                    SizedBox(
+                                      height: innerConstraints.maxHeight * 0.25,
+                                      width: Get.width,
+                                      child: TextButton.icon(
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          // fixedSize: const Size(300, 60),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        onPressed: () => controller.appleSignIn(),
+                                        icon: SvgPicture.asset(
+                                          'assets/images/apple-logo.svg',
+                                          height: Get.height * 0.024,
+                                          width: Get.height * 0.024,
+                                        ),
+                                        label: Padding(
+                                          padding: const EdgeInsets.only(left: 8),
+                                          child: Text(
+                                            'Sign in with Apple',
+                                            style: Get.theme.kSmallTextStyle.copyWith(
+                                                color: Colors.black.withAlpha(138),
+                                                fontSize: Get.height * 0.018),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  onPressed: () => controller.appleSignIn(),
-                                  icon: SvgPicture.asset(
-                                    'assets/images/apple-logo.svg',
-                                    height: Get.height * 0.024,
-                                    width: Get.height * 0.024,
-                                  ),
-                                  label: Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Text(
-                                      'Sign in with Apple',
-                                      style: Get.theme.kSmallTextStyle.copyWith(
-                                          color: Colors.black.withAlpha(138),
-                                          fontSize: Get.height * 0.018),
-                                    ),
-                                  ),
+                                  ],
                                 ),
-                              ),
+
                             ],
                           ),
                         );

@@ -4,7 +4,6 @@ import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
 import 'package:AARUUSH_CONNECT/Model/Events/gallery.dart';
-import 'package:AARUUSH_CONNECT/Screens/Events/controllers/events_controller.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/state/Home_State.dart';
 import 'package:AARUUSH_CONNECT/Services/notificationServices.dart';
 import 'package:AARUUSH_CONNECT/Services/appRating.dart';
@@ -50,18 +49,18 @@ class HomeController extends GetxController {
             FirebaseFirestore.instance.collection('users').doc(user?.email);
 
         await userDoc.update({'fcmToken': newToken});
-        if (kDebugMode) {
-          print('Token updated in Firestore');
-        }
-      } on FirebaseException catch (e) {
-        if (kDebugMode) {
-          print(
-              "Firebase Exception occurred while updating new token: ${e.message}");
-        }
-      } catch (e) {
-        if (kDebugMode) {
-          printError(info: "Error occurred while updating new token: $e");
-        }
+
+          Log.highlight('Token updated in Firestore');
+
+      } on FirebaseException catch (e,stacktrace) {
+
+          Log.verbose(
+              "Firebase Exception occurred while updating new token:",[e,stacktrace]);
+
+      } catch (e,stacktrace) {
+
+          Log.verbose("Error occurred while updating new token: ",[e,stacktrace]);
+
       }
     });
     updateProfile();
@@ -86,7 +85,7 @@ class HomeController extends GetxController {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       if (data["message"] == "Unauthorized") {
-        debugPrint("unauthorized");
+        Log.warning("unauthorized");
         commonController.signOutCurrentUser();
       }
 
@@ -116,11 +115,10 @@ class HomeController extends GetxController {
           })
           .then((_) => Log.highlight(
               'from HomeController: Success in updating info from aws to firebase'))
-          .catchError((error) {
+          .catchError((error,stacktrace) {
             if (kDebugMode) {
-              print(
-                  'from HomeController: error in updating info from aws to firebase');
-              print('Failed: $error');
+              Log.verbose(
+                  'from HomeController: error in updating info from aws to firebase',[error,stacktrace]);
             }
           });
     } else {
@@ -134,35 +132,36 @@ class HomeController extends GetxController {
    Future<void> fetchEventData() async {
     state.isLoading.value = true;
     try {
-      final response = await http.get(Uri.parse('${ApiData.API}/events'));
-      if (response.statusCode == 200) {
-        String data = utf8.decode(response.bodyBytes);
-        List jsonResponse = json.decode(data);
-        List<dynamic> filteredLiveEvents =
-            jsonResponse.where((event) => event['live'] == true).toList();
+      List<EventListModel>? jsonResponse;
+      jsonResponse = await commonController.fetchEventData();
+      if(jsonResponse == null){
+        state.isLoading.value = false;
+        setSnackBar("Message", "Data Not Found");
+        return;
+      }
+
+        List<EventListModel> filteredLiveEvents =
+            jsonResponse.where((event) => event.live == true).toList();
         state.eventList.assignAll(
-            jsonResponse.map((e) => EventListModel.fromMap(e)).toList());
+            jsonResponse.map((e) => e).toList());
         state.eventList.sort((a, b) {
           if (a.timestamp == null) return 1; // nulls last
           if (b.timestamp == null) return -1;
           return b.timestamp!.compareTo(a.timestamp!); // Descending order
         });
         state.templiveEventList.assignAll(
-            filteredLiveEvents.map((e) => EventListModel.fromMap(e)).toList());
+            filteredLiveEvents.map((e) => e).toList());
 
         state.LiveEventsList.value =
             state.templiveEventList.map((e) => e.id).toList();
 
         update();
-      } else {
-        Log.verbose("Error banners: ${response.body} ${response.statusCode}");
-        throw Exception('Failed to load events');
-      }
+
     } catch (e,stacktrace) {
       Log.verbose('Error fetching events data:' ,[e,stacktrace]);
     } finally {
       state.isLoading.value = false;
-      state.regEvents.value = CommonController.registeredEvents();
+      state.regEvents.value = CommonController.getRegisteredEvents();
       refresh();
     }
   }
@@ -200,11 +199,14 @@ class HomeController extends GetxController {
   Future<void> fetchEventDataByCategory(String category) async {
     state.isLoading.value = true;
     try {
-      final response = await http.get(Uri.parse('${ApiData.API}/events/'));
 
-      if (response.statusCode == 200) {
-        String data = utf8.decode(response.bodyBytes);
-        List<dynamic> jsonResponse = json.decode(data);
+      List<dynamic>? jsonResponse;
+      jsonResponse = await commonController.fetchEventData();
+      if(jsonResponse == null){
+        state.isLoading.value = false;
+        setSnackBar("Message", "Data Not Found");
+        return;
+      }
 
         var filteredEvents = jsonResponse.where((event) {
           return event['sortCategory'] == category;
@@ -218,10 +220,7 @@ class HomeController extends GetxController {
           return b.timestamp!.compareTo(a.timestamp!); // Descending order
         });
         update();
-      } else {
-        debugPrint("Error banners: ${response.body} ${response.statusCode}");
-        throw Exception('Failed to load events');
-      }
+
     } catch (e,stackTrace) {
       Log.verbose('Error fetching events by category:',[e,stackTrace]);
     } finally {

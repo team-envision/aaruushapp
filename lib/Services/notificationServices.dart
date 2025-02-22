@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
-import 'package:AARUUSH_CONNECT/Screens/Events/views/events_screen.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../Screens/Notification/views/NotificationScreen.dart';
 
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -44,24 +42,25 @@ class NotificationServices {
       _saveNotification(message);
 
       String? url = message.data['url'];
-      if (kDebugMode) {
-        print(message);
-      }
+
+        Log.debug(message);
+
       if (url != null && url.isNotEmpty) {
-        print(message.data["url"]);
+        Log.debug(message.data["url"]);
       } else {
-        print(notification!.body);
+        Log.debug(notification!.body);
       }
 
-      if (kDebugMode) {
-        print("Notification title: ${notification?.title}");
-        print("Notification body: ${notification?.body}");
+
+        Log.debug("Notification title: ${notification?.title}\n Notification body: ${notification?.body}");
+
         if (android != null) {
-          print('Android notification count: ${android.count}');
-          print('Android notification link: ${android.link}');
+
+          Log.debug('Android notification count: ${android.count}\n Android notification link: ${android.link}');
+
         }
-        print('Notification data: ${message.data}');
-      }
+      Log.debug('Notification data: ${message.data}');
+
 
       if (Platform.isIOS) {
         forgroundMessage();
@@ -86,12 +85,12 @@ class NotificationServices {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      debugPrint("User granted permission");
+      Log.debug("User granted permission");
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      debugPrint("User granted provisional permission");
+      Log.debug("User granted provisional permission");
     } else {
-      debugPrint("User declined permission");
+      Log.warning("User declined permission");
     }
   }
 
@@ -148,7 +147,7 @@ class NotificationServices {
   }
 
   Future<void> setupInteractMessage(BuildContext context) async {
-    // When app is terminated
+
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
@@ -156,20 +155,18 @@ class NotificationServices {
       _saveNotification(initialMessage);
     }
 
-    // When app is in background
+
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      if (kDebugMode) {
-        print('A new onMessageOpenedApp event was published!');
-        print("app is in background");
-        print(message.data);
-      }
+        Log.debug('A new onMessageOpenedApp event was published!');
+        Log.debug("app is in background");
+        Log.info(message.data);
       handleMessage(context, message);
-      // get_launch_url();
+
     });
   }
 
   Future<void> _saveNotification(RemoteMessage message) async {
-    print("Notification saved");
+    Log.highlight("Notification saved");
     final directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
     // Open the Hive box
@@ -193,41 +190,34 @@ class NotificationServices {
     String? eventRoute = message.data['event'];
 
     if (url != null && url.isNotEmpty) {
-      if (kDebugMode) {
-        print("handleMessage1$url");
-      }
+
+        Log.debug("handleMessage: $url\n eventRoute: $eventRoute");
+
       await launchUrl(Uri.parse(url));
     } else if (eventRoute != null && eventRoute.isNotEmpty) {
-      if (kDebugMode) {
-        print("eventroute");
-      }
-      // Get.to(() => EventsScreen(
-      //       fromNotificationRoute: true,
-      //       EventId: eventRoute,
-      //       fromMyEvents: false.obs,
-      //     ));
+
       Get.toNamed(
           AppRoutes.eventScreen,
+          parameters: {'EventId': eventRoute},
           arguments: {
             'fromNotificationRoute': true,
-            'EventId': eventRoute,
             'fromMyEvents': false.obs,
           });
     } else {
-      if (kDebugMode) {
+
         Get.toNamed(AppRoutes.notificationScreen);
-        print('No valid URL or key in the notification.');
-        print(message);
-      }
+        Log.warning('No valid URL or key in the notification.');
+        Log.debug(message);
+
     }
   }
 
   Future<void> forgroundMessage() async {
-    print("forgroundMessage");
+
     // get_launch_url();
     final message = await FirebaseMessaging.instance.getInitialMessage();
     if (message != null) {
-      await _saveNotification(message!);
+      await _saveNotification(message);
     }
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(

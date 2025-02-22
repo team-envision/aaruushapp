@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:AARUUSH_CONNECT/Common/core/Routes/app_pages.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
+import 'package:AARUUSH_CONNECT/Common/core/Utils/GlobalErrorHandler.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Utils/Navigator_Observer/app_navigator_observer.dart';
+import 'package:AARUUSH_CONNECT/Views/PageNotFound.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -43,16 +45,18 @@ Future<void> main() async {
         statusBarIconBrightness: Brightness.light,
       ),
     );
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-    runApp(AaruushApp());
+
+      runApp(AaruushApp());
+
+
+
 
     // runApp(  DevicePreview(
     //   enabled: !kReleaseMode,
     //   builder: (context) => AaruushApp(), // Wrap your app
     // ),
     // );
-
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
   FlutterNativeSplash.remove();
 }
@@ -63,20 +67,27 @@ class AaruushApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      defaultTransition: Transition.rightToLeftWithFade,
-      transitionDuration: const Duration(milliseconds: 400),
-      initialBinding: DefaultController(),
-      debugShowCheckedModeBanner: false,
-      theme: Themes.light,
-      darkTheme: Themes.dark,
-      themeMode: ThemeService().theme,
-      // home: const AaruushAppScreen(),
-      getPages: AppPages.pages,
-      initialRoute: AppRoutes.splash,
-      navigatorObservers: [AppNavigatorObserver()],
+    return ErrorHandlerWidget(
+      child: GetMaterialApp(
+
+        useInheritedMediaQuery: true,
+        locale: DevicePreview.locale(context),
+        defaultTransition: Transition.rightToLeftWithFade,
+        transitionDuration: const Duration(milliseconds: 400),
+        initialBinding: DefaultController(),
+        debugShowCheckedModeBanner: false,
+        unknownRoute: GetPage(
+          name: AppRoutes.pageNotFound,
+          page: () => const PageNotFound(),
+        ),
+        theme: Themes.light,
+        darkTheme: Themes.dark,
+        themeMode: ThemeService().theme,
+        // home: const AaruushAppScreen(),
+        getPages: AppPages.pages,
+        initialRoute: AppRoutes.splash,
+        navigatorObservers: [AppNavigatorObserver()],
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
-import 'package:AARUUSH_CONNECT/Screens/Events/controllers/events_controller.dart';
+import 'package:AARUUSH_CONNECT/Model/Events/event_list_model.dart';
+import 'package:AARUUSH_CONNECT/Screens/Events/eventScreen/controllers/events_controller.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/aaruushappbar.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
@@ -7,10 +8,10 @@ import 'package:AARUUSH_CONNECT/components/dropdown_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../Common/controllers/common_controller.dart';
-import '../../../Model/Events/event_list_model.dart';
-import '../../../components/DynamicWhiteBox.dart';
-import '../../../components/profile_text_field.dart';
+import '../../../../Common/controllers/common_controller.dart';
+import '../../../../components/DynamicWhiteBox.dart';
+import '../../../../components/profile_text_field.dart';
+
 
 class RegisterEvent extends GetView<EventsController> {
   const RegisterEvent({super.key, required this.event});
@@ -66,11 +67,11 @@ class RegisterEvent extends GetView<EventsController> {
                                     hint: e.label ?? "Select",
                                     list: e.options?.split(',') ?? [],
                                     onChanged: (val) {
-                                      controller.registerFieldData[e.label] =
+                                      controller.state.registerFieldData[e.label] =
                                           val;
                                     },
                                     value:
-                                        controller.registerFieldData[e.label] ??
+                                        controller.state.registerFieldData[e.label] ??
                                             "",
                                   ));
                             } else {
@@ -122,7 +123,7 @@ class RegisterEvent extends GetView<EventsController> {
                                                           .toString()
                                                       : "",
                                   onChanged: (v) {
-                                    controller
+                                    controller.state
                                         .registerFieldData.value[e.label!] = v;
                                     debugPrint("${e.label} $v");
                                   },
@@ -133,7 +134,7 @@ class RegisterEvent extends GetView<EventsController> {
                           }),
                         sizeBox(10, 0),
                         Obx(
-                          () => controller.isLoading.value
+                          () => controller.state.isLoading.value
                               ? Container(
                                   height: Get.height,
                                   width: Get.width,
@@ -154,19 +155,19 @@ class RegisterEvent extends GetView<EventsController> {
                                                 .validate() &&
                                             event.dynamicform != null) {
                                           for (var e in event.dynamicform!) {
-                                            controller.registerFieldData.value
+                                            controller.state.registerFieldData.value
                                                 .addAllIf(
-                                              controller.userDetails
+                                              controller.state.userDetails
                                                       .value[e.label] !=
                                                   null,
                                               {
-                                                e.label!: controller
+                                                e.label!: controller.state
                                                     .userDetails.value[e.label]
                                               },
                                             );
                                           }
                                           debugPrint(
-                                              "Register data ${controller.registerFieldData.value}");
+                                              "Register data ${controller.state.registerFieldData.value}");
                                           controller.registerEvent(e: event);
                                         }
                                       },

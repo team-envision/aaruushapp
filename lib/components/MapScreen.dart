@@ -1,6 +1,7 @@
-import 'package:AARUUSH_CONNECT/Screens/Events/controllers/events_controller.dart';
+import 'package:AARUUSH_CONNECT/Screens/Events/eventScreen/controllers/events_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 
 class Mapscreen extends StatefulWidget {
@@ -14,8 +15,8 @@ class Mapscreen extends StatefulWidget {
 }
 
 class _MapscreenState extends State<Mapscreen> {
-  MapController _mapController = MapController();
-  var eventController = EventsController();
+  final MapController _mapController = MapController();
+  EventsController eventController = Get.find<EventsController>();
 
   @override
   void initState() {
@@ -32,9 +33,9 @@ class _MapscreenState extends State<Mapscreen> {
 
   @override
   Widget build(BuildContext context) {
-    var Coordinates;
+    var coordinates;
     if (widget.Lattitude != null && widget.Longitude != null) {
-      Coordinates = LatLng(
+      coordinates = LatLng(
           double.parse(widget.Lattitude!), double.parse(widget.Longitude!));
     }
 
@@ -50,7 +51,7 @@ class _MapscreenState extends State<Mapscreen> {
                   widget.Lattitude!, widget.Longitude!);
             }
           },
-          center: Coordinates,
+          center: coordinates,
           interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
         ),
         children: [
@@ -58,7 +59,7 @@ class _MapscreenState extends State<Mapscreen> {
           widget.Lattitude != null
               ? MarkerLayer(markers: [
                   Marker(
-                      point: Coordinates,
+                      point: coordinates,
                       width: 100,
                       height: 100,
                       rotate: false,
@@ -83,7 +84,7 @@ class _MapscreenState extends State<Mapscreen> {
             child: LogoSourceAttribution(
               const Icon(Icons.center_focus_strong_rounded),
               onTap: () {
-                _mapController.move(Coordinates, 17);
+                _mapController.move(coordinates, 17);
               },
               tooltip: "CLick to centre the map",
             ),

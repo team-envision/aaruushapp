@@ -1,7 +1,7 @@
 import 'package:AARUUSH_CONNECT/Screens/Home/controllers/home_controller.dart';
-import 'package:AARUUSH_CONNECT/Screens/Home/state/Home_State.dart';
-import 'package:AARUUSH_CONNECT/Screens/Search/state/Search_State.dart';
 import 'package:get/get.dart';
+
+import '../state/Search_State.dart';
 
 class SearchBarController extends GetxController{
   final HomeController homeController;
@@ -13,33 +13,36 @@ class SearchBarController extends GetxController{
   void onInit() {
     super.onInit();
     _initialList();
-    state.searchController.addListener(_onSearchChanged);
+    state.searchController.addListener(onSearchChanged);
   }
 
   @override
   void dispose() {
-    state.searchController.removeListener(_onSearchChanged);
+    state.searchController.removeListener(onSearchChanged);
     state.searchController.dispose();
     state.scrollController1.dispose();
     state.scrollController2.dispose();
     super.dispose();
   }
 
-  void _onSearchChanged() {
-    final query = state.searchController.text.toLowerCase();
+  void onSearchChanged() {
+    state.eventList.value = homeController.state.eventList.where((event) =>event.startdate != null).toList();
+    state.query.value = state.searchController.text.toLowerCase();
     state.searchResults.value = homeController.state.eventList
         .where((event) =>
-    event.name!.toLowerCase().contains(query) &&
-        event.startdate != null &&
-        event.edition == 'a24')
+    event.name!.toLowerCase().contains(state.query.value) &&
+        event.startdate != null)
         .toList();
+    state.searchResults.sort((a, b) => DateTime.parse(a.startdate!).compareTo(DateTime.parse(b.startdate!)));
+
   }
 
   void _initialList() {
     state.eventList.value = homeController.state.eventList
         .where((event) =>
-    event.live! && event.startdate != null && event.edition == 'a24')
+     event.startdate != null)
         .toList();
+    state.eventList.sort((a, b) => DateTime.parse(a.startdate!).compareTo(DateTime.parse(b.startdate!)));
   }
 
 }

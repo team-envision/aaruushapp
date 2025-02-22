@@ -2,16 +2,13 @@ import 'dart:io';
 import 'package:AARUUSH_CONNECT/Common/controllers/common_controller.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
-import 'package:AARUUSH_CONNECT/Screens/Events/views/events_screen.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/controllers/home_controller.dart';
-import 'package:AARUUSH_CONNECT/Screens/Home/state/Home_State.dart';
 import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/capitalize.dart';
 import 'package:AARUUSH_CONNECT/Utilities/correct_ellipis.dart';
 import 'package:AARUUSH_CONNECT/Utilities/custom_sizebox.dart';
 import 'package:AARUUSH_CONNECT/Utilities/removeBracketsIfExist.dart';
 import 'package:AARUUSH_CONNECT/components/bg_area.dart';
-import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -99,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                       sizeBox(0, 9),
                       Obx(() => FittedBox(
                             child: Text(
-                              "Hi, ${toRemoveTextInBracketsIfExists(CommonController.userName.toString())}"
+                              "Hi, ${toRemoveTextInBracketsIfExists(CommonController.userName.split(" ").first)}"
                                   .useCorrectEllipsis(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -212,28 +209,10 @@ class HomeScreen extends StatelessWidget {
                                     .map((event) {
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 12),
-                                    child: OpenContainer(
-                                      middleColor: Colors.transparent,
-                                      openColor: Colors.transparent,
-                                      closedColor: Colors.transparent,
-                                      closedShape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                      transitionDuration:
-                                          const Duration(milliseconds: 400),
-                                      transitionType:
-                                          ContainerTransitionType.fadeThrough,
-                                      closedBuilder: (context, action) =>
-                                          eventCard(
-                                        event,
-                                        action,
-                                        homeController,
-                                      ),
-                                      openBuilder: (context, action) =>
-                                          EventsScreen(
-                                        event: event,
-                                        fromMyEvents: false.obs,
-                                      ),
+                                    child: eventCard(
+                                      event: event,
+                                      onTap: ()=>Get.toNamed(AppRoutes.eventScreen,parameters: {"EventId":event.id!},arguments: {"event":event}),
+                                      homeController: homeController,
                                     ),
                                   );
                                 }).toList(),
@@ -284,26 +263,10 @@ class HomeScreen extends StatelessWidget {
                               .map((e) {
                             return Padding(
                               padding: const EdgeInsets.only(right: 12),
-                              child: OpenContainer(
-                                middleColor: Colors.transparent,
-                                openColor: Colors.transparent,
-                                closedColor: Colors.transparent,
-                                closedShape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                                transitionDuration:
-                                    const Duration(milliseconds: 400),
-                                transitionType:
-                                    ContainerTransitionType.fadeThrough,
-                                openBuilder: (context, _) => EventsScreen(
-                                  event: e,
-                                  fromMyEvents: false.obs,
-                                ),
-                                closedBuilder: (context, openContainer) =>
-                                    eventCard(
-                                  e,
-                                  openContainer,
-                                  homeController,
-                                ),
+                              child:   eventCard(
+                                event: e,
+                                onTap: ()=>Get.toNamed(AppRoutes.eventScreen,parameters: {"EventId":e.id!},arguments: {"event":e}),
+                                homeController: homeController,
                               ),
                             );
                           }).toList(),

@@ -5,7 +5,7 @@ import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
@@ -23,6 +23,7 @@ class CommonController extends GetxController {
   static RxMap<String, dynamic> userDetails = <String, dynamic>{}.obs;
   static RxBool isLoading = false.obs;
   static RxBool isEventRegistered = false.obs;
+
   // void resetProfileData() {
   //   final profileController = Get.put(ProfileController());
   //   profileController.resetProfileData();
@@ -38,9 +39,7 @@ class CommonController extends GetxController {
   Future<void> onInit() async {
     await fetchAndLoadDetails();
     super.onInit();
-
   }
-
 
   static Future<bool> isUserSignedIn() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -49,7 +48,6 @@ class CommonController extends GetxController {
     }
     return user != null;
   }
-
 
   // Future<Widget> getLandingPage() async {
   //   bool isSignedIn = await isUserSignedIn();
@@ -78,11 +76,11 @@ class CommonController extends GetxController {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        return user; // Directly return the current user if not null
+        return user;
       }
       return null;
-    } on FirebaseAuthException catch (e) {
-      debugPrint("Firebase Signin Error: ${e.message}");
+    } on FirebaseAuthException catch (e, stacktrace) {
+      Log.verbose("Firebase Signing Error:", [e, stacktrace]);
       return null;
     }
   }
@@ -97,20 +95,16 @@ class CommonController extends GetxController {
       DocumentSnapshot userSnapshot = await userDoc.get();
 
       if (userSnapshot.exists) {
-        if (kDebugMode) {
-          print('User details are available.');
-        }
+        Log.info('User details are available.');
+
         return true;
       } else {
-        if (kDebugMode) {
-          print('User details are not available.');
-        }
+        Log.info('User details are not available.');
         return false;
       }
-    } catch (error) {
-      if (kDebugMode) {
-        print('Failed to check user availability: $error');
-      }
+    } catch (error, stacktrace) {
+      Log.verbose('Failed to check user availability:', [error, stacktrace]);
+
       return false;
     }
   }
@@ -118,16 +112,13 @@ class CommonController extends GetxController {
   Future<void> signOutCurrentUser() async {
     try {
       final GoogleSignInAccount? googleUser = GoogleSignIn().currentUser;
-      await googleUser?.clearAuthCache();
-      await FirebaseAuth.instance.signOut();
-      await LocalClient.clearAll();
-      await GoogleSignIn().disconnect();
-      await GoogleSignIn().signOut();
-
-      // await _deleteCacheDir();
-      // await _deleteAppDir();
-    } on FirebaseAuthException catch (e) {
-      debugPrint("Errr $e");
+      googleUser?.clearAuthCache();
+      FirebaseAuth.instance.signOut();
+      LocalClient.clearAll();
+      GoogleSignIn().disconnect();
+      GoogleSignIn().signOut();
+    } on FirebaseAuthException catch (e, stacktrace) {
+      Log.verbose("Error in signing out user ", [e, stacktrace]);
     }
     Get.offAllNamed(AppRoutes.onBoarding);
   }
@@ -141,9 +132,9 @@ class CommonController extends GetxController {
       Log.info("User signed in");
       Rx<User?> attributes = (await getCurrentUser()).obs;
       final response = await get(
-          Uri.parse(
-              'https://api.aaruush.org/api/v1/users/${attributes.value?.email}'),
+          Uri.parse('${ApiData.API}/users/${attributes.value?.email}'),
           headers: {'Authorization': ApiData.accessToken});
+      Log.logPrettyJson(response,"User Details");
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data["message"] == "Unauthorized") {
@@ -169,8 +160,8 @@ class CommonController extends GetxController {
             data['college (na if not applicable)'] ??
             data['college_name'] ??
             "";
-        Log.info("User details: $data");
         update();
+        refresh();
         return data;
       } else {
         var data = jsonDecode(response.body);
@@ -180,7 +171,7 @@ class CommonController extends GetxController {
     }
   }
 
- static List<String> registeredEvents() {
+  static List<String> getRegisteredEvents() {
     List<String> events = [];
     if (userDetails['events'] != null) {
       for (var event in userDetails['events']) {
@@ -188,6 +179,36 @@ class CommonController extends GetxController {
       }
     }
     return events;
+  }
+
+  Future<List<EventListModel>?> fetchEventData() async {
+    isLoading.value = true;
+    try {
+      final response = await http.get(Uri.parse('${ApiData.API}/events/'));
+      Log.logPrettyJson(response,"Event Data");
+      if (response.statusCode == 200) {
+        String data = utf8.decode(response.bodyBytes);
+
+        final jsonResponse = json.decode(data);
+
+        if (jsonResponse is List) {
+          // Check if the decoded data is a list
+          List<EventListModel> events = jsonResponse.map((item) {
+            return EventListModel.fromMap(item);
+          }).toList();
+          return events;
+        } else {
+          Log.error("Error banners: ${response.body} ${response.statusCode}");
+          throw Exception('Failed to load events');
+        }
+      }
+    } catch (e, stackTrace) {
+      Log.verbose('Error fetching events by category:', [e, stackTrace]);
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+    return null;
   }
 
   void checkRegistered(EventListModel e) {
@@ -199,8 +220,5 @@ class CommonController extends GetxController {
   Future<void> fetchAndLoadDetails() async {
     userDetails.value = await getUserDetails();
     update();
-    // isEventRegistered.value = userDetails['events'].contains(e.id);
   }
-
-
 }

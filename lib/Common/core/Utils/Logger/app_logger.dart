@@ -1,5 +1,7 @@
-import 'package:logger/logger.dart';
+import 'dart:convert';
 
+import 'package:logger/logger.dart';
+import 'package:http/http.dart' as http;
 class Log {
   static final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -58,5 +60,15 @@ class Log {
       error: error,
       stackTrace: stackTrace,
     );
+  }
+
+  static void logPrettyJson(http.Response jsonString,String label) {
+    try {
+      final jsonObject = jsonDecode(jsonString.body);
+      final prettyJson = const JsonEncoder.withIndent('  ').convert(jsonObject);
+      Log.info(prettyJson,[label]);
+    } catch (e,stackTrace) {
+      Log.error("Error parsing JSON: $e",[e,stackTrace]);
+    }
   }
 }

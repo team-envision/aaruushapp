@@ -92,14 +92,14 @@ class SignInController extends GetxController {
       }
     } on FirebaseAuthException catch (e,stackTrace) {
       Log.verbose("Error in SignIn Controller(google): ",[e,stackTrace]);
-      setSnackBar('Error:', e.message!,
+      setSnackBar('Error:', e.message ?? "Something Went Wrong",
           icon: const Icon(
             Icons.warning_amber_rounded,
             color: Colors.red,
           ));
     } catch (stackTrace,e) {
       Log.verbose("Error in SignIn Controller(google) : ",[e,stackTrace]);
-      setSnackBar('Error:', e.toString(),
+      setSnackBar('Error:', "Something Went Wrong",
           icon: const Icon(
             Icons.warning_amber_rounded,
             color: Colors.red,
