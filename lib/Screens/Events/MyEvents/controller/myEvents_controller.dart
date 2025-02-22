@@ -25,12 +25,11 @@ class MyEventsController extends GetxController {
   Future<void> fetchRegisteredEvents() async {
     try {
       state.isLoading.value = true;
-      Log.info(homeController.state.eventList);
       await homeController.fetchEventData();
       state.eventList ??= homeController.state.eventList;
 
       final List<String> eventIds = CommonController.getRegisteredEvents();
-      Log.info("Fetched registered event IDs: $eventIds");
+      Log.info(eventIds,["Registered event IDs"]);
       state.registeredEvents.clear();
       state.eventList?.forEach((element) {
         if (eventIds.contains(element.id)) {

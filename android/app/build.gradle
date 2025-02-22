@@ -33,12 +33,17 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.example.aaruushapp"
-    compileSdk 34
+    compileSdkVersion 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        allprojects {
+            tasks.withType(JavaCompile) {
+                options.compilerArgs << "-Xlint:deprecation"
+            }
+        }
     }
 
     kotlinOptions {
@@ -88,5 +93,5 @@ flutter {
 }
 
 dependencies {
-    implementation "androidx.activity:activity:1.6.0-alpha05"
+    implementation "androidx.activity:activity:1.10.0"
 }
