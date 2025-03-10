@@ -32,7 +32,7 @@ To set up the environment variables and Firebase for the project, follow these s
 
 ### **Step 2: Install & SetUp Firebase CLI**  
 - If you haven't installed Firebase CLI, download it from:  
-  👉 [FlutterFire CLI Installation Guide]([https://firebase.google.com/docs/cli#install_the_firebase_cli](https://firebase.flutter.dev/docs/cli/)  
+  👉 [FlutterFire CLI Installation Guide][https://firebase.flutter.dev/docs/cli]
 
 
 ### **Step 3: Configure Firebase for Flutter**  
@@ -51,11 +51,27 @@ To set up the environment variables and Firebase for the project, follow these s
 
 
 ## **5. Initialize the Project**  
-- Run the following command to fetch dependencies and start the project:  
+- Run the following command to fetch dependencies and start the project:
+
+
+
+## **6. Ensure Correct Flutter Version**  
+- **Make sure you are using Flutter version `3.27.3`.**  
+- To check your current Flutter version, run:  
 
   ```bash
-  flutter pub get
-  flutter run
+  flutter --version
   ```
 
+- If you need to switch to Flutter `3.27.3`, run:  
+
+  ```bash
+  flutter version 3.27.3
+  ```
+- Or You can use FVM for running multiple version, checkout:
+  👉 [FVM DOCS ][https://fvm.app/documentation/getting-started]  
+    
+
 ---
+
+
