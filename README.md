@@ -27,7 +27,7 @@ To set up the environment variables and Firebase for the project, follow these s
 ## **4. Firebase Setup & Integration**  
 
 ### **Step 1: Ensure Firebase Access**  
-- **Make sure you are added to the Firebase account of Aaruush.**  
+- **Make sure you are added to the Firebase account of Team Envision.**  
 - Contact the Firebase owner to get the necessary permissions.  
 
 ### **Step 2: Install & SetUp Firebase CLI**  
