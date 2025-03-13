@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="TODO">
     <application
         android:label="Aaruush Connect"
         android:name="${applicationName}"
@@ -23,13 +24,33 @@
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="www.aaruush.org" />
+
+
+
+                <data android:scheme="https"
+                    android:host="aaruush.org"
+                    android:pathPrefix="/profileScreen"/>
+
+                <data android:scheme="https"
+                    android:host="aaruush.org"
+                    android:pathPrefix="/signIn"/>
+
+                <data android:scheme="https"
+                    android:host="aaruush.org"
+                    android:pathPrefix="/homeScreen"/>
+
+                <data android:scheme="https"
+                    android:host="aaruush.org"
+                    android:pathPrefix="/myEvents"/>
+                <data android:scheme="https" android:host="aaruush.org" android:pathPrefix="/eventScreen" />
             </intent-filter>
 
         </activity>

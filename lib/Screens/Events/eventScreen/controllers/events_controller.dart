@@ -37,7 +37,7 @@ final CommonController commonController;
 
 
   // Future<void> _initializeEventData() async {
-  //   if (widget.fromNotificationRoute && widget.EventId != null) {
+  //   if (widget.fromNotificationRoute && widget.EventId != nul
   //     await fetchEventData(widget.EventId!);
   //
   //     eventData = controller.eventData.value;
@@ -70,10 +70,10 @@ final CommonController commonController;
       );
     }
 
-    Log.info(state.userDetails.keys.toList());
-    state.userDetails.keys.map((val) {
-      Log.info(val);
-    });
+    // Log.info(state.userDetails.keys.toList());
+    // state.userDetails.keys.map((val) {
+    //   Log.info(val);
+    // });
 
   }
 
@@ -168,11 +168,14 @@ final CommonController commonController;
   Future<void> fetchEventData(String eventId) async {
     state.isLoading.value = true;
 
-   if(Get.arguments["event"] != null){
+   if(Get.arguments != null && Get.arguments.containsKey("event")){
      Log.debug(Get.arguments["event"]);
      state.eventData.value ??= await  Get.arguments["event"];
      state.isLoading.value = false;
      return;
+   }
+   else {
+     Log.debug("Get.arguments is null or does not contain the 'event' key");
    }
 
     try {

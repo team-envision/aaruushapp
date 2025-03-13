@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:AARUUSH_CONNECT/Themes/themes.dart';
 import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -121,7 +122,7 @@ class appRating {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.white,
-                                  backgroundColor: const Color.fromRGBO(239, 101, 34, 1),
+                                  backgroundColor: Get.theme.colorPrimary,
                                 ),
                                 child: const Text("Submit"),
                               ),
@@ -143,7 +144,7 @@ class appRating {
           ];
         },
         ignoreNativeDialog: Platform.isAndroid,
-        dialogStyle: const DialogStyle(
+        dialogStyle:  DialogStyle(
           titleAlign: TextAlign.center,
           messageAlign: TextAlign.center,
           messagePadding: EdgeInsets.only(bottom: 20),

@@ -27,7 +27,7 @@ class SignInController extends GetxController {
 });
 
 
-
+/// thi s is to handle google signing
   Future<void> googleSignIn() async {
     if (state.isSigningIn) return; // Prevent multiple sign-in attempts
     state.isSigningIn = true;
@@ -70,20 +70,20 @@ class SignInController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(response.body);
-        debugPrint('Access token: ${data['accessToken']}');
 
         await LocalClient.saveString(key: 'accessToken', value: data['accessToken']);
-        Log.highlight("Access Token: " + data['accessToken']);
+        Log.highlight("Access Token: $data['accessToken']['accessToken]");
         Log.highlight("googleUserName: ${googleUser.displayName}. googleUserEmail: ${googleUser.email}");
         await LocalClient.saveString(key: 'userEmail',value:  googleUser.email);
         await LocalClient.saveString(key: 'userName',value:  googleUser.displayName ?? "");
+
         if (await CommonController.isUserAvailableInFirebase(googleUser.email)) {
           Get.offAllNamed(AppRoutes.stage);
         } else {
           Get.toNamed(AppRoutes.registerView);
         }
       } else {
-        setSnackBar('Error:', response.body,
+        setSnackBar('Error:', "Something Went Wrong",
             icon: const Icon(
               Icons.warning_amber_rounded,
               color: Colors.red,

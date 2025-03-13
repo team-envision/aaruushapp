@@ -4,7 +4,6 @@ import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Utils/Logger/app_logger.dart';
 import 'package:AARUUSH_CONNECT/Screens/Auth/Register/state/Register_State.dart';
 import 'package:AARUUSH_CONNECT/Screens/Home/controllers/home_controller.dart';
-import 'package:AARUUSH_CONNECT/Screens/Stage/Widget/AaruushBottomBar.dart';
 import 'package:AARUUSH_CONNECT/Utilities/removeBracketsIfExist.dart';
 import 'package:AARUUSH_CONNECT/Utilities/snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,9 +33,6 @@ class RegisterController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     Rx<User?> currentUser = (await CommonController.getCurrentUser()).obs;
-    print('hhhhhhh');
-    print(currentUser.value?.email);
-    print(currentUser.value?.displayName);
     state.googleUserEmail = currentUser.value?.email;
     state.EmailTextEditingController.text = currentUser.value?.email ?? "";
     state.NameTextEditingController.text =
@@ -48,7 +44,7 @@ class RegisterController extends GetxController {
   }
 
 
-  //Todo: homecontroller remove krna hai registercontroller se
+  // TODO: homecontroller remove krna hai registercontroller se
   Future<void> updateProfile() async {
     final userRes = await put(
       Uri.parse('${ApiData.API}/users'),
@@ -78,7 +74,7 @@ class RegisterController extends GetxController {
           color: Colors.green,
         ),
       );
-      Get.toNamed(AppRoutes.aaruushBottomBar);
+      await homeController.commonController.fetchAndLoadDetails();
     } else {
       setSnackBar(
         'ERROR:',
@@ -88,17 +84,15 @@ class RegisterController extends GetxController {
           color: Colors.red,
         ),
       );
-      debugPrint("ERROR : ${userRes.body}");
-      debugPrint("ERROR : ${userRes.reasonPhrase}");
+      Log.error("ERROR : ${userRes.body}");
+      Log.error("ERROR : ${userRes.reasonPhrase}");
     }
 
-    await homeController.commonController.fetchAndLoadDetails();
+
   }
 
   Future<void> saveUserToFirestore() async {
-    if (kDebugMode) {
-      print(FirebaseAuth.instance.currentUser!.getIdToken());
-    }
+
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     String? fcmToken = await messaging.getToken();
 
@@ -124,12 +118,13 @@ class RegisterController extends GetxController {
 
       try {
         await users.doc(email).set(userData);
-        Get.offAllNamed(AppRoutes.aaruushBottomBar);
+        Get.offAllNamed(AppRoutes.stage);
       } on FirebaseException catch (e) {
         Log.verbose(e.message,[e,e.stackTrace]);
         setSnackBar(e.code, e.message!);
       } catch (stackTrace,error) {
         Log.verbose(error,[error,stackTrace]);
+        setSnackBar("Oops!", "Something Went Wrong");
       }
 
   }

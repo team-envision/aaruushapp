@@ -4,6 +4,7 @@ import 'package:AARUUSH_CONNECT/Common/core/Routes/app_routes.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Utils/GlobalErrorHandler.dart';
 import 'package:AARUUSH_CONNECT/Common/core/Utils/Navigator_Observer/app_navigator_observer.dart';
 import 'package:AARUUSH_CONNECT/Views/PageNotFound.dart';
+import 'package:app_links/app_links.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -16,6 +17,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Common/bindings/default_controller_bindings.dart';
+import 'Common/core/Utils/handleAppLinks.dart';
 import 'Data/api_data.dart';
 import 'Themes/theme_service.dart';
 import 'Themes/themes.dart';
@@ -50,8 +52,6 @@ Future<void> main() async {
       runApp(AaruushApp());
 
 
-
-
     // runApp(  DevicePreview(
     //   enabled: !kReleaseMode,
     //   builder: (context) => AaruushApp(), // Wrap your app
@@ -67,9 +67,24 @@ class AaruushApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Future.delayed(Duration(seconds: 2), () {
+      FlutterNativeSplash.remove();
+    });
+    Future.delayed(Duration.zero, () async {
+      final appLinks = AppLinks();
+      final initialLink = await appLinks.getInitialLink();
+      if (initialLink != null) {
+        handleDeepLink(initialLink);
+      }
+      appLinks.uriLinkStream.listen((uri) {
+        handleDeepLink(uri);
+      });
+    });
+
     return ErrorHandlerWidget(
       child: GetMaterialApp(
-
+        onInit: (){ Get.rootDelegate.toNamed(Get.currentRoute);},
         useInheritedMediaQuery: true,
         locale: DevicePreview.locale(context),
         defaultTransition: Transition.rightToLeftWithFade,

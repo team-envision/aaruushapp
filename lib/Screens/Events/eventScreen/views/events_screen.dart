@@ -51,20 +51,22 @@ class EventsScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.state.isLoading.value) {
-          return Center(
-            child: Container(
-                height: Get.height,
-                width: Get.width,
-                color: Colors.black,
-                child: Image.asset('assets/images/spinner.gif', scale: 4)),
+          return BgArea(
+            child: Center(
+              child: Container(
+                  height: Get.height,
+                  width: Get.width,
+                  color: Colors.black,
+                  child: Image.asset('assets/images/spinner.gif', scale: 4)),
+            ),
           );
         }
 
         return BgArea(
-          image: 'bg.png',
-          child: SingleChildScrollView(
+          child: SingleChildScrollView(physics: const BouncingScrollPhysics(),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 sizeBox(100, 0),
                 Flexible(
@@ -251,28 +253,26 @@ class EventsScreen extends StatelessWidget {
                           physics: const BouncingScrollPhysics(),
                           children: [
                             _TabDataWidget(
-                                text:
-                                    controller.state.eventData.value?.about ??
-                                        "Nil"),
+                                text: controller.state.eventData.value?.about ??
+                                    "Nil"),
                             _TabDataWidget(
                                 text: controller
                                         .state.eventData.value?.structure ??
                                     "Nil"),
                             _TabDataWidget(
-                                text: controller
-                                        .state.eventData.value?.contact ??
-                                    "Nil"),
+                                text:
+                                    controller.state.eventData.value?.contact ??
+                                        "Nil"),
                           ],
                         ),
                       ),
                       Text(
-                          (controller.state.eventData.value?.mode ==
-                                      "online" ||
-                                  controller.state.eventData.value
-                                          ?.locationLng ==
+                          (controller.state.eventData.value?.mode == "online" ||
+                                  controller
+                                          .state.eventData.value?.locationLng ==
                                       null ||
-                                  controller.state.eventData.value
-                                          ?.locationLat ==
+                                  controller
+                                          .state.eventData.value?.locationLat ==
                                       null)
                               ? ''
                               : 'LOCATION',
@@ -285,13 +285,15 @@ class EventsScreen extends StatelessWidget {
                       ),
                       ClipRRect(
                           borderRadius: BorderRadius.circular(21),
-                          child: controller.state.eventData.value?.mode!
+                          child: controller
+                                          .state.eventData.value?.mode!
                                           .toLowerCase() ==
                                       "online" ||
-                                  controller.state.eventData.value?.locationLng ==
+                                  controller
+                                          .state.eventData.value?.locationLng ==
                                       null ||
-                                  controller.state.eventData.value
-                                          ?.locationLat ==
+                                  controller
+                                          .state.eventData.value?.locationLat ==
                                       null
                               ? const SizedBox(
                                   height: 10,
@@ -299,16 +301,19 @@ class EventsScreen extends StatelessWidget {
                               : Container(
                                   height: 200,
                                   width: Get.width * 0.9,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(210)),
-                                  child: Mapscreen(
-                                      Lattitude: controller
-                                          .state.eventData.value?.locationLat,
-                                      Longitude: controller
-                                          .state.eventData.value?.locationLng,
-                                      location: controller
-                                          .state.eventData.value?.location)))
+                                  decoration:
+                                      BoxDecoration(
+                                          borderRadius: BorderRadius
+                                              .circular(210)),
+                                  child:
+                                      Mapscreen(
+                                          Lattitude:
+                                              controller.state.eventData.value
+                                                  ?.locationLat,
+                                          Longitude: controller.state.eventData
+                                              .value?.locationLng,
+                                          location: controller.state.eventData
+                                              .value?.location)))
                     ],
                   ),
                 ),
@@ -327,15 +332,13 @@ class EventsScreen extends StatelessWidget {
                   ? 'View Ticket'
                   : 'Register now',
               onTap: () async {
-
                 if (controller.state.isEventRegistered.value) {
                   Get.toNamed(AppRoutes.ticket,
                       arguments: controller.state.eventData.value);
                   return;
                 }
                 await controller.getUser();
-                if (controller
-                    .state.eventData.value!.dynamicform!.isNotEmpty) {
+                if (controller.state.eventData.value!.dynamicform!.isNotEmpty) {
                   if (controller.state.eventData.value?.live ?? false) {
                     Get.toNamed(AppRoutes.registerEvent,
                         arguments: controller.state.eventData);
@@ -351,12 +354,10 @@ class EventsScreen extends StatelessWidget {
                   }
                 } else if ((controller
                     .state.eventData.value!.reglink!.isNotEmpty)) {
-                  if (await canLaunchUrl(Uri.parse(controller
-                      .state.eventData.value!.reglink
-                      .toString()))) {
-                    launchUrl(Uri.parse(controller
-                        .state.eventData.value!.reglink
-                        .toString()));
+                  if (await canLaunchUrl(Uri.parse(
+                      controller.state.eventData.value!.reglink.toString()))) {
+                    launchUrl(Uri.parse(
+                        controller.state.eventData.value!.reglink.toString()));
                     controller.registerEvent(
                         e: controller.state.eventData.value!);
                   } else {
@@ -432,40 +433,31 @@ class ImageColoredShadow extends StatelessWidget {
     double blurSigma = 100;
     String imageUrl = link;
 
-    return Stack(children: [
-      Center(
-          child: ClipRRect(
-              child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
-                    width: width + blurRadius,
-                    height: height + blurRadius,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                            fit: BoxFit.contain,
-                            image: CachedNetworkImageProvider(imageUrl))),
-                  )))),
+    return Stack(
+        children: [
+      Container(
+        width: width + blurRadius,
+        height: height + blurRadius,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+            image: DecorationImage(
+                fit: BoxFit.contain,
+                image: CachedNetworkImageProvider(imageUrl))),
+      ),
       Positioned.fill(
-          child: SizedBox(
-            width: width + blurRadius,
-            height: height + blurRadius,
-            child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
-                child: Container(color: Colors.black.withOpacity(0))),
-          )),
+          child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+              child: const SizedBox())),
       Positioned.fill(
         bottom: 20,
-        child: Center(
-          child: Container(
-              width: width - 20,
-              height: height,
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  image: DecorationImage(
-                      fit: BoxFit.contain,
-                      image: CachedNetworkImageProvider(imageUrl)))),
-        ),
+        child: Container(
+            width: width - 20,
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.transparent,
+                image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: CachedNetworkImageProvider(imageUrl)))),
       ),
     ]);
   }

@@ -42,8 +42,8 @@ class _MapscreenState extends State<Mapscreen> {
     return FlutterMap(
         mapController: _mapController,
         options: MapOptions(
-          rotationThreshold: 20,
-          zoom: 17,
+          initialRotation: 20,
+          initialZoom: 17,
           maxZoom: 21,
           onTap: (val, Coordinates) {
             if (Coordinates != null) {
@@ -51,8 +51,9 @@ class _MapscreenState extends State<Mapscreen> {
                   widget.Lattitude!, widget.Longitude!);
             }
           },
-          center: coordinates,
-          interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+          initialCenter: coordinates,
+          interactionOptions: InteractionOptions(
+              flags: InteractiveFlag.all & ~InteractiveFlag.rotate),
         ),
         children: [
           map,
@@ -63,22 +64,24 @@ class _MapscreenState extends State<Mapscreen> {
                       width: 100,
                       height: 100,
                       rotate: false,
-                      anchorPos: AnchorPos.align(AnchorAlign.center),
-                      rotateAlignment: Alignment.center,
-                      builder: (context) {
-                        return  Column(mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FittedBox(child: Text(widget.location??'',style: const TextStyle(fontSize: 40),)),
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FittedBox(
+                              child: Text(
+                            widget.location ?? '',
+                            style: const TextStyle(fontSize: 40),
+                          )),
                           const Icon(
-                          Icons.location_pin,
-                          size: 30,
-                          color: Colors.red,
-                                                  ),
-                          ],
-                        );
-                      }),
+                            Icons.location_pin,
+                            size: 30,
+                            color: Colors.red,
+                          ),
+                        ],
+                      )),
                 ])
-              : const MarkerLayer(),
+              : const SizedBox(),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: LogoSourceAttribution(
@@ -114,7 +117,6 @@ class _MapscreenState extends State<Mapscreen> {
         maxZoom: 21,
         retinaMode: true,
         userAgentPackageName: "dev.fleaflet.flutter_map.example",
-        backgroundColor: Colors.transparent,
         tileBuilder: _darkModeTileBuilder,
       );
 }

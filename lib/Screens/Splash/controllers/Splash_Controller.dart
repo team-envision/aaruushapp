@@ -7,34 +7,29 @@ import 'package:AARUUSH_CONNECT/Data/api_data.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
-
-
   Future<void> getLandingPage() async {
-
     bool isSignedIn = await CommonController.isUserSignedIn();
     String? accessToken = ApiData.accessToken;
     String? userEmail = LocalClient.getString(key: LocalKeys.userEmail);
-Log.info(accessToken);
-    bool isUserAvailableinFirebase = await CommonController.isUserAvailableInFirebase(userEmail);
+    Log.info(accessToken);
+    bool isUserAvailableinFirebase =
+        await CommonController.isUserAvailableInFirebase(userEmail);
 
-
-      if (isSignedIn && isUserAvailableinFirebase) {
-        Log.info("User signed in");
-        Get.toNamed(AppRoutes.stage);
-      } else if (isSignedIn && !isUserAvailableinFirebase) {
-        Log.info("User not registered in firebase");
-        Get.toNamed(AppRoutes.registerView);
-      } else {
-        Log.info("User not signed in");
-        Get.toNamed(AppRoutes.onBoarding);
+    if (isSignedIn && isUserAvailableinFirebase) {
+      Log.info("User signed in");
+      Get.toNamed(AppRoutes.stage);
+    } else if (isSignedIn && !isUserAvailableinFirebase) {
+      Log.info("User not registered in firebase");
+      Get.toNamed(AppRoutes.registerView);
+    } else {
+      Log.info("User not signed in");
+      Get.toNamed(AppRoutes.onBoarding);
     }
   }
 
-@override
+  @override
   void onInit() {
     super.onInit();
     getLandingPage();
   }
-
-
 }

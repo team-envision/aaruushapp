@@ -1,0 +1,2 @@
+D:/personal/aaruush_app/aaruushapp/android/app/.cxx/RelWithDebInfo/54185n6a/x86_64/CMakeFiles/edit_cache.dir
+D:/personal/aaruush_app/aaruushapp/android/app/.cxx/RelWithDebInfo/54185n6a/x86_64/CMakeFiles/rebuild_cache.dir
